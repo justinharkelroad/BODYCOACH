@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   images: {
@@ -14,7 +13,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Apply CORS headers to all API routes
         source: '/api/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
@@ -27,28 +25,25 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  // Sentry organization and project
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
+// Only wrap with Sentry if credentials are available
+let config = nextConfig;
 
-  // Only upload source maps in production
-  silent: !process.env.CI,
+if (process.env.SENTRY_ORG && process.env.SENTRY_PROJECT) {
+  try {
+    const { withSentryConfig } = require("@sentry/nextjs");
+    config = withSentryConfig(nextConfig, {
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      silent: !process.env.CI,
+      widenClientFileUpload: true,
+      disableLogger: true,
+      hideSourceMaps: true,
+      reactComponentAnnotation: { enabled: true },
+      tunnelRoute: "/monitoring",
+    });
+  } catch {
+    // Sentry not installed or not configured — skip
+  }
+}
 
-  // Upload a larger set of source maps for prettier stack traces
-  widenClientFileUpload: true,
-
-  // Automatically tree-shake Sentry logger statements
-  disableLogger: true,
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-
-  // Automatically instrument React components
-  reactComponentAnnotation: {
-    enabled: true,
-  },
-
-  // Route handler and middleware tracing
-  tunnelRoute: "/monitoring",
-});
+export default config;
