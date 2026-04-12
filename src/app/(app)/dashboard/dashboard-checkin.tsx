@@ -31,6 +31,7 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
   const [sleepHours, setSleepHours] = useState<number | null>(todayCheckin?.sleep_hours || null);
   const [waterOz, setWaterOz] = useState(todayCheckin?.water_oz?.toString() || '');
   const [stressLevel, setStressLevel] = useState<number | null>(todayCheckin?.stress_level || null);
+  const [notes, setNotes] = useState(todayCheckin?.notes || '');
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -64,6 +65,7 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
           sleep_hours: sleepHours,
           water_oz: waterOz ? parseInt(waterOz) : null,
           stress_level: stressLevel,
+          notes: notes || null,
         }, { onConflict: 'user_id,date' });
 
       setSaved(true);
@@ -77,7 +79,7 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
   };
 
   const stressEmojis: Record<number, string> = { 1: '😫', 2: '😟', 3: '😐', 4: '🙂', 5: '😄' };
-  const hasInput = weight || sleepHours || waterOz || stressLevel;
+  const hasInput = weight || sleepHours || waterOz || stressLevel || notes;
 
   return (
     <section className="space-y-4">
@@ -171,13 +173,35 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
             </div>
           </div>
 
-          {/* Save */}
+          {/* Notes */}
+          <div>
+            <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+              Notes <span className="font-normal normal-case tracking-normal">(optional)</span>
+            </label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="How are you feeling today?"
+              rows={2}
+              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] resize-none"
+            />
+          </div>
+
+          {/* Save feedback */}
+          {saved && (
+            <div className="flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[rgba(52,199,89,0.08)] text-[#34C759] text-[14px] font-medium">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              Check-in saved
+            </div>
+          )}
+
+          {/* Save button */}
           <button
             onClick={handleSave}
             disabled={isSaving || !hasInput}
             className="w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[#0071e3] hover:bg-[#0077ED] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {isSaving ? 'Saving...' : saved ? 'Saved!' : 'Save Check-in'}
+            {isSaving ? 'Saving...' : 'Save Check-in'}
           </button>
         </CardContent>
       </Card>
@@ -193,21 +217,26 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
                   <div className="text-[14px] font-medium text-[#1d1d1f] min-w-[60px]">
                     {new Date(checkin.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </div>
-                  <div className="flex flex-wrap gap-3 text-[14px] text-[#6e6e73]">
-                    {checkin.stress_level && (
-                      <span>{stressEmojis[checkin.stress_level]}</span>
-                    )}
-                    {checkin.water_oz && (
-                      <span className="flex items-center gap-1">
-                        <Droplets className="h-3.5 w-3.5 text-[#5AC8FA]" />
-                        {checkin.water_oz}oz
-                      </span>
-                    )}
-                    {checkin.sleep_hours && (
-                      <span className="flex items-center gap-1">
-                        <Moon className="h-3.5 w-3.5 text-[#86868b]" />
-                        {checkin.sleep_hours}h
-                      </span>
+                  <div className="flex-1">
+                    <div className="flex flex-wrap gap-3 text-[14px] text-[#6e6e73]">
+                      {checkin.stress_level && (
+                        <span>{stressEmojis[checkin.stress_level]}</span>
+                      )}
+                      {checkin.water_oz && (
+                        <span className="flex items-center gap-1">
+                          <Droplets className="h-3.5 w-3.5 text-[#5AC8FA]" />
+                          {checkin.water_oz}oz
+                        </span>
+                      )}
+                      {checkin.sleep_hours && (
+                        <span className="flex items-center gap-1">
+                          <Moon className="h-3.5 w-3.5 text-[#86868b]" />
+                          {checkin.sleep_hours}h
+                        </span>
+                      )}
+                    </div>
+                    {checkin.notes && (
+                      <p className="text-[12px] text-[#86868b] mt-1 italic">{checkin.notes}</p>
                     )}
                   </div>
                 </div>

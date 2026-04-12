@@ -31,6 +31,7 @@ export function StatsForm({ userId, existingStatId, defaultValues }: StatsFormPr
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [saved, setSaved] = useState(false);
   const [showMeasurements, setShowMeasurements] = useState(false);
 
   const [weight, setWeight] = useState(defaultValues?.weight_lbs?.toString() || '');
@@ -103,6 +104,8 @@ export function StatsForm({ userId, existingStatId, defaultValues }: StatsFormPr
       setNotes('');
     }
 
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
     setIsLoading(false);
   }
 
@@ -244,6 +247,13 @@ export function StatsForm({ userId, existingStatId, defaultValues }: StatsFormPr
 
           {error && (
             <p className="text-sm text-[var(--error)]">{error}</p>
+          )}
+
+          {saved && (
+            <div className="flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[rgba(52,199,89,0.08)] text-[#34C759] text-[14px] font-medium">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              Saved successfully
+            </div>
           )}
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
