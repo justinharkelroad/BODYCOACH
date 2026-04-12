@@ -37,9 +37,9 @@ export default function HomePage() {
       </header>
 
       {/* Hero — Dark, cinematic */}
-      <section className="pt-28 pb-24 px-6 bg-black text-center">
-        <div className="max-w-[680px] mx-auto">
-          <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-20 sm:h-28 md:h-32 w-auto mx-auto mb-10 invert brightness-200" />
+      <section className="pt-28 pb-24 px-6 bg-black text-center overflow-hidden">
+        <div className="max-w-[880px] mx-auto">
+          <img src="/logos/standard-nutrition-white.png" alt="Standard Nutrition" className="max-w-full h-auto w-auto max-h-24 sm:max-h-32 md:max-h-40 mx-auto mb-10" />
           <h1 className="text-[40px] sm:text-[56px] font-semibold text-white leading-[1.07] tracking-[-0.005em] mb-4">
             Your nutrition.{' '}
             <span className="text-[#86868b]">Your coach.</span>
