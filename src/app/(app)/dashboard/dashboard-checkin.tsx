@@ -28,10 +28,10 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
   const supabase = createClient();
 
   const [weight, setWeight] = useState('');
-  const [sleepHours, setSleepHours] = useState<number | null>(todayCheckin?.sleep_hours || null);
-  const [waterOz, setWaterOz] = useState(todayCheckin?.water_oz?.toString() || '');
-  const [stressLevel, setStressLevel] = useState<number | null>(todayCheckin?.stress_level || null);
-  const [notes, setNotes] = useState(todayCheckin?.notes || '');
+  const [sleepHours, setSleepHours] = useState<number | null>(null);
+  const [waterOz, setWaterOz] = useState('');
+  const [stressLevel, setStressLevel] = useState<number | null>(null);
+  const [notes, setNotes] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
