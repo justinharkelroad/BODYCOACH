@@ -7,9 +7,10 @@ function getResend() {
   }
   return _resend;
 }
-const DEFAULT_FROM_EMAIL = 'Standard Nutrition <notifications@standardnutrition.com>';
+const DEFAULT_FROM_EMAIL = 'Corina | Standard Nutrition <corina@standardnutrition.app>';
 const FROM_EMAIL = process.env.NOTIFICATION_FROM_EMAIL || DEFAULT_FROM_EMAIL;
-const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || 'https://standardnutrition.com').replace(/\/$/, '');
+const REPLY_TO = 'corinahark@gmail.com';
+const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || 'https://standardnutrition.app').replace(/\/$/, '');
 
 export interface EmailOptions {
   to: string;
@@ -27,6 +28,7 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions) {
   try {
     const { data, error } = await getResend().emails.send({
       from: FROM_EMAIL,
+      replyTo: REPLY_TO,
       to,
       subject,
       html,
