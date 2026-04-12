@@ -168,7 +168,7 @@ export default function HomePage() {
       </section>
 
       {/* Meet Your Coach — Bio section */}
-      <section className="py-24 px-6 bg-[#f5f5f7]">
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-[980px] mx-auto">
           <p className="text-[14px] font-semibold text-[#0071e3] uppercase tracking-[0.08em] mb-3">
             Meet your coach
@@ -176,13 +176,11 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Photo */}
             <div className="order-1">
-              <div className="relative aspect-[4/5] rounded-[16px] overflow-hidden bg-[#e8e8ed]">
-                <img
-                  src="/CORINA.png"
-                  alt="Corina Harkelroad"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <img
+                src="/CORINA.png"
+                alt="Corina Harkelroad"
+                className="w-full h-auto"
+              />
             </div>
 
             {/* Bio */}
