@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     description: "Personalized nutrition and fitness coaching with progress tracking, macro plans, and accountability.",
     type: "website",
     siteName: "Standard Nutrition",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Standard Nutrition" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Standard Nutrition — Coach-Led Fitness & Nutrition",
     description: "Personalized nutrition and fitness coaching with progress tracking, macro plans, and accountability.",
+    images: ["/og-image.png"],
   },
   appleWebApp: {
     capable: true,
