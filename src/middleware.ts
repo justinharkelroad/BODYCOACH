@@ -55,20 +55,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Block archived/removed clients: if the only coach relationships are 'removed',
-  // kill the session so they can't access the app.
+  // Block deactivated clients: any authenticated non-coach must have an active
+  // coach relationship or we kill the session. Covers archived AND deleted clients.
   if (user) {
     const cachedRole = request.cookies.get('user_role')?.value;
     if (cachedRole !== 'coach') {
-      const { data: relationships } = await supabase
-        .from('coach_clients')
-        .select('status')
-        .eq('client_id', user.id);
+      const [profileRes, relationshipsRes] = await Promise.all([
+        supabase.from('profiles').select('role').eq('id', user.id).maybeSingle(),
+        supabase.from('coach_clients').select('status').eq('client_id', user.id),
+      ]);
 
-      const hasRelationships = (relationships?.length ?? 0) > 0;
-      const hasActive = relationships?.some((r) => r.status === 'active') ?? false;
+      const isCoach = profileRes.data?.role === 'coach';
+      const hasActive = relationshipsRes.data?.some((r) => r.status === 'active') ?? false;
 
-      if (hasRelationships && !hasActive) {
+      if (!isCoach && !hasActive) {
         await supabase.auth.signOut();
         const url = request.nextUrl.clone();
         url.pathname = '/login';
