@@ -2,13 +2,21 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+  // Skip middleware if Supabase env vars aren't set
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.next();
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -54,7 +62,6 @@ export async function middleware(request: NextRequest) {
   );
 
   if (isAuthPath && user) {
-    // Redirect coaches to admin, clients to dashboard
     const cachedRole = request.cookies.get('user_role')?.value;
     const url = request.nextUrl.clone();
     url.pathname = cachedRole === 'coach' ? '/admin' : '/dashboard';
@@ -78,7 +85,6 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
       }
 
-      // Cache the role so we skip DB next time
       supabaseResponse.cookies.set('user_role', 'coach', {
         path: '/',
         httpOnly: true,
@@ -89,7 +95,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Welcome walkthrough check — new clients must complete the info slides before accessing the app
+  // Welcome walkthrough check — new clients must complete the info slides
   if (user && isProtectedPath && !request.nextUrl.pathname.startsWith('/onboarding') && !request.nextUrl.pathname.startsWith('/admin')) {
     const welcomeCookie = request.cookies.get('welcome_completed')?.value === '1';
 
@@ -106,7 +112,6 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
       }
 
-      // Cache the cookie so we skip DB next time
       if (profile?.welcome_completed) {
         supabaseResponse.cookies.set('welcome_completed', '1', {
           path: '/',
@@ -124,14 +129,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     * - api routes (handled separately)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
