@@ -33,10 +33,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logos/icon.png", type: "image/png" },
+      { url: "/app-icon.png", type: "image/png" },
     ],
     apple: [
-      { url: "/logos/icon.png", type: "image/png" },
+      { url: "/app-icon.png", type: "image/png" },
     ],
   },
 };
@@ -58,7 +58,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" href="/logos/icon.png" />
+        <link rel="apple-touch-icon" href="/app-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
