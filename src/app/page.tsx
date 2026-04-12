@@ -21,7 +21,7 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               <Link
                 href="/login"
-                className="text-[14px] font-normal text-[#0071e3] border border-[#0071e3] px-4 py-1.5 rounded-[980px] hover:bg-[rgba(0,113,227,0.08)] transition-colors"
+                className="inline-flex items-center text-[14px] font-normal text-[#0071e3] border border-[#0071e3] px-4 py-1.5 rounded-[980px] hover:bg-[rgba(0,113,227,0.08)] transition-colors leading-none"
               >
                 Sign in
               </Link>
