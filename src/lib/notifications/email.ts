@@ -48,6 +48,51 @@ export async function sendEmail({ to, subject, html, text, replyTo }: EmailOptio
   }
 }
 
+export function purchaseWelcomeEmail(params: { firstName: string; accessCode: string; signupUrl: string }) {
+  const { firstName, accessCode, signupUrl } = params;
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi there,';
+  return {
+    subject: "Welcome to Standard Nutrition — here's how to get started",
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 520px; margin: 0 auto; padding: 24px; color: #1a1a2e; line-height: 1.55;">
+        <p style="font-size: 16px; margin: 0 0 16px;">${greeting}</p>
+
+        <p style="font-size: 16px; margin: 0 0 16px;">
+          Welcome to Standard Nutrition — I'm so glad you're here. You just took a real step toward feeling better in your body, and I can't wait to help you get there.
+        </p>
+
+        <p style="font-size: 16px; margin: 0 0 16px;">
+          To set up your account, head to the app and create your login with the access code below.
+        </p>
+
+        <div style="background: #f5f5f7; border-radius: 10px; padding: 20px; margin: 24px 0; text-align: center;">
+          <div style="font-size: 12px; color: #6e6e73; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px;">Your access code</div>
+          <div style="font-size: 28px; font-weight: 600; letter-spacing: 0.12em; color: #1a1a2e; font-family: 'SF Mono', Menlo, Consolas, monospace;">${accessCode}</div>
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${signupUrl}"
+             style="display: inline-block; background: #0071e3; color: white; padding: 14px 28px; border-radius: 980px; text-decoration: none; font-size: 16px;">
+            Create your account
+          </a>
+        </div>
+
+        <p style="font-size: 16px; margin: 24px 0 16px;">
+          Once you're in, you'll be able to log your weigh-ins, upload progress photos, track your workouts, and see the plan I build for you. I'll be checking in on your progress as you go.
+        </p>
+
+        <p style="font-size: 16px; margin: 0 0 8px;">
+          Any questions, just reply to this email and it'll come straight to me.
+        </p>
+
+        <p style="font-size: 16px; margin: 24px 0 0;">
+          — Corina
+        </p>
+      </div>
+    `,
+  };
+}
+
 export function newSignupNotificationEmail(params: { fullName: string; email: string; signedUpAt: Date }) {
   const { fullName, email, signedUpAt } = params;
   const formattedDate = signedUpAt.toLocaleString('en-US', {

@@ -1,18 +1,20 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const prefilledCode = (searchParams.get('code') || '').trim().toUpperCase();
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [accessCode, setAccessCode] = useState('');
+  const [accessCode, setAccessCode] = useState(prefilledCode);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -72,6 +74,11 @@ export default function SignupPage() {
       </div>
 
       <div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
+        {prefilledCode && (
+          <div className="mb-5 rounded-[8px] border border-[#34C759] bg-[#EBFBEF] px-4 py-3 text-[14px] text-[#1a7a34]">
+            Welcome! Your access code has been filled in — just create your login below.
+          </div>
+        )}
         <form onSubmit={handleEmailSignup} className="space-y-5">
           <div>
             <label htmlFor="fullName" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
@@ -170,5 +177,13 @@ export default function SignupPage() {
         </p>
       </div>
     </>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]" />}>
+      <SignupForm />
+    </Suspense>
   );
 }
