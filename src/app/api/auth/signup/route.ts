@@ -53,7 +53,17 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: error.message }, { status: 400 });
   }
 
-  if (data.user && fullName) {
+  // Supabase returns a stub user with an empty identities array when the email
+  // already exists (anti-enumeration). Reject so we don't silently upsert old data.
+  const identities = data.user?.identities;
+  if (!data.user || !identities || identities.length === 0) {
+    return Response.json(
+      { error: 'An account with this email already exists. Try signing in instead.' },
+      { status: 409 }
+    );
+  }
+
+  if (fullName) {
     await supabase.from('profiles').update({ full_name: fullName }).eq('id', data.user.id);
   }
 
