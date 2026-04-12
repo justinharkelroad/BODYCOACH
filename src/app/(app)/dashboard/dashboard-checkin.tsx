@@ -68,8 +68,15 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
           notes: notes || null,
         }, { onConflict: 'user_id,date' });
 
+      // Clear the form
+      setWeight('');
+      setSleepHours(null);
+      setWaterOz('');
+      setStressLevel(null);
+      setNotes('');
+
       setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
+      setTimeout(() => setSaved(false), 4000);
       router.refresh();
     } catch (error) {
       console.error('Failed to save:', error);
