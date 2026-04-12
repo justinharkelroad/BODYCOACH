@@ -55,33 +55,33 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Block deactivated clients: any authenticated non-coach must have an active
-  // coach relationship or we kill the session. Covers archived AND deleted clients.
+  // Authoritative role + active-relationship check for every authenticated
+  // request. We used to cache role in a `user_role` cookie keyed only on value,
+  // which let a stale cookie from a previous coach session grant /admin access
+  // to a different user signing in on the same browser. Always hit the DB.
+  let isCoach = false;
   if (user) {
-    const cachedRole = request.cookies.get('user_role')?.value;
-    if (cachedRole !== 'coach') {
-      const [profileRes, relationshipsRes] = await Promise.all([
-        supabase.from('profiles').select('role').eq('id', user.id).maybeSingle(),
-        supabase.from('coach_clients').select('status').eq('client_id', user.id),
-      ]);
+    const [profileRes, relationshipsRes] = await Promise.all([
+      supabase.from('profiles').select('role').eq('id', user.id).maybeSingle(),
+      supabase.from('coach_clients').select('status').eq('client_id', user.id),
+    ]);
 
-      const isCoach = profileRes.data?.role === 'coach';
-      const hasActive = relationshipsRes.data?.some((r) => r.status === 'active') ?? false;
+    isCoach = profileRes.data?.role === 'coach';
+    const hasActive = relationshipsRes.data?.some((r) => r.status === 'active') ?? false;
 
-      if (!isCoach && !hasActive) {
-        await supabase.auth.signOut();
-        const url = request.nextUrl.clone();
-        url.pathname = '/login';
-        url.search = '';
-        url.searchParams.set('deactivated', '1');
-        const redirectResponse = NextResponse.redirect(url);
-        supabaseResponse.cookies.getAll().forEach((c) => {
-          redirectResponse.cookies.set(c.name, c.value);
-        });
-        redirectResponse.cookies.delete('user_role');
-        redirectResponse.cookies.delete('welcome_completed');
-        return redirectResponse;
-      }
+    if (!isCoach && !hasActive) {
+      await supabase.auth.signOut();
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      url.search = '';
+      url.searchParams.set('deactivated', '1');
+      const redirectResponse = NextResponse.redirect(url);
+      supabaseResponse.cookies.getAll().forEach((c) => {
+        redirectResponse.cookies.set(c.name, c.value);
+      });
+      redirectResponse.cookies.delete('user_role');
+      redirectResponse.cookies.delete('welcome_completed');
+      return redirectResponse;
     }
   }
 
@@ -92,37 +92,16 @@ export async function proxy(request: NextRequest) {
   );
 
   if (isAuthPath && user) {
-    const cachedRole = request.cookies.get('user_role')?.value;
     const url = request.nextUrl.clone();
-    url.pathname = cachedRole === 'coach' ? '/admin' : '/dashboard';
+    url.pathname = isCoach ? '/admin' : '/dashboard';
     return NextResponse.redirect(url);
   }
 
   // Coach role check for /admin routes
-  if (user && request.nextUrl.pathname.startsWith('/admin')) {
-    const cachedRole = request.cookies.get('user_role')?.value;
-
-    if (cachedRole !== 'coach') {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-
-      if (!profile || profile.role !== 'coach') {
-        const url = request.nextUrl.clone();
-        url.pathname = '/dashboard';
-        return NextResponse.redirect(url);
-      }
-
-      supabaseResponse.cookies.set('user_role', 'coach', {
-        path: '/',
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 365,
-      });
-    }
+  if (user && request.nextUrl.pathname.startsWith('/admin') && !isCoach) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/dashboard';
+    return NextResponse.redirect(url);
   }
 
   // Welcome walkthrough check — new clients must complete the info slides
