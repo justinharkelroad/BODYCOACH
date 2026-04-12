@@ -55,6 +55,36 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Block archived/removed clients: if the only coach relationships are 'removed',
+  // kill the session so they can't access the app.
+  if (user) {
+    const cachedRole = request.cookies.get('user_role')?.value;
+    if (cachedRole !== 'coach') {
+      const { data: relationships } = await supabase
+        .from('coach_clients')
+        .select('status')
+        .eq('client_id', user.id);
+
+      const hasRelationships = (relationships?.length ?? 0) > 0;
+      const hasActive = relationships?.some((r) => r.status === 'active') ?? false;
+
+      if (hasRelationships && !hasActive) {
+        await supabase.auth.signOut();
+        const url = request.nextUrl.clone();
+        url.pathname = '/login';
+        url.search = '';
+        url.searchParams.set('deactivated', '1');
+        const redirectResponse = NextResponse.redirect(url);
+        supabaseResponse.cookies.getAll().forEach((c) => {
+          redirectResponse.cookies.set(c.name, c.value);
+        });
+        redirectResponse.cookies.delete('user_role');
+        redirectResponse.cookies.delete('welcome_completed');
+        return redirectResponse;
+      }
+    }
+  }
+
   // Auth routes - redirect to dashboard if already authenticated
   const authPaths = ['/login', '/signup'];
   const isAuthPath = authPaths.some((path) =>

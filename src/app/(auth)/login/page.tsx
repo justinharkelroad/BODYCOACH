@@ -9,6 +9,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirectTo') || '/dashboard';
+  const deactivated = searchParams.get('deactivated') === '1';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,6 +55,11 @@ function LoginForm() {
 
   return (
     <div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
+      {deactivated && (
+        <div className="mb-5 rounded-[8px] border border-[#FFCC00] bg-[#FFF9E6] px-4 py-3 text-[14px] text-[#8B6F00]">
+          This account is no longer active. Please contact your coach if you think this is a mistake.
+        </div>
+      )}
       <form onSubmit={handleEmailLogin} className="space-y-5">
         <div>
           <label htmlFor="email" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
