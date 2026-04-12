@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { Sidebar } from '@/components/layout/sidebar';
 import { MilestoneCelebrationWrapper } from '@/features/milestones';
 import { CheckinPrompt } from '@/features/checkin';
