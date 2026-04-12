@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { createClientForApi } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
@@ -71,14 +72,39 @@ export async function DELETE(
     return Response.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  const { error } = await supabase
+  // Verify the client actually belongs to this coach before nuking the auth user
+  const { data: relationship, error: relError } = await supabase
     .from('coach_clients')
-    .delete()
+    .select('client_id')
     .eq('coach_id', user.id)
-    .eq('client_id', clientId);
+    .eq('client_id', clientId)
+    .maybeSingle();
 
-  if (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+  if (relError) {
+    return Response.json({ error: relError.message }, { status: 500 });
+  }
+  if (!relationship) {
+    return Response.json({ error: 'Client not found' }, { status: 404 });
+  }
+
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceRoleKey) {
+    return Response.json(
+      { error: 'Server is not configured to delete accounts. Contact support.' },
+      { status: 500 }
+    );
+  }
+
+  const admin = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    serviceRoleKey,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+
+  const { error: deleteError } = await admin.auth.admin.deleteUser(clientId);
+
+  if (deleteError) {
+    return Response.json({ error: deleteError.message }, { status: 500 });
   }
 
   return Response.json({ success: true });
