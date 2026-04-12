@@ -37,8 +37,12 @@ export default function HomePage() {
       </header>
 
       {/* Hero — Dark, cinematic */}
-      <section className="pt-28 pb-24 px-6 bg-black text-center overflow-hidden">
-        <div className="max-w-[880px] mx-auto">
+      <section
+        className="relative pt-28 pb-24 px-6 bg-black bg-cover bg-center text-center overflow-hidden"
+        style={{ backgroundImage: "url('/hero-back.png')" }}
+      >
+        <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+        <div className="relative max-w-[880px] mx-auto">
           <img src="/logos/standard-nutrition-white.png" alt="Standard Nutrition" className="max-w-full h-auto w-auto max-h-24 sm:max-h-32 md:max-h-40 mx-auto mb-10" />
           <h1 className="text-[40px] sm:text-[56px] font-semibold text-white leading-[1.07] tracking-[-0.005em] mb-4">
             Your nutrition.{' '}
