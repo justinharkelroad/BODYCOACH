@@ -44,7 +44,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
         <div className="relative max-w-[880px] mx-auto">
           <img src="/logos/standard-nutrition-white.png" alt="Standard Nutrition" className="max-w-full h-auto w-auto max-h-24 sm:max-h-32 md:max-h-40 mx-auto mb-10" />
-          <h1 className="text-[40px] sm:text-[56px] font-semibold text-white leading-[1.07] tracking-[-0.005em] mb-4">
+          <h1 className="text-[40px] sm:text-[56px] font-semibold text-white uppercase leading-[1.07] tracking-[-0.005em] mb-4">
             Your nutrition.{' '}
             <span className="text-[#86868b]">Your coach.</span>
           </h1>
