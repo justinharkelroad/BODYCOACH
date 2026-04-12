@@ -16,7 +16,7 @@ export default function HomePage() {
         <div className="max-w-[980px] mx-auto px-6">
           <div className="flex justify-between items-center h-12">
             <Link href="/">
-              <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-6 w-auto" />
+              <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-8 w-auto" />
             </Link>
             <div className="flex items-center gap-4">
               <Link
@@ -39,7 +39,7 @@ export default function HomePage() {
       {/* Hero — Dark, cinematic */}
       <section className="pt-28 pb-24 px-6 bg-black text-center">
         <div className="max-w-[680px] mx-auto">
-          <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-12 sm:h-14 w-auto mx-auto mb-10 invert brightness-200" />
+          <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-20 sm:h-28 md:h-32 w-auto mx-auto mb-10 invert brightness-200" />
           <h1 className="text-[40px] sm:text-[56px] font-semibold text-white leading-[1.07] tracking-[-0.005em] mb-4">
             Your nutrition.{' '}
             <span className="text-[#86868b]">Your coach.</span>
@@ -235,7 +235,7 @@ export default function HomePage() {
       <footer className="py-8 px-6 bg-[#f5f5f7] border-t border-[rgba(0,0,0,0.06)]">
         <div className="max-w-[980px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-4 w-auto" />
+            <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-5 w-auto" />
             <div className="flex items-center gap-6">
               <Link href="/privacy" className="text-[12px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors">
                 Privacy
