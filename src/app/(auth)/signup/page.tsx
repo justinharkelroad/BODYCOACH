@@ -32,7 +32,7 @@ export default function SignupPage() {
 
     setIsLoading(true);
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -46,7 +46,20 @@ export default function SignupPage() {
       return;
     }
 
-    router.push('/onboarding/welcome');
+    // If session is returned, we're authenticated — go to welcome
+    // If not (email confirmation required), the user needs to check email
+    if (data.session) {
+      router.push('/onboarding/welcome');
+    } else {
+      // Auto sign in since email confirmation is disabled
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        setError(signInError.message);
+        setIsLoading(false);
+        return;
+      }
+      router.push('/onboarding/welcome');
+    }
     router.refresh();
   }
 

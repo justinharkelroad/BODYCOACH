@@ -114,12 +114,23 @@ export default function WelcomePage() {
 
   const handleComplete = async () => {
     setIsCompleting(true);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setIsCompleting(false); return; }
-    await supabase.from('profiles').update({ welcome_completed: true }).eq('id', user.id);
-    document.cookie = 'welcome_completed=1; path=/; max-age=31536000; samesite=lax';
-    router.push('/dashboard');
-    router.refresh();
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        // Not authenticated — redirect to login
+        router.push('/login');
+        return;
+      }
+      await supabase.from('profiles').update({ welcome_completed: true }).eq('id', user.id);
+      document.cookie = 'welcome_completed=1; path=/; max-age=31536000; samesite=lax';
+      router.push('/dashboard');
+      router.refresh();
+    } catch {
+      // If anything fails, still try to go to dashboard
+      document.cookie = 'welcome_completed=1; path=/; max-age=31536000; samesite=lax';
+      router.push('/dashboard');
+      router.refresh();
+    }
   };
 
   const handleTouchStart = (e: React.TouchEvent) => { touchStartRef.current = e.touches[0].clientX; };
