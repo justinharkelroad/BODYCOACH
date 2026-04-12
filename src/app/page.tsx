@@ -178,12 +178,9 @@ export default function HomePage() {
             <div className="order-1">
               <div className="relative aspect-[4/5] rounded-[16px] overflow-hidden bg-[#e8e8ed]">
                 <img
-                  src="/corina.jpg"
+                  src="/CORINA.png"
                   alt="Corina Harkelroad"
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
                 />
               </div>
             </div>
