@@ -128,8 +128,8 @@ export default function WelcomePage() {
       // Ignore — cookie is set, user can proceed
     }
 
-    // Always redirect to login to establish a proper session
-    window.location.href = '/login';
+    // Full page reload to dashboard — picks up auth cookies properly
+    window.location.href = '/dashboard';
   };
 
   const handleTouchStart = (e: React.TouchEvent) => { touchStartRef.current = e.touches[0].clientX; };
