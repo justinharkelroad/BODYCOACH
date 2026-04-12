@@ -17,9 +17,10 @@ export interface EmailOptions {
   subject: string;
   html: string;
   text?: string;
+  replyTo?: string;
 }
 
-export async function sendEmail({ to, subject, html, text }: EmailOptions) {
+export async function sendEmail({ to, subject, html, text, replyTo }: EmailOptions) {
   if (!process.env.RESEND_API_KEY) {
     console.log('[Email] Resend not configured, skipping email to:', to);
     return { success: false, error: 'Resend not configured' };
@@ -28,7 +29,7 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions) {
   try {
     const { data, error } = await getResend().emails.send({
       from: FROM_EMAIL,
-      replyTo: REPLY_TO,
+      replyTo: replyTo || REPLY_TO,
       to,
       subject,
       html,

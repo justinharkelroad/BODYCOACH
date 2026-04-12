@@ -1,10 +1,18 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import { LearnMoreModal } from '@/components/landing/LearnMoreModal';
 
 export default function HomePage() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen overflow-x-hidden">
+      <LearnMoreModal open={modalOpen} onClose={() => setModalOpen(false)} />
+
       {/* Navigation — Apple glass nav */}
-      <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-[rgba(0,0,0,0.06)]">
+      <header className="fixed top-0 left-0 right-0 z-40 glass border-b border-[rgba(0,0,0,0.06)]">
         <div className="max-w-[980px] mx-auto px-6">
           <div className="flex justify-between items-center h-12">
             <Link href="/">
@@ -17,12 +25,12 @@ export default function HomePage() {
               >
                 Sign in
               </Link>
-              <Link
-                href="/signup"
+              <button
+                onClick={() => setModalOpen(true)}
                 className="text-[14px] font-normal bg-[#0071e3] text-white px-4 py-1.5 rounded-[980px] hover:bg-[#0077ED] transition-colors"
               >
-                Get Started
-              </Link>
+                Learn more
+              </button>
             </div>
           </div>
         </div>
@@ -40,17 +48,17 @@ export default function HomePage() {
             Personalized macro plans, daily accountability, and a real coach guiding your progress every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              href="/signup"
+            <button
+              onClick={() => setModalOpen(true)}
               className="inline-flex items-center justify-center text-[17px] font-normal bg-[#0071e3] text-white px-8 py-3 rounded-[980px] hover:bg-[#0077ED] transition-colors"
             >
-              Get Started
-            </Link>
+              Learn more
+            </button>
             <a
               href="#how-it-works"
               className="inline-flex items-center justify-center text-[17px] font-normal text-[#2997ff] px-8 py-3 rounded-[980px] border border-[#2997ff] hover:bg-[rgba(41,151,255,0.1)] transition-colors"
             >
-              Learn more
+              See how it works
             </a>
           </div>
         </div>
@@ -131,15 +139,15 @@ export default function HomePage() {
               <div className="w-14 h-14 rounded-full bg-[#0071e3] text-white flex items-center justify-center mx-auto mb-5 text-[21px] font-semibold">
                 1
               </div>
-              <h3 className="text-[17px] font-semibold text-white mb-2">Sign up</h3>
-              <p className="text-[14px] text-[#86868b] leading-[1.43]">Quick onboarding to set your profile and goals.</p>
+              <h3 className="text-[17px] font-semibold text-white mb-2">Reach out</h3>
+              <p className="text-[14px] text-[#86868b] leading-[1.43]">Tell Corina a bit about you and your goals.</p>
             </div>
             <div className="text-center">
               <div className="w-14 h-14 rounded-full bg-[#0071e3] text-white flex items-center justify-center mx-auto mb-5 text-[21px] font-semibold">
                 2
               </div>
               <h3 className="text-[17px] font-semibold text-white mb-2">Get your plan</h3>
-              <p className="text-[14px] text-[#86868b] leading-[1.43]">Your coach sets custom macros tailored to your body.</p>
+              <p className="text-[14px] text-[#86868b] leading-[1.43]">Corina builds a custom macro plan for your body.</p>
             </div>
             <div className="text-center">
               <div className="w-14 h-14 rounded-full bg-[#0071e3] text-white flex items-center justify-center mx-auto mb-5 text-[21px] font-semibold">
@@ -153,7 +161,7 @@ export default function HomePage() {
                 4
               </div>
               <h3 className="text-[17px] font-semibold text-white mb-2">See results</h3>
-              <p className="text-[14px] text-[#86868b] leading-[1.43]">Track your progress with charts, photos, and coach feedback.</p>
+              <p className="text-[14px] text-[#86868b] leading-[1.43]">Track progress with charts, photos, and coach feedback.</p>
             </div>
           </div>
         </div>
@@ -219,14 +227,14 @@ export default function HomePage() {
             Ready to start?
           </h2>
           <p className="text-[21px] text-[#86868b] leading-[1.19] mb-10">
-            Get matched with your coach and start seeing results.
+            Reach out to Corina and get matched with a plan built for you.
           </p>
-          <Link
-            href="/signup"
+          <button
+            onClick={() => setModalOpen(true)}
             className="inline-flex items-center justify-center text-[17px] font-normal bg-[#0071e3] text-white px-8 py-3 rounded-[980px] hover:bg-[#0077ED] transition-colors"
           >
-            Get Started
-          </Link>
+            Learn more
+          </button>
           <p className="mt-8 text-[14px] text-[#86868b]">
             Already have an account?{' '}
             <Link href="/login" className="text-[#2997ff] hover:underline">
