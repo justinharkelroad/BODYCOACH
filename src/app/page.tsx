@@ -167,54 +167,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials — Light section */}
+      {/* Meet Your Coach — Bio section */}
       <section className="py-24 px-6 bg-[#f5f5f7]">
         <div className="max-w-[980px] mx-auto">
-          <h2 className="text-[40px] font-semibold text-[#1d1d1f] text-center leading-[1.10] tracking-[-0.005em] mb-16">
-            Real results.
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            <div className="bg-white rounded-[12px] p-8">
-              <div className="flex gap-1 mb-4">
-                {[1,2,3,4,5].map((i) => (
-                  <svg key={i} className="w-4 h-4 text-[#FF9500]" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
+          <p className="text-[14px] font-semibold text-[#0071e3] uppercase tracking-[0.08em] mb-3">
+            Meet your coach
+          </p>
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Photo */}
+            <div className="order-1">
+              <div className="relative aspect-[4/5] rounded-[16px] overflow-hidden bg-[#e8e8ed]">
+                <img
+                  src="/corina.jpg"
+                  alt="Corina Harkelroad"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
               </div>
-              <p className="text-[17px] text-[#1d1d1f] mb-6 leading-[1.47] tracking-[-0.022em]">
-                &quot;Having a real coach check in on my progress makes all the difference. I&apos;ve never been this consistent.&quot;
-              </p>
-              <p className="text-[14px] text-[#86868b]">Sarah M.</p>
             </div>
 
-            <div className="bg-white rounded-[12px] p-8">
-              <div className="flex gap-1 mb-4">
-                {[1,2,3,4,5].map((i) => (
-                  <svg key={i} className="w-4 h-4 text-[#FF9500]" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
+            {/* Bio */}
+            <div className="order-2">
+              <h2 className="text-[40px] sm:text-[48px] font-semibold text-[#1d1d1f] leading-[1.07] tracking-[-0.005em] mb-6">
+                Corina <span className="block text-[#86868b] font-normal text-[28px] sm:text-[32px] leading-[1.14] mt-1">Your coach</span>
+              </h2>
+              <div className="space-y-4 text-[17px] text-[#1d1d1f] leading-[1.47] tracking-[-0.022em]">
+                <p>
+                  I&apos;m a mother of three, a wife, a fitness competitor, and I&apos;ve found my purpose helping people reach their health and fitness goals.
+                </p>
+                <p>
+                  I&apos;m a graduate of Indiana University–Bloomington where I studied Telecommunications and Business. I found personal training later in life after getting my own health back after kids.
+                </p>
+                <p>
+                  I was pre-diabetic and heading down a path of sickness. I was tired all the time and had little energy to even take care of my three kids. Exercise saved my life, and eating the right foods gave me the energy I needed to fuel my body.
+                </p>
+                <p className="text-[#6e6e73] italic">
+                  Now I&apos;m here to help you do the same.
+                </p>
               </div>
-              <p className="text-[17px] text-[#1d1d1f] mb-6 leading-[1.47] tracking-[-0.022em]">
-                &quot;The daily check-ins keep me accountable without feeling overwhelming. Simple and effective.&quot;
-              </p>
-              <p className="text-[14px] text-[#86868b]">Rachel T.</p>
-            </div>
-
-            <div className="bg-white rounded-[12px] p-8">
-              <div className="flex gap-1 mb-4">
-                {[1,2,3,4,5].map((i) => (
-                  <svg key={i} className="w-4 h-4 text-[#FF9500]" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-[17px] text-[#1d1d1f] mb-6 leading-[1.47] tracking-[-0.022em]">
-                &quot;Clean interface, no BS. I log my weight, track my workouts, and my coach handles the rest.&quot;
-              </p>
-              <p className="text-[14px] text-[#86868b]">Mike D.</p>
             </div>
           </div>
         </div>
