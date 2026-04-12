@@ -48,6 +48,43 @@ export async function sendEmail({ to, subject, html, text, replyTo }: EmailOptio
   }
 }
 
+export function newSignupNotificationEmail(params: { fullName: string; email: string; signedUpAt: Date }) {
+  const { fullName, email, signedUpAt } = params;
+  const formattedDate = signedUpAt.toLocaleString('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+  return {
+    subject: `New client signup: ${fullName || email}`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #1a1a2e; margin-bottom: 16px;">New client signup</h2>
+        <p style="color: #4a4a68; line-height: 1.6;">
+          A new client just created a Standard Nutrition account.
+        </p>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+          <tr>
+            <td style="padding: 8px 0; color: #8a8aa3; font-size: 14px;">Name</td>
+            <td style="padding: 8px 0; color: #1a1a2e; font-size: 14px;">${fullName || '—'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #8a8aa3; font-size: 14px;">Email</td>
+            <td style="padding: 8px 0; color: #1a1a2e; font-size: 14px;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #8a8aa3; font-size: 14px;">Signed up</td>
+            <td style="padding: 8px 0; color: #1a1a2e; font-size: 14px;">${formattedDate}</td>
+          </tr>
+        </table>
+        <a href="${APP_URL}/admin"
+           style="display: inline-block; background: #0071e3; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 20px;">
+          Open Admin
+        </a>
+      </div>
+    `,
+  };
+}
+
 // Email templates
 export function weighInReminderEmail(name: string) {
   return {

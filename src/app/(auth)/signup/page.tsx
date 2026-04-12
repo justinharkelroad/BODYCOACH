@@ -12,6 +12,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [accessCode, setAccessCode] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,37 +32,32 @@ export default function SignupPage() {
       return;
     }
 
+    if (!accessCode.trim()) {
+      setError('Access code is required');
+      return;
+    }
+
     setIsLoading(true);
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName },
-        emailRedirectTo: `${window.location.origin}/api/auth/callback?redirectTo=/onboarding/welcome`,
-      },
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fullName, email, password, accessCode: accessCode.trim() }),
     });
 
-    if (error) {
-      setError(error.message);
+    const payload = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      setError(payload?.error || 'Something went wrong. Please try again.');
       setIsLoading(false);
       return;
     }
 
-    // Ensure session is active
-    if (!data.session) {
-      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      if (signInError) {
-        setError(signInError.message);
-        setIsLoading(false);
-        return;
-      }
-    }
-
-    // Save full name to profile
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user && fullName) {
-      await supabase.from('profiles').update({ full_name: fullName }).eq('id', user.id);
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInError) {
+      setError(signInError.message);
+      setIsLoading(false);
+      return;
     }
 
     router.push('/onboarding/welcome');
@@ -132,6 +128,22 @@ export default function SignupPage() {
               placeholder="Confirm your password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="accessCode" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+              Access code
+            </label>
+            <input
+              id="accessCode"
+              type="text"
+              autoComplete="off"
+              placeholder="Provided by your coach"
+              value={accessCode}
+              onChange={(e) => setAccessCode(e.target.value)}
               required
               className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
             />

@@ -42,7 +42,7 @@ export function ClientCard({
   return (
     <Link href={`/admin/clients/${clientId}`}>
       <Card hover className="h-full">
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="flex items-start justify-between mb-4">
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-[var(--theme-text)] truncate">

@@ -17,7 +17,7 @@ export async function streamChatResponse(
   let fullResponse = '';
 
   const stream = await anthropic.messages.stream({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 1024,
     system: systemPrompt,
     messages: messages.map((m) => ({
@@ -42,7 +42,7 @@ export async function getChatResponse(
   messages: ChatMessage[]
 ): Promise<string> {
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 1024,
     system: systemPrompt,
     messages: messages.map((m) => ({
@@ -169,7 +169,7 @@ Guidelines:
   }));
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 2048,
     messages: [
       {
@@ -241,7 +241,7 @@ Guidelines:
 - Return ONLY the JSON object`;
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 1024,
     messages: [
       {

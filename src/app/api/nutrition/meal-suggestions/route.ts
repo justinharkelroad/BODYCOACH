@@ -152,7 +152,7 @@ ${preferencesText.length > 0 ? `USER PREFERENCES:\n${preferencesText.join('\n')}
 Please suggest 3 ${mealType} options that fit within these remaining macros. Return only the JSON object.`;
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 2048,
       system: systemPrompt,
       messages: [
