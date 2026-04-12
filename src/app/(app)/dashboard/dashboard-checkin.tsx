@@ -7,6 +7,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Droplets, Moon, Scale } from 'lucide-react';
 import type { DailyCheckin } from '@/types/database';
 
+interface HistoryEntry {
+  date: string;
+  weight_lbs: number | null;
+  sleep_hours: number | null;
+  water_oz: number | null;
+  stress_level: number | null;
+  notes: string | null;
+}
+
 const STRESS_EMOJIS = [
   { value: 1, emoji: '😫', label: 'Very stressed' },
   { value: 2, emoji: '😟', label: 'Stressed' },
@@ -19,11 +28,11 @@ const SLEEP_HOURS = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 interface DashboardCheckInProps {
   todayCheckin: DailyCheckin | null;
-  recentCheckins: DailyCheckin[];
+  recentHistory: HistoryEntry[];
   lastWeight: number | null;
 }
 
-export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: DashboardCheckInProps) {
+export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckInProps) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -214,36 +223,42 @@ export function DashboardCheckIn({ todayCheckin, recentCheckins, lastWeight }: D
       </Card>
 
       {/* History */}
-      {recentCheckins.length > 0 && (
+      {recentHistory.length > 0 && (
         <Card>
           <CardContent className="p-5">
             <h3 className="text-[14px] font-semibold text-[#1d1d1f] mb-3">Recent Check-ins</h3>
             <div className="space-y-3">
-              {recentCheckins.map(checkin => (
-                <div key={checkin.id} className="flex items-start gap-3 py-2.5 border-b border-[rgba(0,0,0,0.05)] last:border-0">
+              {recentHistory.map(entry => (
+                <div key={entry.date} className="flex items-start gap-3 py-2.5 border-b border-[rgba(0,0,0,0.05)] last:border-0">
                   <div className="text-[14px] font-medium text-[#1d1d1f] min-w-[60px]">
-                    {new Date(checkin.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </div>
                   <div className="flex-1">
                     <div className="flex flex-wrap gap-3 text-[14px] text-[#6e6e73]">
-                      {checkin.stress_level && (
-                        <span>{stressEmojis[checkin.stress_level]}</span>
-                      )}
-                      {checkin.water_oz && (
-                        <span className="flex items-center gap-1">
-                          <Droplets className="h-3.5 w-3.5 text-[#5AC8FA]" />
-                          {checkin.water_oz}oz
+                      {entry.weight_lbs && (
+                        <span className="flex items-center gap-1 font-medium text-[#1d1d1f]">
+                          <Scale className="h-3.5 w-3.5 text-[#0071e3]" />
+                          {entry.weight_lbs} lbs
                         </span>
                       )}
-                      {checkin.sleep_hours && (
+                      {entry.stress_level && (
+                        <span>{stressEmojis[entry.stress_level]}</span>
+                      )}
+                      {entry.water_oz && (
+                        <span className="flex items-center gap-1">
+                          <Droplets className="h-3.5 w-3.5 text-[#5AC8FA]" />
+                          {entry.water_oz}oz
+                        </span>
+                      )}
+                      {entry.sleep_hours && (
                         <span className="flex items-center gap-1">
                           <Moon className="h-3.5 w-3.5 text-[#86868b]" />
-                          {checkin.sleep_hours}h
+                          {entry.sleep_hours}h
                         </span>
                       )}
                     </div>
-                    {checkin.notes && (
-                      <p className="text-[12px] text-[#86868b] mt-1 italic">{checkin.notes}</p>
+                    {entry.notes && (
+                      <p className="text-[12px] text-[#86868b] mt-1 italic">{entry.notes}</p>
                     )}
                   </div>
                 </div>

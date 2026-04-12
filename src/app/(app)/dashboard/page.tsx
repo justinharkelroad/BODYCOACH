@@ -58,7 +58,49 @@ export default async function DashboardPage() {
   const allCheckins = (checkinsRes.data || []) as DailyCheckin[];
 
   const todayCheckin = allCheckins.find(c => c.date === today) || null;
-  const recentCheckins = allCheckins.slice(0, 10);
+
+  // Merge body_stats and daily_checkins by date into a unified history
+  const historyMap = new Map<string, {
+    date: string;
+    weight_lbs: number | null;
+    sleep_hours: number | null;
+    water_oz: number | null;
+    stress_level: number | null;
+    notes: string | null;
+  }>();
+
+  allCheckins.forEach(c => {
+    historyMap.set(c.date, {
+      date: c.date,
+      weight_lbs: null,
+      sleep_hours: c.sleep_hours,
+      water_oz: c.water_oz,
+      stress_level: c.stress_level,
+      notes: c.notes,
+    });
+  });
+
+  allStats.forEach(s => {
+    const date = s.recorded_at;
+    const existing = historyMap.get(date);
+    if (existing) {
+      existing.weight_lbs = s.weight_lbs;
+      if (!existing.notes && s.notes) existing.notes = s.notes;
+    } else {
+      historyMap.set(date, {
+        date,
+        weight_lbs: s.weight_lbs,
+        sleep_hours: null,
+        water_oz: null,
+        stress_level: null,
+        notes: s.notes,
+      });
+    }
+  });
+
+  const recentHistory = Array.from(historyMap.values())
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 14);
 
   // Calculate stats
   const currentWeight = allStats[0]?.weight_lbs || null;
@@ -96,7 +138,7 @@ export default async function DashboardPage() {
       {/* ============ DAILY CHECK-IN (inline) ============ */}
       <DashboardCheckIn
         todayCheckin={todayCheckin}
-        recentCheckins={recentCheckins}
+        recentHistory={recentHistory}
         lastWeight={currentWeight}
       />
 
