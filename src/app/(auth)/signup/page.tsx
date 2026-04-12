@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 export default function SignupPage() {
   const router = useRouter();
 
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +37,7 @@ export default function SignupPage() {
       email,
       password,
       options: {
+        data: { full_name: fullName },
         emailRedirectTo: `${window.location.origin}/api/auth/callback?redirectTo=/onboarding/welcome`,
       },
     });
@@ -46,20 +48,23 @@ export default function SignupPage() {
       return;
     }
 
-    // If session is returned, we're authenticated — go to welcome
-    // If not (email confirmation required), the user needs to check email
-    if (data.session) {
-      router.push('/onboarding/welcome');
-    } else {
-      // Auto sign in since email confirmation is disabled
+    // Ensure session is active
+    if (!data.session) {
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError) {
         setError(signInError.message);
         setIsLoading(false);
         return;
       }
-      router.push('/onboarding/welcome');
     }
+
+    // Save full name to profile
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user && fullName) {
+      await supabase.from('profiles').update({ full_name: fullName }).eq('id', user.id);
+    }
+
+    router.push('/onboarding/welcome');
     router.refresh();
   }
 
@@ -72,6 +77,21 @@ export default function SignupPage() {
 
       <div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
         <form onSubmit={handleEmailSignup} className="space-y-5">
+          <div>
+            <label htmlFor="fullName" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+              Full name
+            </label>
+            <input
+              id="fullName"
+              type="text"
+              placeholder="Jane Doe"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+            />
+          </div>
+
           <div>
             <label htmlFor="email" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
               Email

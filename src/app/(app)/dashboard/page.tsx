@@ -86,7 +86,7 @@ export default async function DashboardPage() {
       {/* Header */}
       <div>
         <h1 className="text-[21px] font-semibold text-[#1d1d1f]">
-          Welcome back, {profile.full_name?.split(' ')[0] || 'there'}!
+          Welcome back, {profile.full_name?.split(' ')[0] || profile.email?.split('@')[0] || 'there'}!
         </h1>
         <p className="text-[14px] text-[#86868b] mt-1">
           {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
