@@ -141,6 +141,13 @@ html[data-theme="dark"] {
   --accent-coral-light: color-mix(in srgb, var(--theme-error) 20%, transparent);
 }
 
+/* Theme-aware logo swap — rendered by <Logo /> in src/components/ui/logo.tsx.
+   Driven by the [data-theme] attribute set pre-paint, so the correct mark is
+   visible on the first frame with no JS. */
+.theme-logo-dark { display: none; }
+html[data-theme="dark"] .theme-logo-light { display: none; }
+html[data-theme="dark"] .theme-logo-dark { display: inline-block; }
+
 /* ========================================
    LEGACY VARIABLE MAPPING
    Maps old variable names to theme system

@@ -4,6 +4,7 @@ import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { Logo } from '@/components/ui/logo';
 
 function LoginForm() {
   const router = useRouter();
@@ -118,7 +119,7 @@ export default function LoginPage() {
   return (
     <>
       <div className="text-center mb-8">
-        <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-10 w-auto mx-auto" />
+        <Logo className="h-10 w-auto mx-auto" />
         <p className="text-[17px] text-[var(--theme-text-secondary)] mt-4">Welcome back</p>
       </div>
 

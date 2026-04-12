@@ -14,6 +14,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -68,7 +69,7 @@ export function Sidebar() {
           {/* Logo */}
           <div className="flex h-20 items-center px-6 border-b border-[var(--theme-border)]">
             <Link href="/dashboard" className="flex items-center gap-3">
-              <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-8 w-auto" />
+              <Logo className="h-8 w-auto" />
             </Link>
           </div>
 
@@ -116,7 +117,7 @@ export function Sidebar() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--theme-surface)] border-b border-[var(--theme-border)] lg:hidden safe-area-top">
         <div className="flex items-center justify-between h-16 px-4">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-6 w-auto" />
+            <Logo className="h-6 w-auto" />
           </Link>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

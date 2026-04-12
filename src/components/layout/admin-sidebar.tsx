@@ -11,6 +11,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 
 const navItems = [
   { href: '/admin', label: 'Clients', icon: Users },
@@ -59,7 +60,7 @@ export function AdminSidebar() {
           {/* Logo + Badge */}
           <div className="flex h-20 items-center px-6 border-b border-[var(--theme-border)]">
             <Link href="/admin" className="flex items-center gap-3">
-              <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-8 w-auto" />
+              <Logo className="h-8 w-auto" />
             </Link>
           </div>
           <div className="px-6 py-3">
@@ -112,7 +113,7 @@ export function AdminSidebar() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--theme-surface)] border-b border-[var(--theme-border)] lg:hidden safe-area-top">
         <div className="flex items-center justify-between h-16 px-4">
           <Link href="/admin" className="flex items-center gap-2">
-            <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-6 w-auto" />
+            <Logo className="h-6 w-auto" />
             <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[color-mix(in_srgb,var(--theme-primary)_15%,transparent)] text-[var(--theme-primary-dark)]">
               Coach
             </span>

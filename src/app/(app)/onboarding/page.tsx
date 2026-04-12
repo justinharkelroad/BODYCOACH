@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Logo } from '@/components/ui/logo';
 import type { GoalType, ActivityLevel, Sex } from '@/types/database';
 
 import {
@@ -322,7 +323,7 @@ export default function OnboardingPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--theme-bg)]">
         <div className="text-center animate-fade-in">
-          <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-12 w-auto mx-auto mb-3" />
+          <Logo className="h-12 w-auto mx-auto mb-3" />
           <p className="text-[17px] text-[var(--theme-text-secondary)]">Let&apos;s set up your personalized targets</p>
         </div>
       </div>
@@ -355,7 +356,7 @@ export default function OnboardingPage() {
       <div className="max-w-lg w-full mx-auto flex-1 flex flex-col">
         {/* Header */}
         <div className="text-center mb-6">
-          <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-7 w-auto mx-auto" />
+          <Logo className="h-7 w-auto mx-auto" />
         </div>
 
         {/* Step Indicators */}
