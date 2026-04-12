@@ -1,0 +1,36 @@
+{
+  "name": "Standard Nutrition",
+  "short_name": "StdNutrition",
+  "description": "Coach-led fitness and nutrition with progress tracking and accountability",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logos/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "fitness", "lifestyle"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Check-in",
+      "short_name": "Check-in",
+      "description": "Log your daily weight",
+      "url": "/check-in",
+      "icons": [{ "src": "/logos/icon.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Log Workout",
+      "short_name": "Workout",
+      "description": "Record your workout",
+      "url": "/workouts/new",
+      "icons": [{ "src": "/logos/icon.png", "sizes": "512x512" }]
+    }
+  ]
+}

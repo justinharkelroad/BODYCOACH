@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { GoalType, ActivityLevel, Sex } from '@/types/database';
-import { useTheme } from '@/context/ThemeContext';
+
 import {
   calculateNutritionTargets,
   lbsToKg,
@@ -109,7 +109,7 @@ const steps = [
 export default function OnboardingPage() {
   const router = useRouter();
   const supabase = createClient();
-  const { setGender } = useTheme();
+
 
   const [step, setStep] = useState(0); // 0 = intro
   const [isLoading, setIsLoading] = useState(false);
@@ -285,12 +285,15 @@ export default function OnboardingPage() {
       });
     }
 
+    // Set cookie so middleware skips DB check on future navigations
+    document.cookie = 'onboarding_completed=1; path=/; max-age=31536000; samesite=lax';
+
     // Show completion screen
     setIsComplete(true);
 
-    // Redirect after celebration
+    // Redirect to welcome walkthrough
     setTimeout(() => {
-      router.push('/dashboard');
+      router.push('/onboarding/welcome');
       router.refresh();
     }, 2500);
   }
@@ -317,16 +320,10 @@ export default function OnboardingPage() {
   // Intro Animation Screen
   if (step === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--theme-gradient-hero)' }}>
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
         <div className="text-center animate-fade-in">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-3xl mb-6 animate-pulse" style={{ background: 'var(--theme-gradient-progress)' }}>
-            <Dumbbell className="h-12 w-12 text-white" />
-          </div>
-          <h1 className="text-4xl font-semibold text-[var(--theme-text)] mb-2">
-            <span className="font-medium">BODY</span>
-            <span className="font-light">COACH</span>
-          </h1>
-          <p className="text-[var(--theme-text-secondary)] text-lg">Let&apos;s set up your personalized targets</p>
+          <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-12 w-auto mx-auto mb-3" />
+          <p className="text-[17px] text-[#86868b]">Let&apos;s set up your personalized targets</p>
         </div>
       </div>
     );
@@ -335,10 +332,10 @@ export default function OnboardingPage() {
   // Completion Screen
   if (isComplete) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--theme-gradient-hero)' }}>
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
         <div className="text-center animate-fade-in">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-[var(--theme-success)] to-[#22c55e] mb-6">
-            <Trophy className="h-12 w-12 text-white animate-bounce" />
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#34C759] mb-6">
+            <Trophy className="h-10 w-10 text-white" />
           </div>
           <h1 className="text-3xl font-semibold text-[var(--theme-text)] mb-2">
             You&apos;re all set, {fullName.split(' ')[0]}!
@@ -346,7 +343,7 @@ export default function OnboardingPage() {
           <p className="text-[var(--theme-text-secondary)] text-lg mb-4">Your personalized plan is ready</p>
           <div className="flex items-center justify-center gap-2 text-[var(--theme-primary-dark)]">
             <Sparkles className="h-5 w-5 animate-pulse" />
-            <span className="font-medium">Preparing your dashboard...</span>
+            <span className="font-medium">Welcome to Standard Nutrition</span>
           </div>
         </div>
       </div>
@@ -354,14 +351,11 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col py-8 px-4" style={{ background: 'var(--theme-gradient-hero)' }}>
+    <div className="min-h-screen flex flex-col py-8 px-4 bg-[#f5f5f7]">
       <div className="max-w-lg w-full mx-auto flex-1 flex flex-col">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="text-2xl font-semibold text-[var(--theme-text)]">
-            <span className="font-medium">BODY</span>
-            <span className="font-light">COACH</span>
-          </div>
+          <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-7 w-auto mx-auto" />
         </div>
 
         {/* Step Indicators */}
@@ -439,8 +433,6 @@ export default function OnboardingPage() {
                           type="button"
                           onClick={() => {
                             setSex(s);
-                            // Switch theme based on sex selection
-                            setGender(s === 'male' ? 'male' : 'female');
                           }}
                           className={`
                             flex items-center justify-center gap-2 p-3 rounded-xl border-2 transition-all

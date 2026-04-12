@@ -1,42 +1,46 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "BODYCOACH - AI-Powered Fitness Coaching",
-  description: "Personalized nutrition and workout guidance with AI coaches, progress tracking, and automated accountability.",
+  title: {
+    default: "Standard Nutrition — Coach-Led Fitness & Nutrition",
+    template: "%s | Standard Nutrition",
+  },
+  description: "Personalized nutrition and fitness coaching with progress tracking, macro plans, and accountability.",
   manifest: "/manifest.json",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://standardnutrition.com"),
+  openGraph: {
+    title: "Standard Nutrition — Coach-Led Fitness & Nutrition",
+    description: "Personalized nutrition and fitness coaching with progress tracking, macro plans, and accountability.",
+    type: "website",
+    siteName: "Standard Nutrition",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Standard Nutrition — Coach-Led Fitness & Nutrition",
+    description: "Personalized nutrition and fitness coaching with progress tracking, macro plans, and accountability.",
+  },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "BODYCOACH",
+    statusBarStyle: "black-translucent",
+    title: "Standard Nutrition",
   },
   formatDetection: {
     telephone: false,
   },
   icons: {
     icon: [
-      { url: "/icons/icon.svg", type: "image/svg+xml" },
+      { url: "/logos/icon.png", type: "image/png" },
     ],
     apple: [
-      { url: "/icons/icon.svg", type: "image/svg+xml" },
+      { url: "/logos/icon.png", type: "image/png" },
     ],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#6C5CE7",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -52,13 +56,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon.svg" />
+        <link rel="apple-touch-icon" href="/logos/icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <ThemeProvider>
           {children}
         </ThemeProvider>
