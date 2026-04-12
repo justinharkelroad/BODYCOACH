@@ -47,3 +47,39 @@ export async function PATCH(
 
   return Response.json({ success: true, status: newStatus });
 }
+
+// Permanently delete a client relationship
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ clientId: string }> }
+) {
+  const { clientId } = await params;
+  const supabase = await createClientForApi(request);
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (!profile || profile.role !== 'coach') {
+    return Response.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  const { error } = await supabase
+    .from('coach_clients')
+    .delete()
+    .eq('coach_id', user.id)
+    .eq('client_id', clientId);
+
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+
+  return Response.json({ success: true });
+}
