@@ -33,7 +33,7 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
         className={`max-w-[80%] rounded-[16px] px-5 py-3 ${
           isUser
             ? 'bg-[var(--navy-cta)] text-white'
-            : 'bg-white border border-[rgba(184,169,232,0.2)] text-[var(--neutral-dark)]'
+            : 'bg-[var(--theme-surface)] border border-[rgba(184,169,232,0.2)] text-[var(--neutral-dark)]'
         }`}
       >
         <div className="whitespace-pre-wrap text-sm leading-relaxed">

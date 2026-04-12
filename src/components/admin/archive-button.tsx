@@ -70,7 +70,7 @@ export function ArchiveButton({ clientId, clientName, isArchived = false }: Arch
             variant="primary"
             onClick={isDelete ? handleDelete : handleArchiveAction}
             isLoading={isLoading}
-            className={isDelete ? 'bg-[#FF3B30] hover:bg-[#E0352B]' : ''}
+            className={isDelete ? 'bg-[var(--theme-error)] hover:bg-[#E0352B]' : ''}
           >
             {isDelete ? 'Delete Forever' : 'Confirm'}
           </Button>
@@ -103,7 +103,7 @@ export function ArchiveButton({ clientId, clientName, isArchived = false }: Arch
         size="sm"
         variant="ghost"
         onClick={() => setConfirmAction('delete')}
-        className="text-[#FF3B30] hover:bg-[rgba(255,59,48,0.06)]"
+        className="text-[var(--theme-error)] hover:bg-[rgba(255,59,48,0.06)]"
       >
         <Trash2 className="h-4 w-4" />
       </Button>

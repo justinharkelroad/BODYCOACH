@@ -18,7 +18,7 @@ export function SuggestionCard({
   isLogging = false,
 }: SuggestionCardProps) {
   return (
-    <div className="bg-white border border-[rgba(184,169,232,0.1)] rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-[var(--theme-surface)] border border-[rgba(184,169,232,0.1)] rounded-xl shadow-sm overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b border-[rgba(184,169,232,0.1)]">
         <div className="flex items-start justify-between gap-2">

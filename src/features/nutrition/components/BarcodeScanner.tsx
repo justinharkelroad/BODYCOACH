@@ -109,7 +109,7 @@ export function BarcodeScanner({
   return (
     <div className="fixed inset-0 z-50 bg-black flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-black/50">
+      <div className="flex items-center justify-between p-4 bg-[var(--theme-overlay-scrim)]">
         <button onClick={onClose} className="text-white p-2">
           <X size={24} />
         </button>
@@ -156,7 +156,7 @@ export function BarcodeScanner({
 
             {/* Loading overlay */}
             {isLoading && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+              <div className="absolute inset-0 bg-[var(--theme-overlay-scrim)] flex items-center justify-center">
                 <div className="text-white text-center">
                   <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-2" />
                   <p>Looking up barcode...</p>
@@ -245,8 +245,8 @@ export function BarcodeNotFoundModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-sm w-full">
+    <div className="fixed inset-0 z-50 bg-[var(--theme-overlay-scrim)] flex items-center justify-center p-4">
+      <div className="bg-[var(--theme-surface)] dark:bg-zinc-900 rounded-xl p-6 max-w-sm w-full">
         <div className="text-center mb-4">
           <AlertCircle size={48} className="mx-auto text-yellow-500 mb-2" />
           <h3 className="text-lg font-semibold">Product Not Found</h3>

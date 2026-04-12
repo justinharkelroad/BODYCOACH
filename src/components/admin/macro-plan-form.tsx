@@ -92,7 +92,7 @@ export function MacroPlanForm({ clientId, existingPlan }: MacroPlanFormProps) {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="E.g., higher protein on training days..."
           rows={2}
-          className="w-full px-4 py-3 rounded-xl bg-[var(--theme-bg-alt)] border-2 border-transparent focus:outline-none focus:border-[var(--theme-primary)] focus:bg-white transition-all resize-none text-sm text-[var(--theme-text)]"
+          className="w-full px-4 py-3 rounded-xl bg-[var(--theme-bg-alt)] border-2 border-transparent focus:outline-none focus:border-[var(--theme-primary)] focus:bg-[var(--theme-surface)] transition-all resize-none text-sm text-[var(--theme-text)]"
         />
       </div>
       <div className="flex items-center gap-3">

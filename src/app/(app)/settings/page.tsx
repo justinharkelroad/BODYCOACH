@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
-import { Bell, User, ChevronRight } from 'lucide-react';
+import { Bell, User, ChevronRight, Palette } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,14 +33,20 @@ export default async function SettingsPage() {
       title: 'Notifications & Reminders',
       description: 'Manage your check-in schedule and notification preferences',
     },
+    {
+      href: '/settings/appearance',
+      icon: Palette,
+      title: 'Appearance',
+      description: 'Switch between light, dark, and system themes',
+    },
   ];
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-[var(--neutral-dark)]">Settings</h1>
-        <p className="text-[var(--neutral-gray)] mt-1">
+        <h1 className="text-2xl font-semibold text-[var(--theme-text)]">Settings</h1>
+        <p className="text-[var(--theme-text-secondary)] mt-1">
           Manage your account and preferences
         </p>
       </div>
@@ -49,16 +55,16 @@ export default async function SettingsPage() {
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-[var(--primary-light)] flex items-center justify-center">
-              <span className="text-2xl font-semibold text-[var(--primary-deep)]">
+            <div className="h-16 w-16 rounded-full bg-[var(--theme-accent-light)] flex items-center justify-center">
+              <span className="text-2xl font-semibold text-[var(--theme-primary-dark)]">
                 {(profile?.full_name || user.email || '?')[0].toUpperCase()}
               </span>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-[var(--neutral-dark)]">
+              <h2 className="text-lg font-semibold text-[var(--theme-text)]">
                 {profile?.full_name || 'User'}
               </h2>
-              <p className="text-[var(--neutral-gray)]">{user.email}</p>
+              <p className="text-[var(--theme-text-secondary)]">{user.email}</p>
             </div>
           </div>
         </CardContent>
@@ -73,14 +79,14 @@ export default async function SettingsPage() {
               <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
-                    <div className="p-3 bg-[rgba(0,113,227,0.08)] rounded-xl">
-                      <Icon className="h-5 w-5 text-[#0071e3]" />
+                    <div className="p-3 bg-[var(--theme-accent-light)] rounded-xl">
+                      <Icon className="h-5 w-5 text-[var(--theme-primary)]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-medium text-[#1d1d1f]">{link.title}</h3>
-                      <p className="text-[14px] text-[#86868b]">{link.description}</p>
+                      <h3 className="font-medium text-[var(--theme-text)]">{link.title}</h3>
+                      <p className="text-[14px] text-[var(--theme-text-secondary)]">{link.description}</p>
                     </div>
-                    <ChevronRight className="h-5 w-5 text-[#aeaeb2]" />
+                    <ChevronRight className="h-5 w-5 text-[var(--theme-text-muted)]" />
                   </div>
                 </CardContent>
               </Card>

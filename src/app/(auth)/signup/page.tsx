@@ -70,18 +70,18 @@ function SignupForm() {
     <>
       <div className="text-center mb-8">
         <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-10 w-auto mx-auto" />
-        <p className="text-[17px] text-[#86868b] mt-4">Create your account</p>
+        <p className="text-[17px] text-[var(--theme-text-secondary)] mt-4">Create your account</p>
       </div>
 
-      <div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
+      <div className="bg-[var(--theme-surface)] rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
         {prefilledCode && (
-          <div className="mb-5 rounded-[8px] border border-[#34C759] bg-[#EBFBEF] px-4 py-3 text-[14px] text-[#1a7a34]">
+          <div className="mb-5 rounded-[8px] border border-[var(--theme-success)] bg-[#EBFBEF] px-4 py-3 text-[14px] text-[#1a7a34]">
             Welcome! Your access code has been filled in — just create your login below.
           </div>
         )}
         <form onSubmit={handleEmailSignup} className="space-y-5">
           <div>
-            <label htmlFor="fullName" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label htmlFor="fullName" className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Full name
             </label>
             <input
@@ -91,12 +91,12 @@ function SignupForm() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
-              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label htmlFor="email" className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Email
             </label>
             <input
@@ -106,12 +106,12 @@ function SignupForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label htmlFor="password" className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Password
             </label>
             <input
@@ -121,12 +121,12 @@ function SignupForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
             />
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label htmlFor="confirmPassword" className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Confirm Password
             </label>
             <input
@@ -136,12 +136,12 @@ function SignupForm() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
             />
           </div>
 
           <div>
-            <label htmlFor="accessCode" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label htmlFor="accessCode" className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Access code
             </label>
             <input
@@ -152,26 +152,26 @@ function SignupForm() {
               value={accessCode}
               onChange={(e) => setAccessCode(e.target.value)}
               required
-              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
             />
           </div>
 
           {error && (
-            <p className="text-[14px] text-[#FF3B30]">{error}</p>
+            <p className="text-[14px] text-[var(--theme-error)]">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#0071e3] text-white text-[17px] font-normal py-3 rounded-[8px] hover:bg-[#0077ED] transition-colors disabled:opacity-50"
+            className="w-full bg-[var(--theme-primary)] text-white text-[17px] font-normal py-3 rounded-[8px] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
           >
             {isLoading ? 'Creating account...' : 'Create account'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-[14px] text-[#86868b]">
+        <p className="mt-6 text-center text-[14px] text-[var(--theme-text-secondary)]">
           Already have an account?{' '}
-          <Link href="/login" className="text-[#0066cc] hover:underline">
+          <Link href="/login" className="text-[var(--theme-primary-dark)] hover:underline">
             Sign in
           </Link>
         </p>
@@ -182,7 +182,7 @@ function SignupForm() {
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={<div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]" />}>
+    <Suspense fallback={<div className="bg-[var(--theme-surface)] rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]" />}>
       <SignupForm />
     </Suspense>
   );

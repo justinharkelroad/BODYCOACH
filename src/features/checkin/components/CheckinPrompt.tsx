@@ -82,7 +82,7 @@ export function CheckinPrompt({ onComplete, onSkip }: CheckinPromptProps) {
       className={`
         fixed inset-0 z-50 flex items-end justify-center
         transition-all duration-300
-        ${isVisible ? 'bg-black/50' : 'bg-transparent pointer-events-none'}
+        ${isVisible ? 'bg-[var(--theme-overlay-scrim)]' : 'bg-transparent pointer-events-none'}
       `}
       onClick={(e) => {
         if (e.target === e.currentTarget) handleSkip();

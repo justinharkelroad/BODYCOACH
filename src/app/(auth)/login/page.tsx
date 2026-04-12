@@ -54,7 +54,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
+    <div className="bg-[var(--theme-surface)] rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
       {deactivated && (
         <div className="mb-5 rounded-[8px] border border-[#FFCC00] bg-[#FFF9E6] px-4 py-3 text-[14px] text-[#8B6F00]">
           This account is no longer active. Please contact your coach if you think this is a mistake.
@@ -62,7 +62,7 @@ function LoginForm() {
       )}
       <form onSubmit={handleEmailLogin} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+          <label htmlFor="email" className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
             Email
           </label>
           <input
@@ -72,12 +72,12 @@ function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+            className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+          <label htmlFor="password" className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
             Password
           </label>
           <input
@@ -87,26 +87,26 @@ function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+            className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
           />
         </div>
 
         {error && (
-          <p className="text-[14px] text-[#FF3B30]">{error}</p>
+          <p className="text-[14px] text-[var(--theme-error)]">{error}</p>
         )}
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-[#0071e3] text-white text-[17px] font-normal py-3 rounded-[8px] hover:bg-[#0077ED] transition-colors disabled:opacity-50"
+          className="w-full bg-[var(--theme-primary)] text-white text-[17px] font-normal py-3 rounded-[8px] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
         >
           {isLoading ? 'Signing in...' : 'Sign in'}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-[14px] text-[#86868b]">
+      <p className="mt-6 text-center text-[14px] text-[var(--theme-text-secondary)]">
         Don&apos;t have an account?{' '}
-        <Link href="/signup" className="text-[#0066cc] hover:underline">
+        <Link href="/signup" className="text-[var(--theme-primary-dark)] hover:underline">
           Sign up
         </Link>
       </p>
@@ -119,15 +119,15 @@ export default function LoginPage() {
     <>
       <div className="text-center mb-8">
         <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-10 w-auto mx-auto" />
-        <p className="text-[17px] text-[#86868b] mt-4">Welcome back</p>
+        <p className="text-[17px] text-[var(--theme-text-secondary)] mt-4">Welcome back</p>
       </div>
 
       <Suspense fallback={
-        <div className="bg-white rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
+        <div className="bg-[var(--theme-surface)] rounded-[12px] p-8 shadow-[var(--theme-shadow-sm)]">
           <div className="animate-pulse space-y-5">
-            <div className="h-12 bg-[#f5f5f7] rounded-[8px]" />
-            <div className="h-12 bg-[#f5f5f7] rounded-[8px]" />
-            <div className="h-12 bg-[#f5f5f7] rounded-[8px]" />
+            <div className="h-12 bg-[var(--theme-bg)] rounded-[8px]" />
+            <div className="h-12 bg-[var(--theme-bg)] rounded-[8px]" />
+            <div className="h-12 bg-[var(--theme-bg)] rounded-[8px]" />
           </div>
         </div>
       }>

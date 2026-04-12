@@ -245,7 +245,7 @@ export function CheckInForm({ lastWeight, weekAgoWeight, pendingCheckInId, exist
           onChange={(e) => setNotes(e.target.value)}
           placeholder="How are you feeling today?"
           rows={3}
-          className="w-full px-4 py-3 rounded-xl bg-[var(--theme-bg-alt)] border-2 border-transparent focus:outline-none focus:border-[var(--theme-primary)] focus:bg-white transition-all resize-none text-[var(--theme-text)]"
+          className="w-full px-4 py-3 rounded-xl bg-[var(--theme-bg-alt)] border-2 border-transparent focus:outline-none focus:border-[var(--theme-primary)] focus:bg-[var(--theme-surface)] transition-all resize-none text-[var(--theme-text)]"
         />
       </div>
 

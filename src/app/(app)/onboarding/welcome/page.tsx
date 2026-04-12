@@ -78,8 +78,8 @@ function FoodGrid({ items }: { items: string[] }) {
     <div className="grid grid-cols-2 gap-x-4 gap-y-2">
       {items.map((item) => (
         <div key={item} className="flex items-center gap-2.5">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] flex-shrink-0" />
-          <span className="text-[14px] text-[#1d1d1f]">{item}</span>
+          <div className="w-1.5 h-1.5 rounded-full bg-[var(--theme-primary)] flex-shrink-0" />
+          <span className="text-[14px] text-[var(--theme-text)]">{item}</span>
         </div>
       ))}
     </div>
@@ -88,7 +88,7 @@ function FoodGrid({ items }: { items: string[] }) {
 
 function InfoNote({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-[8px] px-4 py-3 text-[14px] text-[#6e6e73] leading-relaxed bg-[#f5f5f7] border-l-3 border-[#0071e3]" style={{ borderLeftWidth: 3, borderLeftColor: '#0071e3' }}>
+    <div className="rounded-[8px] px-4 py-3 text-[14px] text-[var(--theme-text-secondary)] leading-relaxed bg-[var(--theme-bg)] border-l-3 border-[var(--theme-primary)]" style={{ borderLeftWidth: 3, borderLeftColor: '#0071e3' }}>
       {children}
     </div>
   );
@@ -140,7 +140,7 @@ export default function WelcomePage() {
     touchStartRef.current = null;
   };
 
-  const CARD = 'rounded-[12px] p-5 sm:p-6 bg-white border border-[rgba(0,0,0,0.06)]';
+  const CARD = 'rounded-[12px] p-5 sm:p-6 bg-[var(--theme-surface)] border border-[var(--theme-border)]';
 
   const slides: { Icon: typeof Heart; title: string; content: React.ReactNode }[] = [
     // 0 — Welcome
@@ -149,22 +149,22 @@ export default function WelcomePage() {
       title: 'Welcome to Standard Nutrition',
       content: (
         <div className={`${CARD} space-y-4`}>
-          <p className="text-[17px] text-[#1d1d1f] leading-relaxed">
+          <p className="text-[17px] text-[var(--theme-text)] leading-relaxed">
             I am a mother of 3, a wife, fitness competitor, and have found my purpose
             in life by helping people reach their health and fitness goals.
           </p>
-          <p className="text-[17px] text-[#1d1d1f] leading-relaxed">
+          <p className="text-[17px] text-[var(--theme-text)] leading-relaxed">
             I am a graduate from Indiana University-Bloomington where I studied
             Telecommunications and Business. I found Personal Training later in life
             after getting my own health back after kids.
           </p>
-          <p className="text-[17px] text-[#1d1d1f] leading-relaxed">
+          <p className="text-[17px] text-[var(--theme-text)] leading-relaxed">
             I was pre-diabetic and heading down a path of sickness. I was tired all the
             time and had little energy to even take care of my three kids. Exercise saved
             my life and eating the right foods gave me the energy I needed to fuel my body.
           </p>
-          <div className="pt-4 border-t border-[rgba(0,0,0,0.06)] text-right">
-            <p className="italic text-[17px] font-medium text-[#0071e3]">Your Coach — Corina</p>
+          <div className="pt-4 border-t border-[var(--theme-border)] text-right">
+            <p className="italic text-[17px] font-medium text-[var(--theme-primary)]">Your Coach — Corina</p>
           </div>
         </div>
       ),
@@ -176,23 +176,23 @@ export default function WelcomePage() {
       title: 'How Coaching Works',
       content: (
         <div className={`${CARD} space-y-4`}>
-          <p className="text-[17px] text-[#1d1d1f] leading-relaxed">
+          <p className="text-[17px] text-[var(--theme-text)] leading-relaxed">
             I provide direction, accountability, and support. I hold you
             accountable and keep you on track to achieve your goals in a healthy and
             sustainable way.
           </p>
-          <p className="text-[17px] text-[#1d1d1f] leading-relaxed">
+          <p className="text-[17px] text-[var(--theme-text)] leading-relaxed">
             Communication is available anytime through text messaging. I will respond within 24 hours.
           </p>
-          <div className="pt-3 border-t border-[rgba(0,0,0,0.06)]">
-            <p className="text-[14px] font-semibold text-[#1d1d1f] mb-3">
+          <div className="pt-3 border-t border-[var(--theme-border)]">
+            <p className="text-[14px] font-semibold text-[var(--theme-text)] mb-3">
               I make macro &amp; calorie adjustments based on:
             </p>
             <div className="space-y-2">
               {['Daily & weekly weight trends', 'Monthly girth measurements', 'Consistency with targets', 'Intake tracked in MyFitnessPal'].map((item) => (
                 <div key={item} className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] flex-shrink-0" />
-                  <span className="text-[14px] text-[#6e6e73]">{item}</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[var(--theme-primary)] flex-shrink-0" />
+                  <span className="text-[14px] text-[var(--theme-text-secondary)]">{item}</span>
                 </div>
               ))}
             </div>
@@ -207,15 +207,15 @@ export default function WelcomePage() {
       title: 'Check-Ins',
       content: (
         <div className={`${CARD} space-y-3`}>
-          <h3 className="font-semibold text-[17px] text-[#1d1d1f]">Virtual Check-Ins</h3>
-          <p className="text-[14px] text-[#6e6e73] leading-relaxed">
+          <h3 className="font-semibold text-[17px] text-[var(--theme-text)]">Virtual Check-Ins</h3>
+          <p className="text-[14px] text-[var(--theme-text-secondary)] leading-relaxed">
             Virtual check-ins are sent within 24 hours of receiving your check-in form. Each check-in requires:
           </p>
           <div className="space-y-2 pl-1">
             {['Completed food journal', 'Most current weigh-in', 'Measurements (if due)', 'Any other relevant progress info'].map((item) => (
               <div key={item} className="flex items-center gap-3">
-                <Check className="w-4 h-4 text-[#34C759] flex-shrink-0" />
-                <span className="text-[14px] text-[#1d1d1f]">{item}</span>
+                <Check className="w-4 h-4 text-[var(--theme-success)] flex-shrink-0" />
+                <span className="text-[14px] text-[var(--theme-text)]">{item}</span>
               </div>
             ))}
           </div>
@@ -232,12 +232,12 @@ export default function WelcomePage() {
           <div className="space-y-4">
             {needItems.map((item, i) => (
               <div key={i} className="flex gap-3">
-                <div className="w-7 h-7 rounded-[8px] flex items-center justify-center flex-shrink-0 text-[12px] font-bold mt-0.5 bg-[rgba(0,113,227,0.08)] text-[#0071e3]">
+                <div className="w-7 h-7 rounded-[8px] flex items-center justify-center flex-shrink-0 text-[12px] font-bold mt-0.5 bg-[rgba(0,113,227,0.08)] text-[var(--theme-primary)]">
                   {i + 1}
                 </div>
                 <div className="min-w-0">
-                  <h4 className="font-semibold text-[14px] text-[#1d1d1f]">{item.name}</h4>
-                  <p className="text-[12px] text-[#86868b] mt-0.5 leading-relaxed">{item.detail}</p>
+                  <h4 className="font-semibold text-[14px] text-[var(--theme-text)]">{item.name}</h4>
+                  <p className="text-[12px] text-[var(--theme-text-secondary)] mt-0.5 leading-relaxed">{item.detail}</p>
                 </div>
               </div>
             ))}
@@ -257,7 +257,7 @@ export default function WelcomePage() {
             <p>Wild caught fish, lean meats, grass-fed beef, and free range chicken are preferred but not required.</p>
           </InfoNote>
           <div className={`${CARD} space-y-3`}>
-            <h3 className="font-semibold text-[14px] text-[#34C759]">Vegan Protein</h3>
+            <h3 className="font-semibold text-[14px] text-[var(--theme-success)]">Vegan Protein</h3>
             <FoodGrid items={veganProteinSources} />
           </div>
         </div>
@@ -299,12 +299,12 @@ export default function WelcomePage() {
       content: (
         <div className="space-y-3">
           {timingPhases.map((phase) => (
-            <div key={phase.label} className="rounded-[12px] p-4 bg-white border border-[rgba(0,0,0,0.06)]">
+            <div key={phase.label} className="rounded-[12px] p-4 bg-[var(--theme-surface)] border border-[var(--theme-border)]">
               <div className="flex items-center justify-between mb-1">
-                <h4 className="font-semibold text-[14px] text-[#1d1d1f]">{phase.label}</h4>
-                <span className="text-[12px] text-[#86868b]">{phase.time}</span>
+                <h4 className="font-semibold text-[14px] text-[var(--theme-text)]">{phase.label}</h4>
+                <span className="text-[12px] text-[var(--theme-text-secondary)]">{phase.time}</span>
               </div>
-              <p className="text-[14px] text-[#6e6e73] leading-relaxed">{phase.detail}</p>
+              <p className="text-[14px] text-[var(--theme-text-secondary)] leading-relaxed">{phase.detail}</p>
             </div>
           ))}
         </div>
@@ -319,9 +319,9 @@ export default function WelcomePage() {
         <div className="space-y-3">
           <InfoNote><p className="italic">These are suggested, not required.</p></InfoNote>
           {supplements.map((supp) => (
-            <div key={supp.name} className="rounded-[12px] p-4 bg-white border border-[rgba(0,0,0,0.06)]">
-              <h4 className="font-semibold text-[14px] text-[#0071e3] mb-1">{supp.name}</h4>
-              <p className="text-[14px] text-[#6e6e73] leading-relaxed">{supp.detail}</p>
+            <div key={supp.name} className="rounded-[12px] p-4 bg-[var(--theme-surface)] border border-[var(--theme-border)]">
+              <h4 className="font-semibold text-[14px] text-[var(--theme-primary)] mb-1">{supp.name}</h4>
+              <p className="text-[14px] text-[var(--theme-text-secondary)] leading-relaxed">{supp.detail}</p>
             </div>
           ))}
         </div>
@@ -337,8 +337,8 @@ export default function WelcomePage() {
           <div className="space-y-3">
             {successTips.map((tip) => (
               <div key={tip} className="flex gap-3 items-start">
-                <Check className="h-4 w-4 flex-shrink-0 mt-0.5 text-[#0071e3]" />
-                <p className="text-[14px] text-[#1d1d1f] leading-relaxed">{tip}</p>
+                <Check className="h-4 w-4 flex-shrink-0 mt-0.5 text-[var(--theme-primary)]" />
+                <p className="text-[14px] text-[var(--theme-text)] leading-relaxed">{tip}</p>
               </div>
             ))}
           </div>
@@ -352,12 +352,12 @@ export default function WelcomePage() {
       title: "Let's Go!",
       content: (
         <div className="text-center space-y-6 pt-4">
-          <div className="w-20 h-20 rounded-full mx-auto flex items-center justify-center bg-[#34C759]">
+          <div className="w-20 h-20 rounded-full mx-auto flex items-center justify-center bg-[var(--theme-success)]">
             <Trophy className="h-10 w-10 text-white" />
           </div>
           <div className="space-y-3">
-            <h2 className="text-[28px] font-semibold text-[#1d1d1f] tracking-tight">You&apos;re All Set!</h2>
-            <p className="text-[17px] text-[#86868b] max-w-xs mx-auto leading-relaxed">
+            <h2 className="text-[28px] font-semibold text-[var(--theme-text)] tracking-tight">You&apos;re All Set!</h2>
+            <p className="text-[17px] text-[var(--theme-text-secondary)] max-w-xs mx-auto leading-relaxed">
               I&apos;m ready to guide you every step of the way. Let&apos;s make it happen.
             </p>
           </div>
@@ -370,28 +370,28 @@ export default function WelcomePage() {
 
   return (
     <div
-      className="-m-4 sm:-m-6 lg:-m-10 min-h-screen flex flex-col select-none bg-[#f5f5f7]"
+      className="-m-4 sm:-m-6 lg:-m-10 min-h-screen flex flex-col select-none bg-[var(--theme-bg)]"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {/* Progress Bar */}
       <div className="flex-shrink-0 px-5 pt-5 sm:px-8 sm:pt-6">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[12px] font-medium text-[#86868b]">
+          <span className="text-[12px] font-medium text-[var(--theme-text-secondary)]">
             {currentSlide + 1} of {TOTAL_SLIDES}
           </span>
           {currentSlide < TOTAL_SLIDES - 1 && (
             <button
               onClick={handleSkip}
-              className="text-[12px] font-medium text-[#86868b] hover:text-[#1d1d1f] transition-colors"
+              className="text-[12px] font-medium text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors"
             >
               Skip
             </button>
           )}
         </div>
-        <div className="h-1 bg-[rgba(0,0,0,0.06)] rounded-full overflow-hidden">
+        <div className="h-1 bg-[var(--theme-hover-subtle)] rounded-full overflow-hidden">
           <div
-            className="h-full rounded-full transition-all duration-500 ease-out bg-[#0071e3]"
+            className="h-full rounded-full transition-all duration-500 ease-out bg-[var(--theme-primary)]"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -405,11 +405,11 @@ export default function WelcomePage() {
         >
           {/* Icon */}
           <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 bg-[rgba(0,113,227,0.08)]">
-            <slide.Icon className="h-7 w-7 text-[#0071e3]" />
+            <slide.Icon className="h-7 w-7 text-[var(--theme-primary)]" />
           </div>
 
           {/* Title */}
-          <h1 className="text-[28px] font-semibold text-[#1d1d1f] text-center mb-6 tracking-tight leading-[1.14]">
+          <h1 className="text-[28px] font-semibold text-[var(--theme-text)] text-center mb-6 tracking-tight leading-[1.14]">
             {slide.title}
           </h1>
 
@@ -425,7 +425,7 @@ export default function WelcomePage() {
             <button
               onClick={handleComplete}
               disabled={isCompleting}
-              className="w-full flex items-center justify-center gap-2 px-8 py-3.5 rounded-[980px] text-[17px] font-normal text-white bg-[#0071e3] hover:bg-[#0077ED] transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 px-8 py-3.5 rounded-[980px] text-[17px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
             >
               {isCompleting ? 'Starting...' : <>Get Started <ArrowRight className="h-5 w-5" /></>}
             </button>
@@ -434,14 +434,14 @@ export default function WelcomePage() {
               <button
                 onClick={handleBack}
                 disabled={currentSlide === 0}
-                className="flex items-center gap-2 px-5 py-3 rounded-[980px] text-[14px] text-[#86868b] hover:text-[#1d1d1f] hover:bg-[rgba(0,0,0,0.04)] transition-all disabled:opacity-0 disabled:pointer-events-none"
+                className="flex items-center gap-2 px-5 py-3 rounded-[980px] text-[14px] text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] hover:bg-[var(--theme-hover-subtle)] transition-all disabled:opacity-0 disabled:pointer-events-none"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </button>
               <button
                 onClick={handleNext}
-                className="flex items-center gap-2 px-6 py-3 rounded-[980px] text-[14px] font-normal text-white bg-[#0071e3] hover:bg-[#0077ED] transition-colors"
+                className="flex items-center gap-2 px-6 py-3 rounded-[980px] text-[14px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors"
               >
                 Next
                 <ArrowRight className="h-4 w-4" />

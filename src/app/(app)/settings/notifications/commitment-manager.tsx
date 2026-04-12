@@ -113,7 +113,7 @@ export function CommitmentManager({ initialCommitments }: CommitmentManagerProps
                 className="flex items-center justify-between p-4 bg-[var(--neutral-gray-light)] rounded-xl"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white rounded-lg">
+                  <div className="p-2 bg-[var(--theme-surface)] rounded-lg">
                     <Icon className="h-5 w-5 text-[var(--primary-deep)]" />
                   </div>
                   <div>
@@ -130,7 +130,7 @@ export function CommitmentManager({ initialCommitments }: CommitmentManagerProps
                 <button
                   onClick={() => handleDeleteCommitment(commitment.id)}
                   disabled={deletingId === commitment.id}
-                  className="p-2 text-[var(--neutral-gray)] hover:text-[var(--accent-coral)] hover:bg-white rounded-lg transition-colors"
+                  className="p-2 text-[var(--neutral-gray)] hover:text-[var(--accent-coral)] hover:bg-[var(--theme-surface)] rounded-lg transition-colors"
                 >
                   {deletingId === commitment.id ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

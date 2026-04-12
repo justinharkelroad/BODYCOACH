@@ -38,7 +38,7 @@ export function SavedMealCard({
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+    <div className="bg-[var(--theme-surface)] dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
       {/* Main content - tap to log */}
       <button
         onClick={handleQuickLog}
@@ -154,8 +154,8 @@ export function SavedMealCard({
 
       {/* Serving picker modal */}
       {showServingPicker && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-sm w-full">
+        <div className="fixed inset-0 z-50 bg-[var(--theme-overlay-scrim)] flex items-center justify-center p-4">
+          <div className="bg-[var(--theme-surface)] dark:bg-zinc-900 rounded-xl p-6 max-w-sm w-full">
             <h3 className="text-lg font-semibold text-center mb-4">
               Log {meal.name}
             </h3>

@@ -78,7 +78,7 @@ export function CoachNotesSection({ clientId, initialNotes }: CoachNotesSectionP
           onChange={(e) => setNewNote(e.target.value)}
           placeholder="Add a note about this client..."
           rows={2}
-          className="flex-1 px-4 py-3 rounded-xl bg-[var(--theme-bg-alt)] border-2 border-transparent focus:outline-none focus:border-[var(--theme-primary)] focus:bg-white transition-all resize-none text-sm text-[var(--theme-text)]"
+          className="flex-1 px-4 py-3 rounded-xl bg-[var(--theme-bg-alt)] border-2 border-transparent focus:outline-none focus:border-[var(--theme-primary)] focus:bg-[var(--theme-surface)] transition-all resize-none text-sm text-[var(--theme-text)]"
         />
         <Button
           size="sm"
@@ -103,7 +103,7 @@ export function CoachNotesSection({ clientId, initialNotes }: CoachNotesSectionP
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
                     rows={2}
-                    className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--theme-border)] focus:outline-none focus:border-[var(--theme-primary)] text-sm text-[var(--theme-text)] resize-none"
+                    className="w-full px-3 py-2 rounded-lg bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:outline-none focus:border-[var(--theme-primary)] text-sm text-[var(--theme-text)] resize-none"
                   />
                   <div className="flex gap-2">
                     <Button size="sm" onClick={() => handleUpdate(note.id)}>Save</Button>

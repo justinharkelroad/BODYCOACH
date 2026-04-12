@@ -238,7 +238,7 @@ export function StatsForm({ userId, existingStatId, defaultValues }: StatsFormPr
             <textarea
               id="notes"
               rows={2}
-              className="block w-full rounded-[12px] border border-[rgba(184,169,232,0.3)] px-4 py-3 text-[var(--neutral-dark)] placeholder-[var(--neutral-gray)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent transition-all"
+              className="block w-full rounded-[12px] border border-[rgba(184,169,232,0.3)] px-4 py-3 text-[var(--neutral-dark)] placeholder-[var(--neutral-gray)] bg-[var(--theme-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent transition-all"
               placeholder="How are you feeling today?"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -250,7 +250,7 @@ export function StatsForm({ userId, existingStatId, defaultValues }: StatsFormPr
           )}
 
           {saved && (
-            <div className="flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[rgba(52,199,89,0.08)] text-[#34C759] text-[14px] font-medium">
+            <div className="flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[rgba(52,199,89,0.08)] text-[var(--theme-success)] text-[14px] font-medium">
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               Saved successfully
             </div>

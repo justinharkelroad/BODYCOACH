@@ -106,7 +106,7 @@ export default function CoachPage() {
       {/* Info */}
       <div className="bg-[var(--primary-light)] rounded-[16px] p-6">
         <div className="flex gap-4">
-          <div className="p-2 bg-white rounded-[12px] h-fit">
+          <div className="p-2 bg-[var(--theme-surface)] rounded-[12px] h-fit">
             <Sparkles className="h-5 w-5 text-[var(--primary-lavender)]" />
           </div>
           <div>

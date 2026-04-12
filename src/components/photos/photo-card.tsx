@@ -204,15 +204,15 @@ export function PhotoCard({ photo, onAnalyze, onDelete, isAnalyzing, analysisJus
       {/* Full Analysis Modal */}
       {showFullAnalysis && analysis && (
         <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-[var(--theme-overlay-scrim)] z-50 flex items-center justify-center p-4"
           onClick={() => setShowFullAnalysis(false)}
         >
           <div
-            className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+            className="bg-[var(--theme-surface)] rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-[rgba(184,169,232,0.1)] p-5 flex items-center justify-between">
+            <div className="sticky top-0 bg-[var(--theme-surface)] border-b border-[rgba(184,169,232,0.1)] p-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-[var(--primary-light)] rounded-xl">
                   <Sparkles className="h-5 w-5 text-[var(--primary-deep)]" />
@@ -314,7 +314,7 @@ export function PhotoCard({ photo, onAnalyze, onDelete, isAnalyzing, analysisJus
             </div>
 
             {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-white border-t border-[rgba(184,169,232,0.1)] p-4">
+            <div className="sticky bottom-0 bg-[var(--theme-surface)] border-t border-[rgba(184,169,232,0.1)] p-4">
               <Button
                 className="w-full"
                 onClick={() => setShowFullAnalysis(false)}

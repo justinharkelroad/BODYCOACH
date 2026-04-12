@@ -11,14 +11,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 
     const variants = {
       default: `
-        bg-white
+        bg-[var(--theme-surface)]
         shadow-[var(--theme-shadow-sm)]
         border border-[var(--theme-border)]
       `,
       glass: `
-        bg-[rgba(255,255,255,0.72)]
+        bg-[var(--theme-glass-bg)]
         backdrop-blur-[20px]
-        border border-[rgba(0,0,0,0.06)]
+        border border-[var(--theme-border)]
       `,
     };
 

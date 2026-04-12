@@ -210,7 +210,7 @@ export function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
               </div>
               <button
                 onClick={clearSelection}
-                className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                className="absolute top-3 right-3 p-2 bg-[var(--theme-surface)] rounded-full shadow-lg hover:bg-gray-100 transition-colors"
               >
                 <X className="h-4 w-4 text-[var(--neutral-dark)]" />
               </button>

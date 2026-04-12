@@ -50,7 +50,7 @@ export function ExerciseList({ exercises, bodyParts, difficulties }: ExerciseLis
             placeholder="Search exercises..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 rounded-[12px] border border-[rgba(184,169,232,0.3)] bg-white text-[var(--neutral-dark)] placeholder-[var(--neutral-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
+            className="w-full pl-10 pr-4 py-3 rounded-[12px] border border-[rgba(184,169,232,0.3)] bg-[var(--theme-surface)] text-[var(--neutral-dark)] placeholder-[var(--neutral-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
           />
         </div>
 
@@ -58,7 +58,7 @@ export function ExerciseList({ exercises, bodyParts, difficulties }: ExerciseLis
         <select
           value={bodyPart}
           onChange={(e) => setBodyPart(e.target.value)}
-          className="px-4 py-3 rounded-[12px] border border-[rgba(184,169,232,0.3)] bg-white text-[var(--neutral-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
+          className="px-4 py-3 rounded-[12px] border border-[rgba(184,169,232,0.3)] bg-[var(--theme-surface)] text-[var(--neutral-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
         >
           {bodyParts.map((bp) => (
             <option key={bp.value} value={bp.value}>{bp.label}</option>
@@ -69,7 +69,7 @@ export function ExerciseList({ exercises, bodyParts, difficulties }: ExerciseLis
         <select
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
-          className="px-4 py-3 rounded-[12px] border border-[rgba(184,169,232,0.3)] bg-white text-[var(--neutral-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
+          className="px-4 py-3 rounded-[12px] border border-[rgba(184,169,232,0.3)] bg-[var(--theme-surface)] text-[var(--neutral-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
         >
           {difficulties.map((d) => (
             <option key={d.value} value={d.value}>{d.label}</option>

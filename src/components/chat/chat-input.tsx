@@ -40,7 +40,7 @@ export function ChatInput({ onSend, disabled, placeholder }: ChatInputProps) {
 
   return (
     <form onSubmit={handleSubmit} className="relative">
-      <div className="flex items-end gap-3 bg-white rounded-[16px] border border-[rgba(184,169,232,0.3)] p-3 focus-within:ring-2 focus-within:ring-[var(--primary-lavender)] focus-within:border-transparent transition-all">
+      <div className="flex items-end gap-3 bg-[var(--theme-surface)] rounded-[16px] border border-[rgba(184,169,232,0.3)] p-3 focus-within:ring-2 focus-within:ring-[var(--primary-lavender)] focus-within:border-transparent transition-all">
         <textarea
           ref={textareaRef}
           value={message}

@@ -127,10 +127,10 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-[21px] font-semibold text-[#1d1d1f]">
+        <h1 className="text-[21px] font-semibold text-[var(--theme-text)]">
           Welcome back, {profile.full_name?.split(' ')[0] || profile.email?.split('@')[0] || 'there'}!
         </h1>
-        <p className="text-[14px] text-[#86868b] mt-1">
+        <p className="text-[14px] text-[var(--theme-text-secondary)] mt-1">
           {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
         </p>
       </div>
@@ -147,32 +147,32 @@ export default async function DashboardPage() {
         <section>
           <div className="flex items-center gap-2 mb-4">
             <Apple className="h-5 w-5 text-[var(--theme-success)]" />
-            <h2 className="text-[17px] font-semibold text-[#1d1d1f]">Your Nutrition Plan</h2>
+            <h2 className="text-[17px] font-semibold text-[var(--theme-text)]">Your Nutrition Plan</h2>
           </div>
           <Card>
             <CardContent className="p-4">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="text-center p-3 rounded-[8px] bg-[#f5f5f7]">
-                  <p className="text-2xl font-bold text-[#1d1d1f]">{macroPlan.calories}</p>
-                  <p className="text-[12px] text-[#86868b]">Calories</p>
+                <div className="text-center p-3 rounded-[8px] bg-[var(--theme-bg)]">
+                  <p className="text-2xl font-bold text-[var(--theme-text)]">{macroPlan.calories}</p>
+                  <p className="text-[12px] text-[var(--theme-text-secondary)]">Calories</p>
                 </div>
-                <div className="text-center p-3 rounded-[8px] bg-[#f5f5f7]">
-                  <p className="text-2xl font-bold text-[#1d1d1f]">{macroPlan.protein}g</p>
-                  <p className="text-[12px] text-[#86868b]">Protein</p>
+                <div className="text-center p-3 rounded-[8px] bg-[var(--theme-bg)]">
+                  <p className="text-2xl font-bold text-[var(--theme-text)]">{macroPlan.protein}g</p>
+                  <p className="text-[12px] text-[var(--theme-text-secondary)]">Protein</p>
                 </div>
-                <div className="text-center p-3 rounded-[8px] bg-[#f5f5f7]">
-                  <p className="text-2xl font-bold text-[#1d1d1f]">{macroPlan.carbs}g</p>
-                  <p className="text-[12px] text-[#86868b]">Carbs</p>
+                <div className="text-center p-3 rounded-[8px] bg-[var(--theme-bg)]">
+                  <p className="text-2xl font-bold text-[var(--theme-text)]">{macroPlan.carbs}g</p>
+                  <p className="text-[12px] text-[var(--theme-text-secondary)]">Carbs</p>
                 </div>
-                <div className="text-center p-3 rounded-[8px] bg-[#f5f5f7]">
-                  <p className="text-2xl font-bold text-[#1d1d1f]">{macroPlan.fat}g</p>
-                  <p className="text-[12px] text-[#86868b]">Fat</p>
+                <div className="text-center p-3 rounded-[8px] bg-[var(--theme-bg)]">
+                  <p className="text-2xl font-bold text-[var(--theme-text)]">{macroPlan.fat}g</p>
+                  <p className="text-[12px] text-[var(--theme-text-secondary)]">Fat</p>
                 </div>
               </div>
               {macroPlan.notes && (
-                <p className="text-[14px] text-[#86868b] mt-3 italic">{macroPlan.notes}</p>
+                <p className="text-[14px] text-[var(--theme-text-secondary)] mt-3 italic">{macroPlan.notes}</p>
               )}
-              <p className="text-[12px] text-[#aeaeb2] mt-2">
+              <p className="text-[12px] text-[var(--theme-text-muted)] mt-2">
                 Set by your coach &middot; {new Date(macroPlan.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </p>
             </CardContent>
@@ -185,9 +185,9 @@ export default async function DashboardPage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Dumbbell className="h-5 w-5 text-[var(--theme-success)]" />
-            <h2 className="text-[17px] font-semibold text-[#1d1d1f]">Workouts</h2>
+            <h2 className="text-[17px] font-semibold text-[var(--theme-text)]">Workouts</h2>
           </div>
-          <Link href="/workouts" className="text-[14px] text-[#0066cc] hover:underline flex items-center gap-1">
+          <Link href="/workouts" className="text-[14px] text-[var(--theme-primary-dark)] hover:underline flex items-center gap-1">
             View all
             <ChevronRight className="h-3.5 w-3.5" />
           </Link>
@@ -199,11 +199,11 @@ export default async function DashboardPage() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-[rgba(52,199,89,0.08)] rounded-[8px]">
-                    <Dumbbell className="h-5 w-5 text-[#34C759]" />
+                    <Dumbbell className="h-5 w-5 text-[var(--theme-success)]" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-[#1d1d1f]">{workoutCount}</p>
-                    <p className="text-[12px] text-[#86868b]">This week</p>
+                    <p className="text-2xl font-bold text-[var(--theme-text)]">{workoutCount}</p>
+                    <p className="text-[12px] text-[var(--theme-text-secondary)]">This week</p>
                   </div>
                 </div>
               </CardContent>
@@ -211,15 +211,15 @@ export default async function DashboardPage() {
           </Link>
 
           <Link href="/workouts/new">
-            <Card className="hover:shadow-md transition-shadow cursor-pointer border-dashed border-2 border-[rgba(0,0,0,0.08)]">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer border-dashed border-2 border-[var(--theme-border)]">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-[#f5f5f7] rounded-[8px]">
-                    <ArrowRight className="h-5 w-5 text-[#aeaeb2]" />
+                  <div className="p-2 bg-[var(--theme-bg)] rounded-[8px]">
+                    <ArrowRight className="h-5 w-5 text-[var(--theme-text-muted)]" />
                   </div>
                   <div>
-                    <p className="text-[14px] font-medium text-[#1d1d1f]">Log Workout</p>
-                    <p className="text-[12px] text-[#86868b]">Track progress</p>
+                    <p className="text-[14px] font-medium text-[var(--theme-text)]">Log Workout</p>
+                    <p className="text-[12px] text-[var(--theme-text-secondary)]">Track progress</p>
                   </div>
                 </div>
               </CardContent>
@@ -233,19 +233,19 @@ export default async function DashboardPage() {
               <div className="space-y-2">
                 {recentWorkouts.slice(0, 3).map((workout) => (
                   <Link key={workout.id} href={`/workouts/${workout.id}`}>
-                    <div className="flex items-center justify-between p-2 rounded-[8px] hover:bg-[#f5f5f7] transition-colors">
+                    <div className="flex items-center justify-between p-2 rounded-[8px] hover:bg-[var(--theme-bg)] transition-colors">
                       <div className="flex items-center gap-3">
                         <div className="p-1.5 bg-[rgba(52,199,89,0.08)] rounded-[8px]">
-                          <Dumbbell className="h-3 w-3 text-[#34C759]" />
+                          <Dumbbell className="h-3 w-3 text-[var(--theme-success)]" />
                         </div>
                         <div>
-                          <p className="text-[14px] font-medium text-[#1d1d1f]">{workout.name || 'Workout'}</p>
-                          <p className="text-[12px] text-[#86868b]">
+                          <p className="text-[14px] font-medium text-[var(--theme-text)]">{workout.name || 'Workout'}</p>
+                          <p className="text-[12px] text-[var(--theme-text-secondary)]">
                             {new Date(workout.workout_date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                           </p>
                         </div>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-[#aeaeb2]" />
+                      <ChevronRight className="h-4 w-4 text-[var(--theme-text-muted)]" />
                     </div>
                   </Link>
                 ))}
@@ -259,10 +259,10 @@ export default async function DashboardPage() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Scale className="h-5 w-5 text-[#0071e3]" />
-            <h2 className="text-[17px] font-semibold text-[#1d1d1f]">Stats & Progress</h2>
+            <Scale className="h-5 w-5 text-[var(--theme-primary)]" />
+            <h2 className="text-[17px] font-semibold text-[var(--theme-text)]">Stats & Progress</h2>
           </div>
-          <Link href="/stats" className="text-[14px] text-[#0066cc] hover:underline flex items-center gap-1">
+          <Link href="/stats" className="text-[14px] text-[var(--theme-primary-dark)] hover:underline flex items-center gap-1">
             View all
             <ChevronRight className="h-3.5 w-3.5" />
           </Link>
@@ -274,11 +274,11 @@ export default async function DashboardPage() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-[rgba(0,113,227,0.08)] rounded-[8px]">
-                    <Scale className="h-5 w-5 text-[#0071e3]" />
+                    <Scale className="h-5 w-5 text-[var(--theme-primary)]" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-[#1d1d1f]">{currentWeight || '—'}</p>
-                    <p className="text-[12px] text-[#86868b]">Current lbs</p>
+                    <p className="text-2xl font-bold text-[var(--theme-text)]">{currentWeight || '—'}</p>
+                    <p className="text-[12px] text-[var(--theme-text-secondary)]">Current lbs</p>
                   </div>
                 </div>
               </CardContent>
@@ -289,20 +289,20 @@ export default async function DashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-[8px] ${weeklyChange && weeklyChange < 0 ? 'bg-[rgba(52,199,89,0.08)]' : weeklyChange && weeklyChange > 0 ? 'bg-[rgba(255,59,48,0.08)]' : 'bg-[#f5f5f7]'}`}>
+                  <div className={`p-2 rounded-[8px] ${weeklyChange && weeklyChange < 0 ? 'bg-[rgba(52,199,89,0.08)]' : weeklyChange && weeklyChange > 0 ? 'bg-[rgba(255,59,48,0.08)]' : 'bg-[var(--theme-bg)]'}`}>
                     {weeklyChange && weeklyChange < 0 ? (
-                      <TrendingDown className="h-5 w-5 text-[#34C759]" />
+                      <TrendingDown className="h-5 w-5 text-[var(--theme-success)]" />
                     ) : weeklyChange && weeklyChange > 0 ? (
-                      <TrendingUp className="h-5 w-5 text-[#FF3B30]" />
+                      <TrendingUp className="h-5 w-5 text-[var(--theme-error)]" />
                     ) : (
-                      <Minus className="h-5 w-5 text-[#aeaeb2]" />
+                      <Minus className="h-5 w-5 text-[var(--theme-text-muted)]" />
                     )}
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-[#1d1d1f]">
+                    <p className="text-2xl font-bold text-[var(--theme-text)]">
                       {weeklyChange !== null ? `${weeklyChange > 0 ? '+' : ''}${weeklyChange.toFixed(1)}` : '—'}
                     </p>
-                    <p className="text-[12px] text-[#86868b]">Week change</p>
+                    <p className="text-[12px] text-[var(--theme-text-secondary)]">Week change</p>
                   </div>
                 </div>
               </CardContent>
@@ -314,11 +314,11 @@ export default async function DashboardPage() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-[rgba(255,149,0,0.08)] rounded-[8px]">
-                    <Flame className="h-5 w-5 text-[#FF9500]" />
+                    <Flame className="h-5 w-5 text-[var(--theme-warning)]" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-[#1d1d1f]">{streak}</p>
-                    <p className="text-[12px] text-[#86868b]">Day streak</p>
+                    <p className="text-2xl font-bold text-[var(--theme-text)]">{streak}</p>
+                    <p className="text-[12px] text-[var(--theme-text-secondary)]">Day streak</p>
                   </div>
                 </div>
               </CardContent>
@@ -330,11 +330,11 @@ export default async function DashboardPage() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-[rgba(0,113,227,0.08)] rounded-[8px]">
-                    <Camera className="h-5 w-5 text-[#0071e3]" />
+                    <Camera className="h-5 w-5 text-[var(--theme-primary)]" />
                   </div>
                   <div>
-                    <p className="text-[14px] font-medium text-[#1d1d1f]">Photos</p>
-                    <p className="text-[12px] text-[#86868b]">Track visually</p>
+                    <p className="text-[14px] font-medium text-[var(--theme-text)]">Photos</p>
+                    <p className="text-[12px] text-[var(--theme-text-secondary)]">Track visually</p>
                   </div>
                 </div>
               </CardContent>
@@ -346,7 +346,7 @@ export default async function DashboardPage() {
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <CardTitle>Weight Trend</CardTitle>
-              <Link href="/stats" className="text-[14px] text-[#0066cc] hover:underline">
+              <Link href="/stats" className="text-[14px] text-[var(--theme-primary-dark)] hover:underline">
                 View all
               </Link>
             </div>

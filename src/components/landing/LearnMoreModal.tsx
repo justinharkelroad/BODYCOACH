@@ -72,20 +72,20 @@ export function LearnMoreModal({ open, onClose }: LearnMoreModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--theme-overlay-scrim)] backdrop-blur-sm"
       onClick={handleClose}
     >
       <div
-        className="bg-white rounded-[16px] max-w-[480px] w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+        className="bg-[var(--theme-surface)] rounded-[16px] max-w-[480px] w-full max-h-[90vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 sm:p-8">
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h2 className="text-[24px] font-semibold text-[#1d1d1f] tracking-tight leading-[1.14]">
+              <h2 className="text-[24px] font-semibold text-[var(--theme-text)] tracking-tight leading-[1.14]">
                 {submitted ? 'Thanks!' : "Let's connect"}
               </h2>
-              <p className="text-[14px] text-[#86868b] mt-1">
+              <p className="text-[14px] text-[var(--theme-text-secondary)] mt-1">
                 {submitted
                   ? 'Corina will reach out to you soon.'
                   : 'Tell me a bit about you and I\'ll be in touch.'}
@@ -93,24 +93,24 @@ export function LearnMoreModal({ open, onClose }: LearnMoreModalProps) {
             </div>
             <button
               onClick={handleClose}
-              className="p-1 rounded-full hover:bg-[#f5f5f7] transition-colors"
+              className="p-1 rounded-full hover:bg-[var(--theme-bg)] transition-colors"
               aria-label="Close"
             >
-              <X className="h-5 w-5 text-[#86868b]" />
+              <X className="h-5 w-5 text-[var(--theme-text-secondary)]" />
             </button>
           </div>
 
           {submitted ? (
             <div className="flex flex-col items-center py-8">
               <div className="w-16 h-16 rounded-full bg-[rgba(52,199,89,0.1)] flex items-center justify-center mb-4">
-                <Check className="h-8 w-8 text-[#34C759]" />
+                <Check className="h-8 w-8 text-[var(--theme-success)]" />
               </div>
-              <p className="text-center text-[17px] text-[#1d1d1f] max-w-[320px]">
+              <p className="text-center text-[17px] text-[var(--theme-text)] max-w-[320px]">
                 Your message has been sent. Corina will respond to you within 24 hours.
               </p>
               <button
                 onClick={handleClose}
-                className="mt-6 px-6 py-2.5 text-[14px] font-normal text-[#0066cc] hover:underline"
+                className="mt-6 px-6 py-2.5 text-[14px] font-normal text-[var(--theme-primary-dark)] hover:underline"
               >
                 Close
               </button>
@@ -119,7 +119,7 @@ export function LearnMoreModal({ open, onClose }: LearnMoreModalProps) {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+                  <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
                     First name
                   </label>
                   <input
@@ -127,11 +127,11 @@ export function LearnMoreModal({ open, onClose }: LearnMoreModalProps) {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
-                    className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-2.5 text-[15px] text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+                    className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2.5 text-[15px] text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+                  <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
                     Last name
                   </label>
                   <input
@@ -139,13 +139,13 @@ export function LearnMoreModal({ open, onClose }: LearnMoreModalProps) {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required
-                    className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-2.5 text-[15px] text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+                    className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2.5 text-[15px] text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+                <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
                   Email
                 </label>
                 <input
@@ -153,42 +153,42 @@ export function LearnMoreModal({ open, onClose }: LearnMoreModalProps) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-2.5 text-[15px] text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+                  className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2.5 text-[15px] text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+                <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
                   Phone number
                 </label>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-2.5 text-[15px] text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+                  className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2.5 text-[15px] text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+                <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
                   Tell me more about why you&apos;re interested
                 </label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={4}
-                  className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-2.5 text-[15px] text-[#1d1d1f] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] resize-none"
+                  className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2.5 text-[15px] text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] resize-none"
                 />
               </div>
 
               {error && (
-                <p className="text-[14px] text-[#FF3B30]">{error}</p>
+                <p className="text-[14px] text-[var(--theme-error)]">{error}</p>
               )}
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[#0071e3] hover:bg-[#0077ED] transition-colors disabled:opacity-50"
+                className="w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
               >
                 {isSubmitting ? 'Sending...' : 'Send'}
               </button>

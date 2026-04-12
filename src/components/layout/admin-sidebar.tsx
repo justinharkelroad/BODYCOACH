@@ -135,7 +135,7 @@ export function AdminSidebar() {
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-[var(--theme-overlay-scrim)] lg:hidden"
           aria-hidden="true"
           onClick={() => setIsMobileMenuOpen(false)}
         />

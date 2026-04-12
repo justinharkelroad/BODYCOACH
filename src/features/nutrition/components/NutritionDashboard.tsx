@@ -173,7 +173,7 @@ export function NutritionDashboard({ initialDate }: NutritionDashboardProps) {
         </div>
 
         {/* Date Picker */}
-        <div className="flex items-center gap-2 bg-white rounded-xl border border-[rgba(184,169,232,0.1)] shadow-sm">
+        <div className="flex items-center gap-2 bg-[var(--theme-surface)] rounded-xl border border-[rgba(184,169,232,0.1)] shadow-sm">
           <button
             onClick={() => navigateDate(-1)}
             className="p-2 text-[var(--neutral-gray)] hover:text-[var(--neutral-dark)] transition-colors"

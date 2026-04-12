@@ -213,7 +213,7 @@ export function MultiPhotoUpload() {
                         className="object-cover"
                       />
                       {slot.status === 'uploading' && (
-                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-[var(--theme-overlay-scrim)] flex items-center justify-center">
                           <Loader2 className="h-8 w-8 text-white animate-spin" />
                         </div>
                       )}
@@ -228,7 +228,7 @@ export function MultiPhotoUpload() {
                     {slot.status === 'selected' && (
                       <button
                         onClick={() => clearPhoto(type)}
-                        className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-lg hover:bg-gray-100"
+                        className="absolute top-2 right-2 p-1.5 bg-[var(--theme-surface)] rounded-full shadow-lg hover:bg-gray-100"
                       >
                         <X className="h-4 w-4 text-[var(--neutral-dark)]" />
                       </button>

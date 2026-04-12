@@ -47,7 +47,7 @@ export function StreakCard({ className = '' }: StreakCardProps) {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-[14px] font-normal text-white bg-[#0071e3] px-4 py-2 rounded-[980px]">
+              <div className="flex items-center gap-2 text-[14px] font-normal text-white bg-[var(--theme-primary)] px-4 py-2 rounded-[980px]">
                 <ClipboardCheck className="h-4 w-4" />
                 Check in
               </div>
@@ -141,7 +141,7 @@ export function StreakCard({ className = '' }: StreakCardProps) {
         {/* Check-in button */}
         <div className="mt-4">
           <Link href="/check-in">
-            <button className="w-full flex items-center justify-center gap-2 text-[14px] font-normal text-white bg-[#0071e3] px-4 py-2.5 rounded-[980px] hover:bg-[#0077ED] transition-colors">
+            <button className="w-full flex items-center justify-center gap-2 text-[14px] font-normal text-white bg-[var(--theme-primary)] px-4 py-2.5 rounded-[980px] hover:bg-[var(--theme-primary-light)] transition-colors">
               <ClipboardCheck className="h-4 w-4" />
               Daily Check-in
             </button>

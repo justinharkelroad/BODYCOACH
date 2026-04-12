@@ -111,7 +111,7 @@ export function NotificationSettings({ initialPreferences, phone }: Notification
                 } ${channel.disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
               >
                 <span
-                  className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white transition-transform ${
+                  className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-[var(--theme-surface)] transition-transform ${
                     isEnabled ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />

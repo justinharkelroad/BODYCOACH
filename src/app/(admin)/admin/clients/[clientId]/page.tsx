@@ -198,7 +198,7 @@ export default async function ClientDetailPage({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-[14px] text-[#6e6e73] mb-3">Set which day this client receives their weekly check-in email.</p>
+          <p className="text-[14px] text-[var(--theme-text-secondary)] mb-3">Set which day this client receives their weekly check-in email.</p>
           <CheckinDayPicker clientId={clientId} currentDay={checkinDay} />
         </CardContent>
       </Card>

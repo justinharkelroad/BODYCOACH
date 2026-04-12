@@ -99,13 +99,13 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
 
   return (
     <section className="space-y-4">
-      <h2 className="text-[17px] font-semibold text-[#1d1d1f]">Daily Check-in</h2>
+      <h2 className="text-[17px] font-semibold text-[var(--theme-text)]">Daily Check-in</h2>
 
       <Card>
         <CardContent className="p-5 space-y-5">
           {/* Weight — optional */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Weight <span className="font-normal normal-case tracking-normal">(optional)</span>
             </label>
             <div className="relative">
@@ -115,15 +115,15 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 placeholder={lastWeight ? `${lastWeight}` : '0.0'}
-                className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[21px] font-semibold text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] pr-12"
+                className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[21px] font-semibold text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] pr-12"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[14px] text-[#86868b]">lbs</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[14px] text-[var(--theme-text-secondary)]">lbs</span>
             </div>
           </div>
 
           {/* How are you feeling? */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               How are you feeling?
             </label>
             <div className="flex justify-between gap-2">
@@ -135,8 +135,8 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
                   aria-label={label}
                   className={`flex-1 py-3 rounded-[8px] text-2xl transition-all ${
                     stressLevel === value
-                      ? 'bg-[#0071e3] shadow-md scale-110'
-                      : 'bg-[#f5f5f7] hover:bg-[rgba(0,0,0,0.06)]'
+                      ? 'bg-[var(--theme-primary)] shadow-md scale-110'
+                      : 'bg-[var(--theme-bg)] hover:bg-[var(--theme-hover-subtle)]'
                   }`}
                 >
                   {emoji}
@@ -144,14 +144,14 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
               ))}
             </div>
             <div className="flex justify-between mt-1 px-1">
-              <span className="text-[10px] text-[#aeaeb2]">Stressed</span>
-              <span className="text-[10px] text-[#aeaeb2]">Great</span>
+              <span className="text-[10px] text-[var(--theme-text-muted)]">Stressed</span>
+              <span className="text-[10px] text-[var(--theme-text-muted)]">Great</span>
             </div>
           </div>
 
           {/* Water */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Water intake
             </label>
             <div className="relative">
@@ -160,15 +160,15 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
                 value={waterOz}
                 onChange={(e) => setWaterOz(e.target.value)}
                 placeholder="0"
-                className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] pr-12"
+                className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] pr-12"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[14px] text-[#86868b]">oz</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[14px] text-[var(--theme-text-secondary)]">oz</span>
             </div>
           </div>
 
           {/* Sleep */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Hours of sleep
             </label>
             <div className="flex flex-wrap gap-2">
@@ -179,8 +179,8 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
                   onClick={() => setSleepHours(sleepHours === hours ? null : hours)}
                   className={`px-3 py-2 rounded-[8px] text-[14px] font-medium transition-all ${
                     sleepHours === hours
-                      ? 'bg-[#0071e3] text-white'
-                      : 'bg-[#f5f5f7] text-[#6e6e73] hover:bg-[rgba(0,0,0,0.06)]'
+                      ? 'bg-[var(--theme-primary)] text-white'
+                      : 'bg-[var(--theme-bg)] text-[var(--theme-text-secondary)] hover:bg-[var(--theme-hover-subtle)]'
                   }`}
                 >
                   {hours}h
@@ -191,7 +191,7 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
 
           {/* Notes */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">
+            <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
               Notes <span className="font-normal normal-case tracking-normal">(optional)</span>
             </label>
             <textarea
@@ -199,13 +199,13 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How are you feeling today?"
               rows={2}
-              className="block w-full rounded-[8px] border border-[rgba(0,0,0,0.12)] bg-white px-4 py-3 text-[17px] text-[#1d1d1f] placeholder-[#aeaeb2] transition-all focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] resize-none"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] transition-all focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)] resize-none"
             />
           </div>
 
           {/* Save feedback */}
           {saved && (
-            <div className="flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[rgba(52,199,89,0.08)] text-[#34C759] text-[14px] font-medium">
+            <div className="flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[rgba(52,199,89,0.08)] text-[var(--theme-success)] text-[14px] font-medium">
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               Check-in saved
             </div>
@@ -215,7 +215,7 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
           <button
             onClick={handleSave}
             disabled={isSaving || !hasInput}
-            className="w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[#0071e3] hover:bg-[#0077ED] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isSaving ? 'Saving...' : 'Save Check-in'}
           </button>
@@ -226,18 +226,18 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
       {recentHistory.length > 0 && (
         <Card>
           <CardContent className="p-5">
-            <h3 className="text-[14px] font-semibold text-[#1d1d1f] mb-3">Recent Check-ins</h3>
+            <h3 className="text-[14px] font-semibold text-[var(--theme-text)] mb-3">Recent Check-ins</h3>
             <div className="space-y-3">
               {recentHistory.map(entry => (
-                <div key={entry.date} className="flex items-start gap-3 py-2.5 border-b border-[rgba(0,0,0,0.05)] last:border-0">
-                  <div className="text-[14px] font-medium text-[#1d1d1f] min-w-[60px]">
+                <div key={entry.date} className="flex items-start gap-3 py-2.5 border-b border-[var(--theme-divider)] last:border-0">
+                  <div className="text-[14px] font-medium text-[var(--theme-text)] min-w-[60px]">
                     {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </div>
                   <div className="flex-1">
-                    <div className="flex flex-wrap gap-3 text-[14px] text-[#6e6e73]">
+                    <div className="flex flex-wrap gap-3 text-[14px] text-[var(--theme-text-secondary)]">
                       {entry.weight_lbs && (
-                        <span className="flex items-center gap-1 font-medium text-[#1d1d1f]">
-                          <Scale className="h-3.5 w-3.5 text-[#0071e3]" />
+                        <span className="flex items-center gap-1 font-medium text-[var(--theme-text)]">
+                          <Scale className="h-3.5 w-3.5 text-[var(--theme-primary)]" />
                           {entry.weight_lbs} lbs
                         </span>
                       )}
@@ -246,19 +246,19 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
                       )}
                       {entry.water_oz && (
                         <span className="flex items-center gap-1">
-                          <Droplets className="h-3.5 w-3.5 text-[#5AC8FA]" />
+                          <Droplets className="h-3.5 w-3.5 text-[var(--theme-info)]" />
                           {entry.water_oz}oz
                         </span>
                       )}
                       {entry.sleep_hours && (
                         <span className="flex items-center gap-1">
-                          <Moon className="h-3.5 w-3.5 text-[#86868b]" />
+                          <Moon className="h-3.5 w-3.5 text-[var(--theme-text-secondary)]" />
                           {entry.sleep_hours}h
                         </span>
                       )}
                     </div>
                     {entry.notes && (
-                      <p className="text-[12px] text-[#86868b] mt-1 italic">{entry.notes}</p>
+                      <p className="text-[12px] text-[var(--theme-text-secondary)] mt-1 italic">{entry.notes}</p>
                     )}
                   </div>
                 </div>

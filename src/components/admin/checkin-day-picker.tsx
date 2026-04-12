@@ -56,15 +56,15 @@ export function CheckinDayPicker({ clientId, currentDay }: CheckinDayPickerProps
             disabled={isSaving}
             className={`px-3 py-1.5 rounded-[8px] text-[12px] font-medium transition-all ${
               selected === value
-                ? 'bg-[#0071e3] text-white'
-                : 'bg-[#f5f5f7] text-[#6e6e73] hover:bg-[rgba(0,0,0,0.06)]'
+                ? 'bg-[var(--theme-primary)] text-white'
+                : 'bg-[var(--theme-bg)] text-[var(--theme-text-secondary)] hover:bg-[var(--theme-hover-subtle)]'
             }`}
           >
             {label}
           </button>
         ))}
       </div>
-      <p className="text-[12px] text-[#86868b] mt-2">
+      <p className="text-[12px] text-[var(--theme-text-secondary)] mt-2">
         {saved
           ? 'Saved!'
           : selected !== null

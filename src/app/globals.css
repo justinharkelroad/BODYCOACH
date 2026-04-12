@@ -53,6 +53,92 @@
   --theme-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --theme-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
   --theme-shadow-lg: rgba(0, 0, 0, 0.12) 3px 5px 30px 0px;
+
+  /* Surface overlays — used anywhere a theme-aware translucent layer is needed */
+  --theme-glass-bg: rgba(255, 255, 255, 0.72);
+  --theme-scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --theme-scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+  --theme-shimmer-highlight: rgba(255, 255, 255, 0.4);
+  --theme-hover-subtle: rgba(0, 0, 0, 0.06);
+  --theme-overlay-scrim: rgba(0, 0, 0, 0.5);
+
+  color-scheme: light;
+}
+
+/* ========================================
+   DARK THEME
+   Flips backgrounds/text/borders; keeps the
+   Apple-blue accent intact for brand continuity.
+   ======================================== */
+
+html[data-theme="dark"] {
+  /* Backgrounds — iOS-style layered grays, OLED-friendly */
+  --theme-bg: #000000;
+  --theme-bg-alt: #1c1c1e;
+  --theme-surface: #1c1c1e;
+  --theme-surface-elevated: #2c2c2e;
+
+  /* Primary stays Apple Blue; slight shift to the "dark appearance" blue
+     for AA contrast against a black background. */
+  --theme-primary: #0A84FF;
+  --theme-primary-light: #409CFF;
+  --theme-primary-dark: #2997ff;
+
+  /* Secondary neutrals flip to light */
+  --theme-secondary: #f5f5f7;
+  --theme-secondary-light: #aeaeb2;
+  --theme-secondary-dark: #ffffff;
+
+  --theme-accent: #0A84FF;
+  --theme-accent-light: rgba(10, 132, 255, 0.18);
+  --theme-accent-dark: #409CFF;
+
+  /* Semantic colors — use iOS dark-appearance values */
+  --theme-success: #30D158;
+  --theme-warning: #FF9F0A;
+  --theme-error: #FF453A;
+  --theme-info: #64D2FF;
+
+  /* Text */
+  --theme-text: #f5f5f7;
+  --theme-text-secondary: #aeaeb2;
+  --theme-text-muted: #6e6e73;
+  --theme-text-on-primary: #ffffff;
+
+  /* Borders */
+  --theme-border: rgba(255, 255, 255, 0.08);
+  --theme-divider: rgba(255, 255, 255, 0.05);
+
+  /* Gradients */
+  --theme-gradient-hero: linear-gradient(180deg, #000000 0%, #1c1c1e 100%);
+  --theme-gradient-card: linear-gradient(180deg, #2c2c2e 0%, #1c1c1e 100%);
+  --theme-gradient-progress: linear-gradient(90deg, #0A84FF 0%, #409CFF 100%);
+  --theme-gradient-accent: linear-gradient(135deg, #0A84FF 0%, #409CFF 100%);
+
+  /* Shadows need more opacity to register on dark surfaces */
+  --theme-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --theme-shadow-md: 0 2px 10px rgba(0, 0, 0, 0.5);
+  --theme-shadow-lg: rgba(0, 0, 0, 0.6) 3px 5px 30px 0px;
+
+  --theme-glass-bg: rgba(28, 28, 30, 0.72);
+  --theme-scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --theme-scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
+  --theme-shimmer-highlight: rgba(255, 255, 255, 0.08);
+  --theme-hover-subtle: rgba(255, 255, 255, 0.06);
+  --theme-overlay-scrim: rgba(0, 0, 0, 0.65);
+
+  color-scheme: dark;
+}
+
+/* Legacy alias overrides — the light-theme version mixes brand colors with a
+   hardcoded `white`, which reads as washed-out lavender on dark surfaces. In
+   dark mode we redirect the soft-tint aliases to the translucent accent so
+   tinted backgrounds stay readable. */
+html[data-theme="dark"] {
+  --primary-light: var(--theme-accent-light);
+  --primary-lavender-soft: var(--theme-accent-light);
+  --accent-mint-light: color-mix(in srgb, var(--theme-success) 20%, transparent);
+  --accent-coral-light: color-mix(in srgb, var(--theme-error) 20%, transparent);
 }
 
 /* ========================================
@@ -214,7 +300,7 @@ body {
 
 /* Glass effect — Apple navigation glass */
 .glass {
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--theme-glass-bg);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
@@ -250,12 +336,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--theme-scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--theme-scrollbar-thumb-hover);
 }
 
 /* Safe area support for iOS */
@@ -342,7 +428,7 @@ button, a {
 .animate-float-slow { animation: floatSlow 8s ease-in-out infinite; }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--theme-shimmer-highlight) 50%, transparent 100%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }

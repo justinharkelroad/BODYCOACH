@@ -320,10 +320,10 @@ export default function OnboardingPage() {
   // Intro Animation Screen
   if (step === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--theme-bg)]">
         <div className="text-center animate-fade-in">
           <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-12 w-auto mx-auto mb-3" />
-          <p className="text-[17px] text-[#86868b]">Let&apos;s set up your personalized targets</p>
+          <p className="text-[17px] text-[var(--theme-text-secondary)]">Let&apos;s set up your personalized targets</p>
         </div>
       </div>
     );
@@ -332,9 +332,9 @@ export default function OnboardingPage() {
   // Completion Screen
   if (isComplete) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--theme-bg)]">
         <div className="text-center animate-fade-in">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#34C759] mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--theme-success)] mb-6">
             <Trophy className="h-10 w-10 text-white" />
           </div>
           <h1 className="text-3xl font-semibold text-[var(--theme-text)] mb-2">
@@ -351,7 +351,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col py-8 px-4 bg-[#f5f5f7]">
+    <div className="min-h-screen flex flex-col py-8 px-4 bg-[var(--theme-bg)]">
       <div className="max-w-lg w-full mx-auto flex-1 flex flex-col">
         {/* Header */}
         <div className="text-center mb-6">

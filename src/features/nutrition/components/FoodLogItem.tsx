@@ -40,7 +40,7 @@ export function FoodLogItem({ log, onEdit, onDelete, onUpdateServings }: FoodLog
 
   return (
     <div
-      className={`bg-white rounded-[16px] border border-[rgba(184,169,232,0.1)] overflow-hidden transition-all shadow-sm ${
+      className={`bg-[var(--theme-surface)] rounded-[16px] border border-[rgba(184,169,232,0.1)] overflow-hidden transition-all shadow-sm ${
         log.is_planned ? 'border-dashed opacity-75' : ''
       }`}
     >

@@ -154,7 +154,7 @@ export function WeeklyInsights({ stats, workouts, goal, name }: WeeklyInsightsPr
               </div>
             )}
 
-            <div className="p-3 bg-white rounded-xl">
+            <div className="p-3 bg-[var(--theme-surface)] rounded-xl">
               <div className="flex items-start gap-2">
                 <Target className="h-4 w-4 text-[var(--primary-deep)] mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-[var(--neutral-dark)]">{insights.suggestion}</p>

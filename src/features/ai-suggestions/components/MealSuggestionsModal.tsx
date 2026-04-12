@@ -102,7 +102,7 @@ export function MealSuggestionsModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center">
-      <div className="bg-white w-full sm:max-w-2xl sm:rounded-[24px] rounded-t-[24px] max-h-[90vh] flex flex-col shadow-xl">
+      <div className="bg-[var(--theme-surface)] w-full sm:max-w-2xl sm:rounded-[24px] rounded-t-[24px] max-h-[90vh] flex flex-col shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[rgba(184,169,232,0.1)]">
           <div className="flex items-center gap-3">

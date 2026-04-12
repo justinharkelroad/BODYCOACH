@@ -253,7 +253,7 @@ export default function NewWorkoutPage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did the workout feel? Any observations?"
               rows={3}
-              className="w-full rounded-[12px] border border-[rgba(184,169,232,0.3)] px-4 py-3 text-[var(--neutral-dark)] placeholder-[var(--neutral-gray)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
+              className="w-full rounded-[12px] border border-[rgba(184,169,232,0.3)] px-4 py-3 text-[var(--neutral-dark)] placeholder-[var(--neutral-gray)] bg-[var(--theme-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
             />
           </CardContent>
         </Card>
