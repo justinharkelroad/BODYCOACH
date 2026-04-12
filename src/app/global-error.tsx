@@ -1,8 +1,5 @@
 'use client';
 
-import * as Sentry from '@sentry/nextjs';
-import { useEffect } from 'react';
-
 export default function GlobalError({
   error,
   reset,
@@ -10,10 +7,6 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    Sentry.captureException(error);
-  }, [error]);
-
   return (
     <html>
       <body>
@@ -26,53 +19,30 @@ export default function GlobalError({
             justifyContent: 'center',
             padding: '2rem',
             textAlign: 'center',
-            background: '#FAFAFA',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
+            background: '#f5f5f7',
+            fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
           }}
         >
-          <p
-            style={{
-              fontSize: '3rem',
-              fontWeight: 'bold',
-              color: '#7C8B9A',
-              marginBottom: '0.5rem',
-            }}
-          >
+          <p style={{ fontSize: '3rem', fontWeight: 'bold', color: '#86868b', marginBottom: '0.5rem' }}>
             Oops
           </p>
-          <h2
-            style={{
-              fontSize: '1.25rem',
-              fontWeight: '600',
-              color: '#2D3436',
-              marginBottom: '0.75rem',
-            }}
-          >
+          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1d1d1f', marginBottom: '0.75rem' }}>
             Something went wrong
           </h2>
-          <p
-            style={{
-              color: '#636E72',
-              marginBottom: '2rem',
-              maxWidth: '400px',
-              lineHeight: '1.5',
-            }}
-          >
-            We hit an unexpected error. Our team has been notified and is looking
-            into it.
+          <p style={{ color: '#6e6e73', marginBottom: '2rem', maxWidth: '400px', lineHeight: '1.5' }}>
+            We hit an unexpected error. Please try again.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem' }}>
             <button
               onClick={() => reset()}
               style={{
                 padding: '0.75rem 1.5rem',
-                background: 'linear-gradient(135deg, #7C8B9A 0%, #D4A853 100%)',
+                background: '#0071e3',
                 color: '#fff',
                 border: 'none',
-                borderRadius: '0.75rem',
+                borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: '0.95rem',
-                fontWeight: '500',
+                fontSize: '1rem',
               }}
             >
               Try again
@@ -81,13 +51,12 @@ export default function GlobalError({
               href="/"
               style={{
                 padding: '0.75rem 1.5rem',
-                background: '#FFFFFF',
-                color: '#2D3436',
-                border: '1px solid #E8E4E0',
-                borderRadius: '0.75rem',
+                background: '#fff',
+                color: '#1d1d1f',
+                border: '1px solid rgba(0,0,0,0.12)',
+                borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: '0.95rem',
-                fontWeight: '500',
+                fontSize: '1rem',
                 textDecoration: 'none',
               }}
             >
