@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, User, Users, Mail } from 'lucide-react';
+import { Settings, User, Users, Mail, Palette } from 'lucide-react';
 import { SendCheckinEmail } from './send-checkin-email';
+import { AppearanceForm } from '@/app/(app)/settings/appearance/appearance-form';
 import type { Profile } from '@/types/database';
 
 export const dynamic = 'force-dynamic';
@@ -94,6 +95,21 @@ export default async function AdminSettingsPage() {
             Send a weekly check-in email to all active clients. The email contains a link to your check-in form.
           </p>
           <SendCheckinEmail clientCount={clientCount || 0} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Palette className="h-5 w-5" aria-hidden="true" />
+            Appearance
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-[var(--theme-text-secondary)]">
+            Choose how the coach dashboard looks on this device.
+          </p>
+          <AppearanceForm />
         </CardContent>
       </Card>
     </div>
