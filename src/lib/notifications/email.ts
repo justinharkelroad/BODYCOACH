@@ -187,16 +187,16 @@ export function weeklyCheckinFormEmail(name: string) {
     subject: "Time for your weekly check-in!",
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
-        <h2 style="color: #1a1a2e; margin-bottom: 16px;">Hey ${name}!</h2>
-        <p style="color: #4a4a68; line-height: 1.6;">
-          It's time for your weekly check-in. Take a few minutes to fill out your progress update so your coach can review and adjust your plan.
+        <h2 style="color: #1d1d1f; margin-bottom: 16px;">Hey ${name}!</h2>
+        <p style="color: #6e6e73; line-height: 1.6;">
+          It's time for your weekly check-in. Take a few minutes to fill out your progress update so I can review and adjust your plan.
         </p>
         <a href="${formUrl}"
-           style="display: inline-block; background: #0071e3; color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; margin-top: 20px; font-weight: 600; font-size: 16px;">
+           style="display: inline-block; background: #0071e3; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; margin-top: 20px; font-size: 16px;">
           Complete Check-in
         </a>
-        <p style="color: #8a8aa3; font-size: 14px; margin-top: 24px;">
-          This should only take a couple of minutes.<br/>- Your Standard Nutrition Team
+        <p style="color: #86868b; font-size: 14px; margin-top: 24px;">
+          This should only take a couple of minutes.<br/>— Corina
         </p>
       </div>
     `,

@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-  // Verify coach role
   const { data: profile } = await supabase
     .from('profiles')
     .select('role')
@@ -21,20 +20,43 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  // Get all active clients
-  const { data: relationships } = await supabase
+  // Check if request wants to filter by today's day
+  let body: { todayOnly?: boolean } = {};
+  try {
+    body = await request.json();
+  } catch {
+    // No body — send to all
+  }
+
+  // Get active clients
+  let query = supabase
     .from('coach_clients')
-    .select('client_id')
+    .select('client_id, checkin_day')
     .eq('coach_id', user.id)
     .eq('status', 'active');
+
+  const { data: relationships } = await query;
 
   if (!relationships || relationships.length === 0) {
     return Response.json({ error: 'No active clients' }, { status: 400 });
   }
 
-  const clientIds = relationships.map(r => r.client_id);
+  // Filter by today's day if requested
+  let clientIds: string[];
+  if (body.todayOnly) {
+    const today = new Date().getDay(); // 0=Sun, 1=Mon, etc.
+    clientIds = relationships
+      .filter(r => r.checkin_day === today)
+      .map(r => r.client_id);
 
-  // Fetch client profiles for names and emails
+    if (clientIds.length === 0) {
+      return Response.json({ error: 'No clients scheduled for today', sent: 0, failed: 0, total: 0 });
+    }
+  } else {
+    clientIds = relationships.map(r => r.client_id);
+  }
+
+  // Fetch client profiles
   const { data: clients } = await supabase
     .from('profiles')
     .select('email, full_name')
@@ -58,10 +80,5 @@ export async function POST(request: NextRequest) {
   const sent = results.filter(r => r.success).length;
   const failed = results.filter(r => !r.success).length;
 
-  return Response.json({
-    success: true,
-    sent,
-    failed,
-    total: results.length,
-  });
+  return Response.json({ success: true, sent, failed, total: results.length });
 }

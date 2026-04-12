@@ -7,9 +7,10 @@ import { AdminPhotoGrid } from './photo-grid';
 import { ArchiveButton } from '@/components/admin/archive-button';
 import { CoachNotesSection } from '@/components/admin/coach-notes-section';
 import { MacroPlanForm } from '@/components/admin/macro-plan-form';
+import { CheckinDayPicker } from '@/components/admin/checkin-day-picker';
 import {
   ArrowLeft, Scale, Camera, StickyNote, TrendingUp, TrendingDown, Minus,
-  Droplets, Moon, Brain, Apple, Dumbbell, Flame, Clock,
+  Droplets, Moon, Brain, Apple, Dumbbell, Flame, Clock, Mail,
 } from 'lucide-react';
 import type { BodyStat, ProgressPhoto, DailyCheckin, Profile, CoachNote, ClientMacroPlan, WorkoutLog, WorkoutExercise, UserStreak } from '@/types/database';
 
@@ -43,13 +44,15 @@ export default async function ClientDetailPage({
   // Verify coach-client relationship
   const { data: relationship } = await supabase
     .from('coach_clients')
-    .select('id')
+    .select('id, checkin_day')
     .eq('coach_id', user.id)
     .eq('client_id', clientId)
     .eq('status', 'active')
     .single();
 
   if (!relationship) notFound();
+
+  const checkinDay = (relationship as { id: string; checkin_day: number | null }).checkin_day;
 
   // Fetch all client data in parallel
   const [profileRes, statsRes, photosRes, checkinsRes, notesRes, macroRes, workoutsRes, streakRes] = await Promise.all([
@@ -183,6 +186,20 @@ export default async function ClientDetailPage({
         </CardHeader>
         <CardContent>
           <MacroPlanForm clientId={clientId} existingPlan={macroPlan} />
+        </CardContent>
+      </Card>
+
+      {/* Weekly Check-in Day */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Mail className="h-5 w-5 text-[var(--theme-primary)]" aria-hidden="true" />
+            Weekly Check-in Email
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-[14px] text-[#6e6e73] mb-3">Set which day this client receives their weekly check-in email.</p>
+          <CheckinDayPicker clientId={clientId} currentDay={checkinDay} />
         </CardContent>
       </Card>
 
