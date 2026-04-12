@@ -10,7 +10,6 @@ import {
   Camera,
   Settings,
   LogOut,
-  ClipboardCheck,
   TrendingUp,
   Menu,
   X,
@@ -18,7 +17,6 @@ import {
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/check-in', label: 'Check-in', icon: ClipboardCheck },
   { href: '/workouts', label: 'Workouts', icon: Dumbbell },
   { href: '/photos', label: 'Photos', icon: Camera },
   { href: '/stats', label: 'Stats', icon: TrendingUp },
@@ -28,7 +26,6 @@ const navItems = [
 // Bottom nav items for mobile (subset of main nav)
 const mobileNavItems = [
   { href: '/dashboard', label: 'Home', icon: LayoutDashboard },
-  { href: '/check-in', label: 'Check-in', icon: ClipboardCheck },
   { href: '/workouts', label: 'Workouts', icon: Dumbbell },
   { href: '/photos', label: 'Photos', icon: Camera },
   { href: '/stats', label: 'Stats', icon: TrendingUp },
