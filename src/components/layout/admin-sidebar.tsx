@@ -109,7 +109,7 @@ export function AdminSidebar() {
       </aside>
 
       {/* Mobile Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--theme-surface)] border-b border-[var(--theme-border)] lg:hidden">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--theme-surface)] border-b border-[var(--theme-border)] lg:hidden safe-area-top">
         <div className="flex items-center justify-between h-16 px-4">
           <Link href="/admin" className="flex items-center gap-2">
             <img src="/logos/standard-nutrition.png" alt="Standard Nutrition" className="h-6 w-auto" />
@@ -148,7 +148,7 @@ export function AdminSidebar() {
           ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
-        <div className="flex h-full flex-col pt-16">
+        <div className="flex h-full flex-col pt-[calc(4rem+env(safe-area-inset-top))]">
           <nav className="flex-1 space-y-1 px-4 py-6 overflow-y-auto" aria-label="Admin mobile menu">
             {navItems.map((item) => {
               const active = isActive(item.href);
