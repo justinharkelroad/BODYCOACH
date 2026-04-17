@@ -13,6 +13,7 @@ import type {
 import { calculateFoodMacros, getSuggestedMealSlot } from '../services/nutritionCalculator';
 import { getFoodById } from '../services/foodCacheService';
 import { dispatchFoodLoggedEvent } from '@/features/checkin';
+import { getLocalDateString } from '@/lib/date';
 
 export interface UseFoodLogResult {
   logs: FoodLog[];
@@ -39,7 +40,7 @@ export function useFoodLog(date?: string): UseFoodLogResult {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const targetDate = date || new Date().toISOString().split('T')[0];
+  const targetDate = date || getLocalDateString();
 
   const fetchLogs = useCallback(async () => {
     setIsLoading(true);

@@ -10,6 +10,7 @@ import {
 import { WeightChart } from '@/components/charts/weight-chart';
 import type { Profile, BodyStat, WorkoutLog, ClientMacroPlan, DailyCheckin } from '@/types/database';
 import { DashboardCheckIn } from './dashboard-checkin';
+import { getDateStringInTimezone } from '@/lib/date';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,18 +34,24 @@ export default async function DashboardPage() {
     redirect('/login');
   }
 
-  // Fetch stats for last 30 days
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-  const today = new Date().toISOString().split('T')[0];
+  // Compute "today" in the user's timezone — server runs in UTC
+  const userTimezone = profile.timezone || 'UTC';
+  const today = getDateStringInTimezone(userTimezone);
+  const thirtyDaysAgo = getDateStringInTimezone(
+    userTimezone,
+    new Date(Date.now() - 30 * 86400000),
+  );
+  const sevenDaysAgo = getDateStringInTimezone(
+    userTimezone,
+    new Date(Date.now() - 7 * 86400000),
+  );
 
   const [statsRes, workoutsRes, macroPlanRes, checkinsRes] = await Promise.all([
     supabase.from('body_stats').select('*').eq('user_id', user.id)
-      .gte('recorded_at', thirtyDaysAgo.toISOString().split('T')[0])
+      .gte('recorded_at', thirtyDaysAgo)
       .order('recorded_at', { ascending: false }),
     supabase.from('workout_logs').select('*', { count: 'exact' }).eq('user_id', user.id)
-      .gte('workout_date', new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0])
+      .gte('workout_date', sevenDaysAgo)
       .order('workout_date', { ascending: false }),
     supabase.from('client_macro_plans').select('*').eq('client_id', user.id).single(),
     supabase.from('daily_checkins').select('*').eq('user_id', user.id)

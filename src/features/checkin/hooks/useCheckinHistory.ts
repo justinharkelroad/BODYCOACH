@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { DailyCheckin } from '@/types/database';
 import type { CheckinSummary, CheckinWeeklyAverages } from '../types';
+import { getLocalDateString } from '@/lib/date';
 
 export interface UseCheckinHistoryResult {
   checkins: DailyCheckin[];
@@ -12,13 +13,6 @@ export interface UseCheckinHistoryResult {
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
-}
-
-/**
- * Helper to format date as YYYY-MM-DD
- */
-function formatDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
 }
 
 /**
@@ -105,8 +99,8 @@ export function useCheckinHistory(days: number = 7): UseCheckinHistoryResult {
         .from('daily_checkins')
         .select('*')
         .eq('user_id', user.id)
-        .gte('date', formatDateString(startDate))
-        .lte('date', formatDateString(today))
+        .gte('date', getLocalDateString(startDate))
+        .lte('date', getLocalDateString(today))
         .order('date', { ascending: false });
 
       if (queryError) throw queryError;

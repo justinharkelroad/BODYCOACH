@@ -9,14 +9,16 @@ import {
   type CheckinSummary,
 } from '../types';
 import { isFeatureEnabled } from '@/lib/featureFlags';
+import { getLocalDateString } from '@/lib/date';
 
 interface CheckinDayRowProps {
   summary: CheckinSummary;
 }
 
 function CheckinDayRow({ summary }: CheckinDayRowProps) {
-  const date = new Date(summary.date);
-  const isToday = new Date().toISOString().split('T')[0] === summary.date;
+  const [y, m, d] = summary.date.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  const isToday = getLocalDateString() === summary.date;
   const dayName = isToday
     ? 'Today'
     : date.toLocaleDateString('en-US', { weekday: 'short' });

@@ -3,7 +3,8 @@ import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckInForm } from './check-in-form';
 import { Scale, CheckCircle2, Clock } from 'lucide-react';
-import type { CheckIn, BodyStat, DailyCheckin } from '@/types/database';
+import type { CheckIn, BodyStat, DailyCheckin, Profile } from '@/types/database';
+import { getDateStringInTimezone } from '@/lib/date';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,8 +26,16 @@ export default async function CheckInPage() {
     .lte('scheduled_for', new Date().toISOString())
     .order('scheduled_for', { ascending: true }) as { data: CheckIn[] | null };
 
+  // Resolve user's timezone so "today" matches their clock, not UTC
+  const { data: tzProfile } = await supabase
+    .from('profiles')
+    .select('timezone')
+    .eq('id', user.id)
+    .single() as { data: Pick<Profile, 'timezone'> | null };
+  const userTimezone = tzProfile?.timezone || 'UTC';
+
   // Get today's stats (if already logged)
-  const today = new Date().toISOString().split('T')[0];
+  const today = getDateStringInTimezone(userTimezone);
   const { data: todayStat } = await supabase
     .from('body_stats')
     .select('*')

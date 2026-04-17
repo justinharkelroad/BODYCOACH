@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Camera, Upload, X, Loader2 } from 'lucide-react';
+import { getLocalDateString } from '@/lib/date';
 
 interface PhotoUploadFormProps {
   onSuccess?: () => void;
@@ -18,7 +19,7 @@ export function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [photoType, setPhotoType] = useState<'front' | 'side' | 'back'>('front');
-  const [takenAt, setTakenAt] = useState(new Date().toISOString().split('T')[0]);
+  const [takenAt, setTakenAt] = useState(getLocalDateString());
   const [notes, setNotes] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -188,7 +189,7 @@ export function PhotoUploadForm({ onSuccess }: PhotoUploadFormProps) {
             type="date"
             value={takenAt}
             onChange={(e) => setTakenAt(e.target.value)}
-            max={new Date().toISOString().split('T')[0]}
+            max={getLocalDateString()}
           />
         </div>
 

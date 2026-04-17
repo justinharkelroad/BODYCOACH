@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WeightChart } from '@/components/charts/weight-chart';
 import { StatsForm } from './stats-form';
 import { TrendingUp, TrendingDown, Minus, Calendar } from 'lucide-react';
-import type { BodyStat } from '@/types/database';
+import type { BodyStat, Profile } from '@/types/database';
+import { getDateStringInTimezone } from '@/lib/date';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,19 +18,29 @@ export default async function StatsPage() {
     redirect('/login');
   }
 
+  // Resolve user's timezone so "today" matches their clock, not UTC
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('timezone')
+    .eq('id', user.id)
+    .single() as { data: Pick<Profile, 'timezone'> | null };
+  const userTimezone = profile?.timezone || 'UTC';
+
   // Fetch all stats for this user (last 90 days)
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  const ninetyDaysAgo = getDateStringInTimezone(
+    userTimezone,
+    new Date(Date.now() - 90 * 86400000),
+  );
 
   const { data: stats } = await supabase
     .from('body_stats')
     .select('*')
     .eq('user_id', user.id)
-    .gte('recorded_at', ninetyDaysAgo.toISOString().split('T')[0])
+    .gte('recorded_at', ninetyDaysAgo)
     .order('recorded_at', { ascending: false }) as { data: BodyStat[] | null };
 
   // Check if already logged today
-  const today = new Date().toISOString().split('T')[0];
+  const today = getDateStringInTimezone(userTimezone);
   const todayStat = stats?.find((s) => s.recorded_at === today);
 
   // Calculate statistics

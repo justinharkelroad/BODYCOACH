@@ -1,5 +1,6 @@
 import { createClientForApi } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import { getDateStringInTimezone } from '@/lib/date';
 
 export async function POST(request: NextRequest) {
   const supabase = await createClientForApi(request);
@@ -54,6 +55,18 @@ export async function POST(request: NextRequest) {
       .from('progress-photos')
       .createSignedUrl(filePath, 3600);
 
+    let fallbackDate: string | null = null;
+    if (!takenAt) {
+      const { data: tzProfile } = await supabase
+        .from('profiles')
+        .select('timezone')
+        .eq('id', user.id)
+        .single();
+      const userTimezone =
+        (tzProfile as { timezone?: string } | null)?.timezone || 'UTC';
+      fallbackDate = getDateStringInTimezone(userTimezone);
+    }
+
     // Create the progress_photos record
     const { data: photo, error: photoError } = await supabase
       .from('progress_photos')
@@ -61,7 +74,7 @@ export async function POST(request: NextRequest) {
         user_id: user.id,
         photo_url: filePath, // Store the path, we'll generate signed URLs on the fly
         photo_type: photoType || 'front',
-        taken_at: takenAt || new Date().toISOString().split('T')[0],
+        taken_at: takenAt || fallbackDate,
       })
       .select()
       .single();

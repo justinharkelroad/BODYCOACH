@@ -1,5 +1,6 @@
 import { createClientForApi } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import { getDateStringInTimezone } from '@/lib/date';
 
 // POST - Complete a check-in
 export async function POST(
@@ -53,9 +54,17 @@ export async function POST(
 
   // If this was a weight check-in, also log to body_stats
   if (!skipped && responses?.weight && checkIn.check_in_type === 'daily_weight') {
+    const { data: tzProfile } = await supabase
+      .from('profiles')
+      .select('timezone')
+      .eq('id', user.id)
+      .single();
+    const userTimezone =
+      (tzProfile as { timezone?: string } | null)?.timezone || 'UTC';
+
     await supabase.from('body_stats').upsert({
       user_id: user.id,
-      recorded_at: new Date().toISOString().split('T')[0],
+      recorded_at: getDateStringInTimezone(userTimezone),
       weight_lbs: responses.weight,
       notes: responses.notes || null,
     }, {

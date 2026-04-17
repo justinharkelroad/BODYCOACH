@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { getLocalDateString } from '@/lib/date';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +27,7 @@ export default function NewWorkoutPage() {
   const [error, setError] = useState('');
 
   const [workoutName, setWorkoutName] = useState('');
-  const [workoutDate, setWorkoutDate] = useState(new Date().toISOString().split('T')[0]);
+  const [workoutDate, setWorkoutDate] = useState(getLocalDateString());
   const [duration, setDuration] = useState('');
   const [notes, setNotes] = useState('');
   const [exercises, setExercises] = useState<ExerciseEntry[]>([

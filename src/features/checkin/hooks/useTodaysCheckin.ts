@@ -3,19 +3,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { DailyCheckin } from '@/types/database';
+import { getLocalDateString } from '@/lib/date';
 
 export interface UseTodaysCheckinResult {
   checkin: DailyCheckin | null;
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
-}
-
-/**
- * Helper to format date as YYYY-MM-DD
- */
-function formatDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
 }
 
 /**
@@ -42,7 +36,7 @@ export function useTodaysCheckin(): UseTodaysCheckinResult {
         return;
       }
 
-      const today = formatDateString(new Date());
+      const today = getLocalDateString();
 
       const { data, error: queryError } = await supabase
         .from('daily_checkins')

@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { DailyCheckin, CheckinLevel } from '@/types/database';
+import { getLocalDateString } from '@/lib/date';
 
 export interface SubmitCheckinData {
   energyLevel?: CheckinLevel | null;
@@ -15,13 +16,6 @@ export interface UseSubmitCheckinResult {
   submitCheckin: (data: SubmitCheckinData) => Promise<DailyCheckin>;
   isSubmitting: boolean;
   error: string | null;
-}
-
-/**
- * Helper to format date as YYYY-MM-DD
- */
-function formatDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
 }
 
 /**
@@ -46,7 +40,7 @@ export function useSubmitCheckin(): UseSubmitCheckinResult {
         throw new Error('Not authenticated');
       }
 
-      const today = formatDateString(new Date());
+      const today = getLocalDateString();
 
       // Check if a check-in already exists for today
       const { data: existing } = await supabase

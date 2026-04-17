@@ -18,6 +18,7 @@ import type { FoodSearchResult, Food, NormalizedFood, MealSlot } from '../types/
 import { useFoodLogIntegration, useBarcodeScannedIntegration } from '@/features/streaks';
 import { useMilestoneCelebration } from '@/features/milestones';
 import { isFeatureEnabled } from '@/lib/featureFlags';
+import { getLocalDateString } from '@/lib/date';
 import { SuggestMealButton, MealSuggestionsModal } from '@/features/ai-suggestions';
 
 interface NutritionDashboardProps {
@@ -27,10 +28,10 @@ interface NutritionDashboardProps {
 export function NutritionDashboard({ initialDate }: NutritionDashboardProps) {
   // Date navigation
   const [selectedDate, setSelectedDate] = useState(() => {
-    return initialDate || new Date().toISOString().split('T')[0];
+    return initialDate || getLocalDateString();
   });
 
-  const isToday = selectedDate === new Date().toISOString().split('T')[0];
+  const isToday = selectedDate === getLocalDateString();
 
   // Modal states
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -68,23 +69,25 @@ export function NutritionDashboard({ initialDate }: NutritionDashboardProps) {
     );
   }, [getDailySummary, selectedDate, profile]);
 
-  // Date navigation
+  // Date navigation — parse YYYY-MM-DD as local midnight so we stay in local TZ
   const navigateDate = (delta: number) => {
-    const date = new Date(selectedDate);
+    const [y, m, d] = selectedDate.split('-').map(Number);
+    const date = new Date(y, m - 1, d);
     date.setDate(date.getDate() + delta);
-    setSelectedDate(date.toISOString().split('T')[0]);
+    setSelectedDate(getLocalDateString(date));
   };
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(y, m - 1, d);
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    if (dateStr === today.toISOString().split('T')[0]) {
+    if (dateStr === getLocalDateString(today)) {
       return 'Today';
     }
-    if (dateStr === yesterday.toISOString().split('T')[0]) {
+    if (dateStr === getLocalDateString(yesterday)) {
       return 'Yesterday';
     }
     return date.toLocaleDateString('en-US', {

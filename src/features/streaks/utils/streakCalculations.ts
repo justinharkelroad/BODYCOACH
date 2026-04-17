@@ -6,6 +6,7 @@
  */
 
 import type { StreakStatus } from '@/types/database';
+import { getLocalDateString } from '@/lib/date';
 
 export interface StreakData {
   currentStreak: number;
@@ -76,10 +77,10 @@ function startOfWeek(date: Date): Date {
 }
 
 /**
- * Format date as YYYY-MM-DD string
+ * Format date as YYYY-MM-DD string in local timezone.
  */
 export function formatDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
+  return getLocalDateString(date);
 }
 
 /**

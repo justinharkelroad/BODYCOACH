@@ -6,6 +6,7 @@ import type { MealSuggestion, SuggestedMealItem } from '../types';
 import type { MealSlot } from '@/features/nutrition/types/nutrition.types';
 import { getSuggestedMealSlot } from '@/features/nutrition/services/nutritionCalculator';
 import { dispatchFoodLoggedEvent } from '@/features/checkin';
+import { getLocalDateString } from '@/lib/date';
 
 export interface UseLogSuggestionResult {
   isLogging: boolean;
@@ -40,7 +41,7 @@ export function useLogSuggestion(): UseLogSuggestionResult {
           throw new Error('Not authenticated');
         }
 
-        const today = new Date().toISOString().split('T')[0];
+        const today = getLocalDateString();
         const slot = mealSlot ?? (getSuggestedMealSlot() as MealSlot | null);
 
         // Create food entries and logs for each item

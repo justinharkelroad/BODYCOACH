@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Camera, Upload, X, Loader2, Check } from 'lucide-react';
+import { getLocalDateString } from '@/lib/date';
 
 type PhotoType = 'front' | 'side' | 'back';
 
@@ -26,7 +27,7 @@ export function MultiPhotoUpload() {
     back: useRef<HTMLInputElement>(null),
   };
 
-  const [takenAt, setTakenAt] = useState(new Date().toISOString().split('T')[0]);
+  const [takenAt, setTakenAt] = useState(getLocalDateString());
   const [isUploading, setIsUploading] = useState(false);
   const [photos, setPhotos] = useState<Record<PhotoType, PhotoSlot>>({
     front: { type: 'front', file: null, preview: null, status: 'empty' },
@@ -187,7 +188,7 @@ export function MultiPhotoUpload() {
           type="date"
           value={takenAt}
           onChange={(e) => setTakenAt(e.target.value)}
-          max={new Date().toISOString().split('T')[0]}
+          max={getLocalDateString()}
           className="max-w-xs"
         />
       </div>

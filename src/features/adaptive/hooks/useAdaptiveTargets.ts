@@ -7,6 +7,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { calculateAdaptiveTargets } from '../utils/adaptiveCalculations';
+import { getLocalDateString } from '@/lib/date';
 import type {
   AdaptiveTargets,
   DailyNutritionSummary,
@@ -35,9 +36,9 @@ export function useAdaptiveTargets(): UseAdaptiveTargetsReturn {
         return;
       }
 
-      const today = new Date().toISOString().split('T')[0];
-      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-      const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+      const today = getLocalDateString();
+      const yesterday = getLocalDateString(new Date(Date.now() - 86400000));
+      const weekAgo = getLocalDateString(new Date(Date.now() - 7 * 86400000));
 
       // Fetch all data in parallel
       const [profileResult, todayLogsResult, weekSummariesResult] = await Promise.all([
@@ -197,7 +198,7 @@ export function useWeekSummaries() {
           return;
         }
 
-        const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+        const weekAgo = getLocalDateString(new Date(Date.now() - 7 * 86400000));
 
         const { data: summaries, error: fetchError } = await supabase
           .from('daily_nutrition_summaries')

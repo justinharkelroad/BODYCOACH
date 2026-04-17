@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { useNutritionProfile } from '@/features/nutrition/hooks/useNutritionProfile';
 import { useFoodLog } from '@/features/nutrition/hooks/useFoodLog';
+import { getLocalDateString } from '@/lib/date';
 
 export interface RemainingMacros {
   calories: number;
@@ -22,7 +23,7 @@ export interface UseRemainingMacrosResult {
  * Hook to calculate remaining macros for the day
  */
 export function useRemainingMacros(date?: string): UseRemainingMacrosResult {
-  const targetDate = date || new Date().toISOString().split('T')[0];
+  const targetDate = date || getLocalDateString();
   const { profile, isLoading: profileLoading } = useNutritionProfile();
   const { logs, isLoading: logsLoading } = useFoodLog(targetDate);
 

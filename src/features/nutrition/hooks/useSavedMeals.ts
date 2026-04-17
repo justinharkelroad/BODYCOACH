@@ -8,6 +8,7 @@ import type {
   SavedMealInsert,
   SavedMealItemInsert,
 } from '../types/nutrition.types';
+import { getLocalDateString } from '@/lib/date';
 
 export interface UseSavedMealsResult {
   savedMeals: SavedMeal[];
@@ -246,7 +247,7 @@ export function useSavedMeals(): UseSavedMealsResult {
         }
 
         // Log each food item in the meal
-        const today = new Date().toISOString().split('T')[0];
+        const today = getLocalDateString();
         const now = new Date().toISOString();
 
         const logs = meal.items.map(item => ({

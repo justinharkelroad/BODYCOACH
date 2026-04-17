@@ -8,6 +8,7 @@ import {
 } from '@/lib/ai/prompts';
 import { checkRateLimit, getClientIdentifier, rateLimitResponse, RATE_LIMITS } from '@/lib/rateLimit';
 import type { Profile, BodyStat, WorkoutLog, CoachMessage } from '@/types/database';
+import { getDateStringInTimezone } from '@/lib/date';
 
 export const dynamic = 'force-dynamic';
 
@@ -69,26 +70,29 @@ export async function POST(
       return Response.json({ error: 'Profile not found' }, { status: 404, headers: corsHeaders });
     }
 
-    // Fetch recent stats (last 14 days)
-    const twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    // Compute lookback windows in the user's timezone
+    const userTimezone = profile.timezone || 'UTC';
+    const twoWeeksAgo = getDateStringInTimezone(
+      userTimezone,
+      new Date(Date.now() - 14 * 86400000),
+    );
+    const weekAgo = getDateStringInTimezone(
+      userTimezone,
+      new Date(Date.now() - 7 * 86400000),
+    );
 
     const { data: stats } = await supabase
       .from('body_stats')
       .select('*')
       .eq('user_id', user.id)
-      .gte('recorded_at', twoWeeksAgo.toISOString().split('T')[0])
+      .gte('recorded_at', twoWeeksAgo)
       .order('recorded_at', { ascending: false }) as { data: BodyStat[] | null };
-
-    // Fetch recent workouts (last 7 days)
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
 
     const { data: workouts } = await supabase
       .from('workout_logs')
       .select('*')
       .eq('user_id', user.id)
-      .gte('workout_date', weekAgo.toISOString().split('T')[0])
+      .gte('workout_date', weekAgo)
       .order('workout_date', { ascending: false }) as { data: WorkoutLog[] | null };
 
     // Build context

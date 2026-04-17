@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Droplets, Moon, Scale } from 'lucide-react';
 import type { DailyCheckin } from '@/types/database';
+import { getLocalDateString } from '@/lib/date';
 
 interface HistoryEntry {
   date: string;
@@ -49,7 +50,7 @@ export function DashboardCheckIn({ recentHistory, lastWeight }: DashboardCheckIn
     setSaved(false);
 
     try {
-      const today = new Date().toISOString().split('T')[0];
+      const today = getLocalDateString();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 

@@ -3,6 +3,7 @@ import { createClientForApi } from '@/lib/supabase/server';
 import { checkRateLimit, getClientIdentifier, rateLimitResponse, RATE_LIMITS } from '@/lib/rateLimit';
 import Anthropic from '@anthropic-ai/sdk';
 import type { Profile } from '@/types/database';
+import { getDateStringInTimezone } from '@/lib/date';
 
 export const dynamic = 'force-dynamic';
 
@@ -121,12 +122,20 @@ export async function PUT(request: NextRequest) {
 
   const { workout, duration } = await request.json();
 
+  const { data: tzProfile } = await supabase
+    .from('profiles')
+    .select('timezone')
+    .eq('id', user.id)
+    .single();
+  const userTimezone =
+    (tzProfile as { timezone?: string } | null)?.timezone || 'UTC';
+
   // Create workout log
   const { data: workoutLog, error: workoutError } = await supabase
     .from('workout_logs')
     .insert({
       user_id: user.id,
-      workout_date: new Date().toISOString().split('T')[0],
+      workout_date: getDateStringInTimezone(userTimezone),
       name: workout.name,
       duration_minutes: duration,
       notes: workout.description,

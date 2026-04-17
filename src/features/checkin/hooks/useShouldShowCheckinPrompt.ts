@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { isFeatureEnabled } from '@/lib/featureFlags';
 import { onFoodLogged } from '../utils/checkinEvents';
+import { getLocalDateString } from '@/lib/date';
 
 export interface UseShouldShowCheckinPromptResult {
   shouldShow: boolean;
@@ -12,13 +13,6 @@ export interface UseShouldShowCheckinPromptResult {
   hasCheckedInToday: boolean;
   dismiss: () => void;
   refetch: () => Promise<void>;
-}
-
-/**
- * Helper to format date as YYYY-MM-DD
- */
-function formatDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
 }
 
 /**
@@ -59,7 +53,7 @@ export function useShouldShowCheckinPrompt(): UseShouldShowCheckinPromptResult {
         return;
       }
 
-      const today = formatDateString(new Date());
+      const today = getLocalDateString();
 
       // Check if user has logged food today
       const { count: foodLogCount } = await supabase

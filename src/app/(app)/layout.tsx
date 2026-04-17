@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import { Sidebar } from '@/components/layout/sidebar';
 import { MilestoneCelebrationWrapper } from '@/features/milestones';
 import { CheckinPrompt } from '@/features/checkin';
+import { TimezoneSync } from '@/components/timezone-sync';
 
 export default function AppLayout({
   children,
@@ -22,6 +23,8 @@ export default function AppLayout({
       </div>
       {/* Daily mood/energy check-in prompt - shows after first food log */}
       <CheckinPrompt />
+      {/* Keep profiles.timezone in sync with browser timezone */}
+      <TimezoneSync />
     </MilestoneCelebrationWrapper>
   );
 }

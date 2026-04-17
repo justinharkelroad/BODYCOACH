@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { getLocalDateString } from '@/lib/date';
 
 interface CheckInFormProps {
   lastWeight: number | null;
@@ -47,7 +48,7 @@ export function CheckInForm({ lastWeight, weekAgoWeight, pendingCheckInId, exist
     setIsSubmitting(true);
 
     try {
-      const today = new Date().toISOString().split('T')[0];
+      const today = getLocalDateString();
 
       // Save weight to body_stats
       if (weight) {
