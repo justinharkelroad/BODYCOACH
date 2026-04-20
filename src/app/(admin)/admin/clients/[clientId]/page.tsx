@@ -8,6 +8,7 @@ import { ArchiveButton } from '@/components/admin/archive-button';
 import { CoachNotesSection } from '@/components/admin/coach-notes-section';
 import { MacroPlanForm } from '@/components/admin/macro-plan-form';
 import { CheckinDayPicker } from '@/components/admin/checkin-day-picker';
+import { CoachWeightForm } from '@/components/admin/coach-weight-form';
 import {
   ArrowLeft, Scale, Camera, StickyNote, TrendingUp, TrendingDown, Minus,
   Droplets, Moon, Brain, Apple, Dumbbell, Flame, Clock, Mail,
@@ -287,6 +288,10 @@ export default async function ClientDetailPage({
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <div className="mb-6 pb-6 border-b border-[var(--theme-divider)]">
+            <h4 className="text-sm font-medium text-[var(--theme-text-secondary)] mb-3">Log a weigh-in for this client</h4>
+            <CoachWeightForm clientId={clientId} />
+          </div>
           <WeightChart data={stats} />
           {stats.length > 0 && (
             <div className="mt-6 border-t border-[var(--theme-divider)] pt-4">
