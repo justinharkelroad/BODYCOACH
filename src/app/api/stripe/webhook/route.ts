@@ -23,6 +23,37 @@ function firstNameFrom(full: string | null | undefined): string {
   return full.trim().split(/\s+/)[0] || '';
 }
 
+function parseIdList(raw: string | undefined): Set<string> {
+  if (!raw) return new Set();
+  return new Set(
+    raw
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+  );
+}
+
+async function isStandardNutritionCheckout(
+  stripe: Stripe,
+  sessionId: string,
+  allowedPriceIds: Set<string>,
+  allowedProductIds: Set<string>
+): Promise<boolean> {
+  if (allowedPriceIds.size === 0 && allowedProductIds.size === 0) return false;
+  const items = await stripe.checkout.sessions.listLineItems(sessionId, {
+    limit: 100,
+    expand: ['data.price.product'],
+  });
+  for (const item of items.data) {
+    const priceId = item.price?.id;
+    if (priceId && allowedPriceIds.has(priceId)) return true;
+    const product = item.price?.product;
+    const productId = typeof product === 'string' ? product : product?.id;
+    if (productId && allowedProductIds.has(productId)) return true;
+  }
+  return false;
+}
+
 export async function POST(request: NextRequest) {
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -77,6 +108,33 @@ export async function POST(request: NextRequest) {
 
   if (existing) {
     return Response.json({ received: true, duplicate: true });
+  }
+
+  // Gate on price/product allowlist so non-SN checkouts (e.g. other businesses on the
+  // same Stripe account) don't mint SN access codes or trigger the welcome email.
+  const allowedPriceIds = parseIdList(process.env.STRIPE_SN_PRICE_IDS);
+  const allowedProductIds = parseIdList(process.env.STRIPE_SN_PRODUCT_IDS);
+  if (allowedPriceIds.size === 0 && allowedProductIds.size === 0) {
+    console.error(
+      '[Stripe webhook] STRIPE_SN_PRICE_IDS / STRIPE_SN_PRODUCT_IDS not configured; ignoring session',
+      session.id
+    );
+    return Response.json({ received: true, ignored: 'allowlist-unset' });
+  }
+  let eligible = false;
+  try {
+    eligible = await isStandardNutritionCheckout(
+      stripe,
+      session.id,
+      allowedPriceIds,
+      allowedProductIds
+    );
+  } catch (err) {
+    console.error('[Stripe webhook] failed to load line items for', session.id, err);
+    return Response.json({ received: true, ignored: 'line-items-error' });
+  }
+  if (!eligible) {
+    return Response.json({ received: true, ignored: 'not-standard-nutrition' });
   }
 
   // Insert — retry up to a few times in the extremely unlikely event of a code collision.
