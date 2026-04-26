@@ -125,6 +125,27 @@ export interface WorkoutExercise {
   order_index: number;
 }
 
+export interface WorkoutTemplate {
+  id: string;
+  user_id: string;
+  name: string;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkoutTemplateExercise {
+  id: string;
+  template_id: string;
+  exercise_name: string;
+  sets: number | null;
+  reps: number | null;
+  target_weight_lbs: number | null;
+  duration_seconds: number | null;
+  notes: string | null;
+  order_index: number;
+}
+
 export interface CoachConversation {
   id: string;
   user_id: string;
@@ -320,6 +341,20 @@ export interface Database {
         Row: WorkoutExercise;
         Insert: Omit<WorkoutExercise, 'id'> & { id?: string };
         Update: Partial<Omit<WorkoutExercise, 'id' | 'workout_log_id'>>;
+      };
+      workout_templates: {
+        Row: WorkoutTemplate;
+        Insert: Omit<WorkoutTemplate, 'id' | 'created_at' | 'updated_at'> & {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Omit<WorkoutTemplate, 'id' | 'user_id' | 'created_at'>>;
+      };
+      workout_template_exercises: {
+        Row: WorkoutTemplateExercise;
+        Insert: Omit<WorkoutTemplateExercise, 'id'> & { id?: string };
+        Update: Partial<Omit<WorkoutTemplateExercise, 'id' | 'template_id'>>;
       };
       coach_conversations: {
         Row: CoachConversation;

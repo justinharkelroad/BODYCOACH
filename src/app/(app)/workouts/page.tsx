@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dumbbell, Plus, Calendar, Clock, Sparkles } from 'lucide-react';
+import { Dumbbell, Plus, Calendar, Clock, Sparkles, ClipboardList } from 'lucide-react';
 import type { WorkoutLog } from '@/types/database';
 
 export const dynamic = 'force-dynamic';
@@ -56,7 +56,13 @@ export default async function WorkoutsPage() {
             Track your training sessions and monitor your progress
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
+          <Link href="/workouts/templates">
+            <Button variant="secondary">
+              <ClipboardList className="h-4 w-4 mr-2" />
+              Templates
+            </Button>
+          </Link>
           <Link href="/workouts/generate">
             <Button variant="secondary">
               <Sparkles className="h-4 w-4 mr-2" />

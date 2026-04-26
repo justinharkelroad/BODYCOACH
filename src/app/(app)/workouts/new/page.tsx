@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { getLocalDateString } from '@/lib/date';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Plus, Trash2, GripVertical } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, GripVertical, ClipboardList } from 'lucide-react';
+import type { WorkoutTemplate, WorkoutTemplateExercise } from '@/types/database';
 
 interface ExerciseEntry {
   id: string;
@@ -19,9 +20,24 @@ interface ExerciseEntry {
   notes: string;
 }
 
-export default function NewWorkoutPage() {
+function emptyExercise(): ExerciseEntry {
+  return {
+    id: typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : Date.now().toString() + Math.random(),
+    exercise_name: '',
+    sets: '',
+    reps: '',
+    weight_lbs: '',
+    notes: '',
+  };
+}
+
+function NewWorkoutForm() {
   const router = useRouter();
   const supabase = createClient();
+  const searchParams = useSearchParams();
+  const initialTemplateId = searchParams.get('templateId');
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -30,25 +46,81 @@ export default function NewWorkoutPage() {
   const [workoutDate, setWorkoutDate] = useState(getLocalDateString());
   const [duration, setDuration] = useState('');
   const [notes, setNotes] = useState('');
-  const [exercises, setExercises] = useState<ExerciseEntry[]>([
-    { id: '1', exercise_name: '', sets: '', reps: '', weight_lbs: '', notes: '' },
-  ]);
+  const [exercises, setExercises] = useState<ExerciseEntry[]>([emptyExercise()]);
+
+  const [templates, setTemplates] = useState<WorkoutTemplate[]>([]);
+  const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
+
+  // Load user's templates for the picker
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('workout_templates')
+        .select('*')
+        .order('updated_at', { ascending: false }) as { data: WorkoutTemplate[] | null };
+      if (!cancelled && data) setTemplates(data);
+    })();
+    return () => { cancelled = true; };
+  }, [supabase]);
+
+  // Pre-fill from a templateId (either from query string on mount, or via picker click)
+  async function applyTemplate(templateId: string) {
+    const { data: tpl } = await supabase
+      .from('workout_templates')
+      .select('*')
+      .eq('id', templateId)
+      .single() as { data: WorkoutTemplate | null };
+    if (!tpl) return;
+
+    const { data: tplExercises } = await supabase
+      .from('workout_template_exercises')
+      .select('*')
+      .eq('template_id', templateId)
+      .order('order_index', { ascending: true }) as { data: WorkoutTemplateExercise[] | null };
+
+    setWorkoutName(tpl.name);
+    if (tpl.notes && !notes) setNotes(tpl.notes);
+    setExercises(
+      (tplExercises && tplExercises.length > 0
+        ? tplExercises.map((ex) => ({
+            id: ex.id,
+            exercise_name: ex.exercise_name,
+            sets: ex.sets?.toString() ?? '',
+            reps: ex.reps?.toString() ?? '',
+            weight_lbs: ex.target_weight_lbs?.toString() ?? '',
+            notes: ex.notes ?? '',
+          }))
+        : [emptyExercise()]),
+    );
+    setActiveTemplateId(templateId);
+  }
+
+  // Apply ?templateId= on first mount
+  useEffect(() => {
+    if (initialTemplateId) {
+      applyTemplate(initialTemplateId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialTemplateId]);
+
+  function clearTemplate() {
+    setActiveTemplateId(null);
+    setWorkoutName('');
+    setExercises([emptyExercise()]);
+  }
 
   function addExercise() {
-    setExercises([
-      ...exercises,
-      { id: Date.now().toString(), exercise_name: '', sets: '', reps: '', weight_lbs: '', notes: '' },
-    ]);
+    setExercises((prev) => [...prev, emptyExercise()]);
   }
 
   function removeExercise(id: string) {
-    if (exercises.length > 1) {
-      setExercises(exercises.filter((e) => e.id !== id));
-    }
+    setExercises((prev) => (prev.length > 1 ? prev.filter((e) => e.id !== id) : prev));
   }
 
   function updateExercise(id: string, field: keyof ExerciseEntry, value: string) {
-    setExercises(exercises.map((e) => (e.id === id ? { ...e, [field]: value } : e)));
+    setExercises((prev) => prev.map((e) => (e.id === id ? { ...e, [field]: value } : e)));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -57,18 +129,22 @@ export default function NewWorkoutPage() {
     setError('');
 
     const { data: { user } } = await supabase.auth.getUser();
-
     if (!user) {
       setError('Not authenticated');
       setIsLoading(false);
       return;
     }
 
-    // Filter out empty exercises
     const validExercises = exercises.filter((ex) => ex.exercise_name.trim());
 
     if (validExercises.length === 0) {
       setError('Please add at least one exercise');
+      setIsLoading(false);
+      return;
+    }
+
+    if (saveAsTemplate && !workoutName.trim()) {
+      setError('Give the workout a name to save it as a template.');
       setIsLoading(false);
       return;
     }
@@ -79,7 +155,7 @@ export default function NewWorkoutPage() {
       .insert({
         user_id: user.id,
         workout_date: workoutDate,
-        name: workoutName || null,
+        name: workoutName.trim() || null,
         duration_minutes: duration ? parseInt(duration) : null,
         notes: notes || null,
         ai_generated: false,
@@ -87,16 +163,15 @@ export default function NewWorkoutPage() {
       .select('id')
       .single();
 
-    if (workoutError) {
-      setError(workoutError.message);
+    if (workoutError || !workout) {
+      setError(workoutError?.message || 'Failed to save workout');
       setIsLoading(false);
       return;
     }
 
-    // Create workout exercises
     const exercisesToInsert = validExercises.map((ex, index) => ({
       workout_log_id: workout.id,
-      exercise_name: ex.exercise_name,
+      exercise_name: ex.exercise_name.trim(),
       sets: ex.sets ? parseInt(ex.sets) : null,
       reps: ex.reps ? parseInt(ex.reps) : null,
       weight_lbs: ex.weight_lbs ? parseFloat(ex.weight_lbs) : null,
@@ -114,13 +189,53 @@ export default function NewWorkoutPage() {
       return;
     }
 
+    if (saveAsTemplate) {
+      const { data: tpl, error: tplError } = await supabase
+        .from('workout_templates')
+        .insert({
+          user_id: user.id,
+          name: workoutName.trim(),
+          notes: notes || null,
+        })
+        .select('id')
+        .single();
+
+      if (tplError || !tpl) {
+        // Workout already saved — surface but don't block redirect
+        setError(`Workout saved, but template failed: ${tplError?.message ?? 'unknown error'}`);
+        setIsLoading(false);
+        return;
+      }
+
+      const tplRows = validExercises.map((ex, index) => ({
+        template_id: tpl.id,
+        exercise_name: ex.exercise_name.trim(),
+        sets: ex.sets ? parseInt(ex.sets) : null,
+        reps: ex.reps ? parseInt(ex.reps) : null,
+        target_weight_lbs: ex.weight_lbs ? parseFloat(ex.weight_lbs) : null,
+        notes: ex.notes || null,
+        order_index: index,
+      }));
+
+      const { error: tplExError } = await supabase
+        .from('workout_template_exercises')
+        .insert(tplRows);
+
+      if (tplExError) {
+        setError(`Workout saved, but template exercises failed: ${tplExError.message}`);
+        setIsLoading(false);
+        return;
+      }
+    }
+
     router.push('/workouts');
     router.refresh();
   }
 
+  const showPicker = templates.length > 0 && !activeTemplateId;
+
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center gap-4">
         <Link href="/workouts">
           <Button variant="ghost" size="sm">
@@ -128,14 +243,53 @@ export default function NewWorkoutPage() {
             Back
           </Button>
         </Link>
-        <h1 className="text-2xl font-semibold text-[var(--neutral-dark)]">Log Workout</h1>
+        <h1 className="text-2xl font-semibold text-[var(--theme-text)]">Log Workout</h1>
       </div>
 
+      {showPicker && (
+        <Card>
+          <CardContent className="py-4">
+            <div className="flex items-center gap-2 mb-3">
+              <ClipboardList className="h-4 w-4 text-[var(--theme-primary)]" />
+              <p className="text-sm font-medium text-[var(--theme-text-secondary)]">
+                Start from a template
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {templates.map((tpl) => (
+                <button
+                  key={tpl.id}
+                  type="button"
+                  onClick={() => applyTemplate(tpl.id)}
+                  className="px-3 py-1.5 text-sm rounded-full bg-[var(--theme-bg-alt)] hover:bg-[var(--theme-border)] text-[var(--theme-text)] transition-colors"
+                >
+                  {tpl.name}
+                </button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {activeTemplateId && (
+        <div className="flex items-center justify-between gap-3 px-4 py-2 rounded-[12px] bg-[var(--theme-bg-alt)]">
+          <p className="text-sm text-[var(--theme-text-secondary)]">
+            Pre-filled from template — adjust weights/reps as needed.
+          </p>
+          <button
+            type="button"
+            onClick={clearTemplate}
+            className="text-sm text-[var(--theme-primary)] hover:underline"
+          >
+            Clear
+          </button>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Workout Details */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-[var(--neutral-dark)]">Workout Details</CardTitle>
+            <CardTitle>Workout Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -166,11 +320,10 @@ export default function NewWorkoutPage() {
           </CardContent>
         </Card>
 
-        {/* Exercises */}
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-[var(--neutral-dark)]">Exercises</CardTitle>
+              <CardTitle>Exercises</CardTitle>
               <Button type="button" variant="secondary" size="sm" onClick={addExercise}>
                 <Plus className="h-4 w-4 mr-1" />
                 Add Exercise
@@ -181,12 +334,12 @@ export default function NewWorkoutPage() {
             {exercises.map((exercise, index) => (
               <div
                 key={exercise.id}
-                className="p-4 bg-[var(--neutral-gray-light)] rounded-[12px] space-y-3"
+                className="p-4 bg-[var(--theme-bg-alt)] rounded-[12px] space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <GripVertical className="h-4 w-4 text-[var(--neutral-gray)]" />
-                    <span className="text-sm font-medium text-[var(--neutral-gray)]">
+                    <GripVertical className="h-4 w-4 text-[var(--theme-text-muted)]" />
+                    <span className="text-sm font-medium text-[var(--theme-text-secondary)]">
                       Exercise {index + 1}
                     </span>
                   </div>
@@ -194,7 +347,8 @@ export default function NewWorkoutPage() {
                     <button
                       type="button"
                       onClick={() => removeExercise(exercise.id)}
-                      className="text-[var(--neutral-gray)] hover:text-[var(--error)] transition-colors"
+                      className="text-[var(--theme-text-muted)] hover:text-[var(--theme-error)] transition-colors"
+                      aria-label="Remove exercise"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -243,25 +397,38 @@ export default function NewWorkoutPage() {
           </CardContent>
         </Card>
 
-        {/* Notes */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-[var(--neutral-dark)]">Notes</CardTitle>
+            <CardTitle>Notes</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did the workout feel? Any observations?"
               rows={3}
-              className="w-full rounded-[12px] border border-[rgba(184,169,232,0.3)] px-4 py-3 text-[var(--neutral-dark)] placeholder-[var(--neutral-gray)] bg-[var(--theme-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-lavender)] focus:border-transparent"
+              className="w-full rounded-[12px] border border-[rgba(184,169,232,0.3)] px-4 py-3 text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] bg-[var(--theme-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-primary)] focus:border-transparent"
             />
+            {!activeTemplateId && (
+              <label className="flex items-start gap-2 text-sm text-[var(--theme-text)] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={saveAsTemplate}
+                  onChange={(e) => setSaveAsTemplate(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 rounded border-[var(--theme-border)] text-[var(--theme-primary)] focus:ring-[var(--theme-primary)]"
+                />
+                <span>
+                  Also save as a template
+                  <span className="block text-xs text-[var(--theme-text-muted)]">
+                    Reuse these exercises any day with one tap.
+                  </span>
+                </span>
+              </label>
+            )}
           </CardContent>
         </Card>
 
-        {error && (
-          <p className="text-sm text-[var(--error)] text-center">{error}</p>
-        )}
+        {error && <p className="text-sm text-[var(--theme-error)] text-center">{error}</p>}
 
         <div className="flex justify-end gap-3">
           <Link href="/workouts">
@@ -273,5 +440,13 @@ export default function NewWorkoutPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function NewWorkoutPage() {
+  return (
+    <Suspense fallback={<div className="space-y-6" />}>
+      <NewWorkoutForm />
+    </Suspense>
   );
 }
