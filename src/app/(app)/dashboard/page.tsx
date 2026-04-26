@@ -65,6 +65,7 @@ export default async function DashboardPage() {
   const allCheckins = (checkinsRes.data || []) as DailyCheckin[];
 
   const todayCheckin = allCheckins.find(c => c.date === today) || null;
+  const todayWeight = allStats.find(s => s.recorded_at === today)?.weight_lbs ?? null;
 
   // Merge body_stats and daily_checkins by date into a unified history
   const historyMap = new Map<string, {
@@ -145,6 +146,7 @@ export default async function DashboardPage() {
       {/* ============ DAILY CHECK-IN (inline) ============ */}
       <DashboardCheckIn
         todayCheckin={todayCheckin}
+        todayWeight={todayWeight}
         recentHistory={recentHistory}
         lastWeight={currentWeight}
       />
