@@ -5,19 +5,16 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { getLocalDateString } from '@/lib/date';
 
 interface CoachWeightFormProps {
   clientId: string;
 }
 
-function todayIsoDate(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 export function CoachWeightForm({ clientId }: CoachWeightFormProps) {
   const router = useRouter();
   const [weight, setWeight] = useState('');
-  const [date, setDate] = useState(todayIsoDate());
+  const [date, setDate] = useState(getLocalDateString());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,7 +69,7 @@ export function CoachWeightForm({ clientId }: CoachWeightFormProps) {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          max={todayIsoDate()}
+          max={getLocalDateString()}
         />
       </div>
       <div className="flex items-center gap-3">

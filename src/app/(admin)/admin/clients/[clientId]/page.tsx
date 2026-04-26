@@ -9,6 +9,7 @@ import { CoachNotesSection } from '@/components/admin/coach-notes-section';
 import { MacroPlanForm } from '@/components/admin/macro-plan-form';
 import { CheckinDayPicker } from '@/components/admin/checkin-day-picker';
 import { CoachWeightForm } from '@/components/admin/coach-weight-form';
+import { CoachWeightHistory } from '@/components/admin/coach-weight-history';
 import {
   ArrowLeft, Scale, Camera, StickyNote, TrendingUp, TrendingDown, Minus,
   Droplets, Moon, Brain, Apple, Dumbbell, Flame, Clock, Mail,
@@ -293,24 +294,7 @@ export default async function ClientDetailPage({
             <CoachWeightForm clientId={clientId} />
           </div>
           <WeightChart data={stats} />
-          {stats.length > 0 && (
-            <div className="mt-6 border-t border-[var(--theme-divider)] pt-4">
-              <h4 className="text-sm font-medium text-[var(--theme-text-secondary)] mb-3">Recent Entries</h4>
-              <div className="space-y-2">
-                {stats.slice(0, 10).map(stat => (
-                  <div key={stat.id} className="flex items-start justify-between py-2 border-b border-[var(--theme-divider)] last:border-0">
-                    <div>
-                      <p className="text-sm font-medium text-[var(--theme-text)]">
-                        {new Date(stat.recorded_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                      </p>
-                      {stat.notes && <p className="text-xs text-[var(--theme-text-secondary)] mt-0.5 max-w-md">{stat.notes}</p>}
-                    </div>
-                    <p className="text-sm font-semibold text-[var(--theme-text)]">{stat.weight_lbs ? `${stat.weight_lbs} lbs` : '—'}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          <CoachWeightHistory clientId={clientId} initialStats={stats} />
         </CardContent>
       </Card>
 
