@@ -52,3 +52,4 @@ mobile/web-build/
 *.orig.*
 .metro-health-check*
 expo-env.d.ts
+.env*.local

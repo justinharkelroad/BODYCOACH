@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dumbbell, Plus, Calendar, Clock, Sparkles, ClipboardList } from 'lucide-react';
 import type { WorkoutLog } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { WorkoutsV2 } from './workouts-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,6 +44,32 @@ export default async function WorkoutsPage() {
   const thisMonth = new Date();
   thisMonth.setDate(1);
   const workoutsThisMonth = workouts?.filter(w => new Date(w.workout_date) >= thisMonth).length || 0;
+
+  if (isNewUI()) {
+    const avgPerWeek =
+      workouts && workouts.length > 0
+        ? Math.round(
+            (workouts.length /
+              Math.max(
+                1,
+                Math.ceil(
+                  (Date.now() -
+                    new Date(workouts[workouts.length - 1].workout_date).getTime()) /
+                    (7 * 24 * 60 * 60 * 1000),
+                ),
+              )) *
+              10,
+          ) / 10
+        : 0;
+    return (
+      <WorkoutsV2
+        workouts={workouts || []}
+        workoutsThisWeek={workoutsThisWeek}
+        workoutsThisMonth={workoutsThisMonth}
+        avgPerWeek={avgPerWeek}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">

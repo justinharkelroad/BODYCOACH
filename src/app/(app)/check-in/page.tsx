@@ -5,6 +5,8 @@ import { CheckInForm } from './check-in-form';
 import { Scale, CheckCircle2, Clock } from 'lucide-react';
 import type { CheckIn, BodyStat, DailyCheckin, Profile } from '@/types/database';
 import { getDateStringInTimezone } from '@/lib/date';
+import { isNewUI } from '@/lib/feature-flags';
+import { CheckInV2 } from './check-in-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,6 +64,23 @@ export default async function CheckInPage() {
 
   const lastWeight = recentStats?.[0]?.weight_lbs;
   const weekAgoWeight = recentStats?.[recentStats.length - 1]?.weight_lbs;
+
+  if (isNewUI()) {
+    return (
+      <CheckInV2
+        todayStat={todayStat}
+        todayCheckin={todayCheckin}
+        pendingCount={pendingCheckIns?.length ?? 0}
+        pendingCheckInId={pendingCheckIns?.[0]?.id}
+        lastWeight={lastWeight ?? null}
+        weekAgoWeight={weekAgoWeight ?? null}
+        recentStats={(recentStats ?? []).map((s) => ({
+          weight_lbs: s.weight_lbs,
+          recorded_at: s.recorded_at,
+        }))}
+      />
+    );
+  }
 
   return (
     <div className="max-w-xl mx-auto space-y-4 sm:space-y-6 lg:space-y-8">
