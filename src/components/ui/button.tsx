@@ -19,6 +19,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary: `
+        v2-cta-btn
         bg-[var(--theme-primary)] text-white
         hover:bg-[var(--theme-primary-dark)]
       `,

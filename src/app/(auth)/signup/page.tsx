@@ -164,7 +164,7 @@ function SignupForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[var(--theme-primary)] text-white text-[17px] font-normal py-3 rounded-[8px] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
+            className="v2-cta-btn w-full bg-[var(--theme-primary)] text-white text-[17px] font-normal py-3 rounded-[8px] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
           >
             {isLoading ? 'Creating account...' : 'Create account'}
           </button>

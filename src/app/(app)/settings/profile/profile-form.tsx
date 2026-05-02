@@ -107,7 +107,7 @@ export function ProfileForm({ email, initialFullName, initialPhone }: ProfileFor
           <button
             type="submit"
             disabled={isSaving}
-            className="w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
+            className="v2-cta-btn w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
           >
             {isSaving ? 'Saving...' : 'Save changes'}
           </button>
