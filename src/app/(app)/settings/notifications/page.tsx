@@ -6,6 +6,8 @@ import { ArrowLeft } from 'lucide-react';
 import { NotificationSettings } from './notification-settings';
 import { CommitmentManager } from './commitment-manager';
 import type { Profile, Commitment } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { PageHeader } from '@/components/v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,6 +26,41 @@ export default async function NotificationsSettingsPage() {
 
   const profile = profileResult.data as Profile | null;
   const commitments = (commitmentsResult.data || []) as Commitment[];
+
+  if (isNewUI()) {
+    return (
+      <div className="mx-auto max-w-2xl space-y-6">
+        <Link
+          href="/settings"
+          className="inline-flex items-center gap-1 text-[13px] font-medium text-[#3B9DFF] hover:underline"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Settings
+        </Link>
+        <PageHeader
+          title="Notifications & Reminders"
+          subtitle="Set up your check-in schedule and how you want to be reminded"
+        />
+        <div className="rounded-3xl bg-white/95 p-5 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur sm:p-6">
+          <h2 className="mb-4 text-[15px] font-semibold text-[#1d1d1f]">
+            Notification Channels
+          </h2>
+          <NotificationSettings
+            initialPreferences={
+              profile?.notification_preferences || { email: true, sms: false, push: true }
+            }
+            phone={profile?.phone || null}
+          />
+        </div>
+        <div className="rounded-3xl bg-white/95 p-5 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur sm:p-6">
+          <h2 className="mb-4 text-[15px] font-semibold text-[#1d1d1f]">
+            Your Commitments
+          </h2>
+          <CommitmentManager initialCommitments={commitments} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">

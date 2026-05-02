@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Bell, User, ChevronRight, Palette } from 'lucide-react';
+import { isNewUI } from '@/lib/feature-flags';
+import { SettingsV2 } from './settings-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +21,15 @@ export default async function SettingsPage() {
     .select('*')
     .eq('id', user.id)
     .single();
+
+  if (isNewUI()) {
+    return (
+      <SettingsV2
+        fullName={profile?.full_name ?? null}
+        email={user.email ?? ''}
+      />
+    );
+  }
 
   const settingsLinks = [
     {
