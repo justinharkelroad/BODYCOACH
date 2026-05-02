@@ -5,6 +5,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ClientCard } from '@/components/admin/client-card';
 import { ArchivedClientRow } from '@/components/admin/archived-client-row';
 import type { Profile, BodyStat, ProgressPhoto } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { AdminV2 } from './admin-v2';
+import type { AdminClientRow } from './admin-v2';
+import type { ClientStatus } from '@/components/v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -99,6 +103,89 @@ export default async function AdminDashboardPage() {
 
   const activeClients = (allProfiles || []).filter(p => activeIds.includes(p.id));
   const archivedClients = (allProfiles || []).filter(p => archivedIds.includes(p.id));
+
+  if (isNewUI()) {
+    // Build the richer v2 row data — weekly change, check-ins this week, status
+    const sevenDaysAgoStr = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+
+    // Aggregate per-user from the stats we already fetched (descending order)
+    const sortedStatsByUser = new Map<string, { weight_lbs: number | null; recorded_at: string }[]>();
+    if (activeIds.length > 0) {
+      const { data: rawStats } = await supabase
+        .from('body_stats')
+        .select('user_id, weight_lbs, recorded_at')
+        .in('user_id', activeIds)
+        .order('recorded_at', { ascending: false });
+      for (const s of rawStats || []) {
+        const arr = sortedStatsByUser.get(s.user_id) || [];
+        arr.push({ weight_lbs: s.weight_lbs, recorded_at: s.recorded_at });
+        sortedStatsByUser.set(s.user_id, arr);
+      }
+    }
+
+    // Check-ins this week per user
+    const checkinsByUser = new Map<string, number>();
+    if (activeIds.length > 0) {
+      const { data: ci } = await supabase
+        .from('daily_checkins')
+        .select('user_id, date')
+        .in('user_id', activeIds)
+        .gte('date', sevenDaysAgoStr);
+      for (const row of ci || []) {
+        checkinsByUser.set(row.user_id, (checkinsByUser.get(row.user_id) || 0) + 1);
+      }
+    }
+
+    const rows: AdminClientRow[] = activeClients.map((p) => {
+      const stats = sortedStatsByUser.get(p.id) || [];
+      const latest = stats.find((s) => s.weight_lbs !== null);
+      const weekAgoTime = Date.now() - 7 * 86400000;
+      const weekAgo = stats.find(
+        (s) => s.weight_lbs !== null && new Date(s.recorded_at).getTime() <= weekAgoTime,
+      );
+      const weeklyChange =
+        latest && weekAgo && latest.weight_lbs !== null && weekAgo.weight_lbs !== null
+          ? latest.weight_lbs - weekAgo.weight_lbs
+          : null;
+      const lastActivityIso = stats[0]?.recorded_at || null;
+      const checkinsThisWeek = checkinsByUser.get(p.id) || 0;
+
+      let status: ClientStatus;
+      const lastActivityDays = lastActivityIso
+        ? Math.floor((Date.now() - new Date(lastActivityIso).getTime()) / 86400000)
+        : Infinity;
+      if (lastActivityDays > 10 && checkinsThisWeek === 0) {
+        status = 'inactive';
+      } else if (lastActivityDays > 5 || checkinsThisWeek <= 1) {
+        status = 'needs_attention';
+      } else {
+        status = 'on_track';
+      }
+
+      return {
+        id: p.id,
+        name: p.full_name || p.email,
+        email: p.email,
+        goal: p.goal,
+        latestWeight: latest?.weight_lbs ?? null,
+        weeklyChange,
+        lastActivityIso,
+        checkinsThisWeek,
+        status,
+      };
+    });
+
+    return (
+      <AdminV2
+        activeClients={rows}
+        archivedClients={archivedClients.map((c) => ({
+          id: c.id,
+          full_name: c.full_name,
+          email: c.email,
+        }))}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">

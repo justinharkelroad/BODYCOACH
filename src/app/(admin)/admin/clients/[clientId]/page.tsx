@@ -15,6 +15,8 @@ import {
   Droplets, Moon, Brain, Apple, Dumbbell, Flame, Clock, Mail,
 } from 'lucide-react';
 import type { BodyStat, ProgressPhoto, DailyCheckin, Profile, CoachNote, ClientMacroPlan, WorkoutLog, WorkoutExercise, UserStreak } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { ClientDetailV2 } from './client-detail-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -117,6 +119,25 @@ export default async function ClientDetailPage({
   const totalChange = latestWeight && startWeight ? latestWeight - startWeight : null;
   const displayName = profile.full_name || profile.email.split('@')[0];
   const memberSince = new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  if (isNewUI()) {
+    return (
+      <ClientDetailV2
+        clientId={clientId}
+        profile={profile}
+        stats={stats}
+        photosWithUrls={photosWithUrls}
+        checkins={checkins}
+        coachNotes={coachNotes}
+        macroPlan={macroPlan}
+        workouts={workouts}
+        exercisesByWorkout={exercisesByWorkout}
+        workoutsThisWeek={workoutsThisWeek}
+        streak={streak}
+        checkinDay={checkinDay}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">
