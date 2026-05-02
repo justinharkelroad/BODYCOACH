@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 import type { AccentTone } from './kpi-card';
 
 const accentMap: Record<AccentTone, { bg: string; fg: string; bar: string }> = {
@@ -16,6 +18,7 @@ interface RecoveryRowProps {
   progress: number;
   subLabel: string;
   tone?: AccentTone;
+  href?: string;
 }
 
 export function RecoveryRow({
@@ -25,29 +28,43 @@ export function RecoveryRow({
   progress,
   subLabel,
   tone = 'blue',
+  href,
 }: RecoveryRowProps) {
   const { bg, fg, bar } = accentMap[tone];
   const width = Math.max(0, Math.min(100, progress));
-  return (
-    <div className="rounded-3xl bg-white/95 p-4 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur">
-      <div className="flex items-center gap-3">
-        <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl ${bg}`}>
-          <span className={fg}>{icon}</span>
-        </div>
-        <div className="flex-1">
-          <div className="flex items-baseline justify-between">
-            <span className="text-[15px] font-semibold text-[#1d1d1f]">{title}</span>
-            <span className={`text-[15px] font-medium ${fg}`}>{value}</span>
-          </div>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E8EFFB]">
-            <div
-              className={`h-full rounded-full bg-gradient-to-r ${bar}`}
-              style={{ width: `${width}%` }}
-            />
-          </div>
-          <div className="mt-1.5 text-[12px] text-[#6e6e73]">{subLabel}</div>
-        </div>
+  const baseClasses =
+    'block rounded-3xl bg-white/95 p-4 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur';
+
+  const inner = (
+    <div className="flex items-center gap-3">
+      <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl ${bg}`}>
+        <span className={fg}>{icon}</span>
       </div>
+      <div className="flex-1">
+        <div className="flex items-baseline justify-between">
+          <span className="text-[15px] font-semibold text-[#1d1d1f]">{title}</span>
+          <span className={`text-[15px] font-medium ${fg}`}>{value}</span>
+        </div>
+        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E8EFFB]">
+          <div
+            className={`h-full rounded-full bg-gradient-to-r ${bar}`}
+            style={{ width: `${width}%` }}
+          />
+        </div>
+        <div className="mt-1.5 text-[12px] text-[#6e6e73]">{subLabel}</div>
+      </div>
+      {href && (
+        <ChevronRight className="h-5 w-5 flex-shrink-0 text-[#9BA3A9]" aria-hidden />
+      )}
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className={`${baseClasses} transition hover:shadow-[0_12px_32px_rgba(120,120,180,0.16)]`}>
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={baseClasses}>{inner}</div>;
 }
