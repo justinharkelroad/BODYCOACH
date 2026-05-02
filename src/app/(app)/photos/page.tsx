@@ -7,6 +7,8 @@ import { PhotoTimeline } from './photo-timeline';
 import { PhotoComparison } from '@/components/photos';
 import { Camera, Plus, Images } from 'lucide-react';
 import type { ProgressPhoto } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { PhotosV2 } from './photos-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,6 +56,10 @@ export default async function PhotosPage() {
   };
 
   const totalPhotos = photosWithUrls.length;
+
+  if (isNewUI()) {
+    return <PhotosV2 photos={photosWithUrls} typeCounts={typeCounts} />;
+  }
 
   return (
     <div className="space-y-8">

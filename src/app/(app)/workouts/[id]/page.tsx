@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Calendar, Clock, Dumbbell, Sparkles } from 'lucide-react';
 import type { WorkoutLog, WorkoutExercise } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { WorkoutDetailV2 } from './workout-detail-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,6 +42,10 @@ export default async function WorkoutDetailPage({
     .select('*')
     .eq('workout_log_id', id)
     .order('order_index', { ascending: true }) as { data: WorkoutExercise[] | null };
+
+  if (isNewUI()) {
+    return <WorkoutDetailV2 workout={workout} exercises={exercises || []} />;
+  }
 
   return (
     <div className="space-y-6">

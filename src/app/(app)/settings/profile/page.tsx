@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { ProfileForm } from './profile-form';
+import { isNewUI } from '@/lib/feature-flags';
+import { V2PageWrapper } from '@/components/v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,6 +19,24 @@ export default async function ProfilePage() {
     .select('*')
     .eq('id', user.id)
     .single();
+
+  if (isNewUI()) {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <V2PageWrapper
+          title="Profile"
+          subtitle="Update your personal information"
+          backHref="/settings"
+        >
+          <ProfileForm
+            email={user.email || ''}
+            initialFullName={profile?.full_name || ''}
+            initialPhone={profile?.phone || ''}
+          />
+        </V2PageWrapper>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">

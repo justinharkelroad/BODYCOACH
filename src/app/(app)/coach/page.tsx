@@ -2,8 +2,12 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Apple, Dumbbell, ArrowRight, Sparkles } from 'lucide-react';
+import { isNewUI } from '@/lib/feature-flags';
+import { CoachV2 } from './coach-v2';
 
 export default function CoachPage() {
+  if (isNewUI()) return <CoachV2 />;
+
   const coaches = [
     {
       type: 'nutrition',

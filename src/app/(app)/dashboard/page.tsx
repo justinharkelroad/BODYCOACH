@@ -11,8 +11,12 @@ import { WeightChart } from '@/components/charts/weight-chart';
 import type { Profile, BodyStat, WorkoutLog, ClientMacroPlan, DailyCheckin } from '@/types/database';
 import { DashboardCheckIn } from './dashboard-checkin';
 import { getDateStringInTimezone } from '@/lib/date';
+import { isNewUI } from '@/lib/feature-flags';
+import { DashboardV2 } from './dashboard-v2';
 
 export const dynamic = 'force-dynamic';
+
+const DAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -46,7 +50,7 @@ export default async function DashboardPage() {
     new Date(Date.now() - 7 * 86400000),
   );
 
-  const [statsRes, workoutsRes, macroPlanRes, checkinsRes] = await Promise.all([
+  const [statsRes, workoutsRes, macroPlanRes, checkinsRes, foodLogsRes] = await Promise.all([
     supabase.from('body_stats').select('*').eq('user_id', user.id)
       .gte('recorded_at', thirtyDaysAgo)
       .order('recorded_at', { ascending: false }),
@@ -56,6 +60,7 @@ export default async function DashboardPage() {
     supabase.from('client_macro_plans').select('*').eq('client_id', user.id).single(),
     supabase.from('daily_checkins').select('*').eq('user_id', user.id)
       .order('date', { ascending: false }).limit(14),
+    supabase.from('food_logs').select('calories_logged').eq('user_id', user.id).eq('log_date', today),
   ]);
 
   const allStats = (statsRes.data || []) as BodyStat[];
@@ -63,6 +68,10 @@ export default async function DashboardPage() {
   const workoutCount = (workoutsRes.count || 0) as number;
   const macroPlan = macroPlanRes.data as ClientMacroPlan | null;
   const allCheckins = (checkinsRes.data || []) as DailyCheckin[];
+  const caloriesConsumedToday = (foodLogsRes.data || []).reduce(
+    (sum: number, row: { calories_logged: number | null }) => sum + (row.calories_logged ?? 0),
+    0,
+  );
 
   const todayCheckin = allCheckins.find(c => c.date === today) || null;
   const todayWeight = allStats.find(s => s.recorded_at === today)?.weight_lbs ?? null;
@@ -129,6 +138,35 @@ export default async function DashboardPage() {
         cur = d;
       } else break;
     }
+  }
+
+  // ── v2 design system branch ─────────────────────────────────────
+  if (isNewUI()) {
+    const weekBars: { day: string; value: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(Date.now() - i * 86400000);
+      const dateStr = getDateStringInTimezone(userTimezone, d);
+      const count = recentWorkouts.filter((w) => w.workout_date === dateStr).length;
+      weekBars.push({ day: DAY_LABELS[d.getDay()], value: count });
+    }
+
+    return (
+      <DashboardV2
+        profile={{
+          full_name: profile.full_name,
+          email: profile.email,
+          target_weight_lbs: profile.target_weight_lbs,
+        }}
+        allStats={allStats}
+        recentWorkouts={recentWorkouts}
+        workoutCount={workoutCount}
+        macroPlan={macroPlan}
+        todayCheckin={todayCheckin}
+        caloriesConsumedToday={caloriesConsumedToday}
+        streak={streak}
+        weekBars={weekBars}
+      />
+    );
   }
 
   return (

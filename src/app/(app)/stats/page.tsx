@@ -6,6 +6,8 @@ import { StatsForm } from './stats-form';
 import { TrendingUp, TrendingDown, Minus, Calendar } from 'lucide-react';
 import type { BodyStat, Profile } from '@/types/database';
 import { getDateStringInTimezone } from '@/lib/date';
+import { isNewUI } from '@/lib/feature-flags';
+import { StatsV2 } from './stats-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,6 +59,20 @@ export default async function StatsPage() {
   const weeklyAvg = weeklyStats?.length
     ? weeklyStats.reduce((sum, s) => sum + (s.weight_lbs || 0), 0) / weeklyStats.length
     : null;
+
+  if (isNewUI()) {
+    return (
+      <StatsV2
+        userId={user.id}
+        stats={stats || []}
+        todayStat={todayStat}
+        latestWeight={latestWeight ?? null}
+        startWeight={startWeight ?? null}
+        totalChange={totalChange}
+        weeklyAvg={weeklyAvg}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">

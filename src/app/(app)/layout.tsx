@@ -4,12 +4,24 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { MilestoneCelebrationWrapper } from '@/features/milestones';
 import { CheckinPrompt } from '@/features/checkin';
 import { TimezoneSync } from '@/components/timezone-sync';
+import { V2AppShell } from '@/components/v2';
+import { isNewUI } from '@/lib/feature-flags';
 
 export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  if (isNewUI()) {
+    return (
+      <MilestoneCelebrationWrapper>
+        <V2AppShell>{children}</V2AppShell>
+        <CheckinPrompt />
+        <TimezoneSync />
+      </MilestoneCelebrationWrapper>
+    );
+  }
+
   return (
     <MilestoneCelebrationWrapper>
       <div className="min-h-screen bg-[var(--neutral-off-white)]">

@@ -5,6 +5,8 @@ import { Settings, User, Users, Mail, Palette } from 'lucide-react';
 import { SendCheckinEmail } from './send-checkin-email';
 import { AppearanceForm } from '@/app/(app)/settings/appearance/appearance-form';
 import type { Profile } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { AdminSettingsV2 } from './admin-settings-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,6 +31,16 @@ export default async function AdminSettingsPage() {
     .select('id', { count: 'exact', head: true })
     .eq('coach_id', user.id)
     .eq('status', 'active');
+
+  if (isNewUI()) {
+    return (
+      <AdminSettingsV2
+        profileName={profile?.full_name ?? null}
+        profileEmail={profile?.email ?? ''}
+        clientCount={clientCount || 0}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8 max-w-2xl">
