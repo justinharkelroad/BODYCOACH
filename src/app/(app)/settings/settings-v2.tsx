@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Bell, ChevronRight, Palette, User } from 'lucide-react';
+import { Bell, ChevronRight, User } from 'lucide-react';
 import { PageHeader } from '@/components/v2';
 
 interface SettingsV2Props {
@@ -23,14 +23,6 @@ const links = [
     description: 'Manage your check-in schedule and notification preferences',
     bg: 'bg-[#FFF4D6]',
     fg: 'text-[#E5A92B]',
-  },
-  {
-    href: '/settings/appearance',
-    icon: Palette,
-    title: 'Appearance',
-    description: 'Switch between light, dark, and system themes',
-    bg: 'bg-[#FCE5F2]',
-    fg: 'text-[#E94BA8]',
   },
 ];
 

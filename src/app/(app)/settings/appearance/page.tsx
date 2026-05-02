@@ -1,24 +1,16 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { AppearanceForm } from './appearance-form';
 import { isNewUI } from '@/lib/feature-flags';
-import { V2PageWrapper } from '@/components/v2';
 
 export const dynamic = 'force-dynamic';
 
 export default function AppearancePage() {
   if (isNewUI()) {
-    return (
-      <div className="mx-auto max-w-2xl">
-        <V2PageWrapper
-          title="Appearance"
-          subtitle="Choose how Standard Nutrition looks on this device."
-          backHref="/settings"
-        >
-          <AppearanceForm />
-        </V2PageWrapper>
-      </div>
-    );
+    // v2 design is light-only; the appearance toggle no longer applies.
+    // Redirect anyone hitting this route directly back to /settings.
+    redirect('/settings');
   }
 
   return (
