@@ -160,6 +160,7 @@ export function DashboardV2({
           </a>
         </div>
         <RecoveryRow
+          href="/check-in"
           icon={<Apple className="h-5 w-5" />}
           title="Daily Check-in"
           value={todayCheckin ? 'Logged' : 'Pending'}

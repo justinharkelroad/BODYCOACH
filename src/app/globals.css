@@ -499,3 +499,67 @@ button, a {
 .feature-icon {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ========================================
+   V2 AURORA OVERRIDE
+   When NEXT_PUBLIC_NEW_UI=1, the root element gets data-v2="1" via the
+   pre-paint script in src/app/layout.tsx. We force the entire app onto a
+   light surface palette and remap --theme-primary from Apple blue to the
+   softer v2 link blue (#3B9DFF) so legacy components rendered against
+   theme variables fit the aurora aesthetic everywhere — including loading
+   screens and pages outside the (app) shell.
+
+   The combined [data-theme="dark"][data-v2="1"] selector beats the bare
+   [data-theme="dark"] block above by specificity, so v2 always wins
+   regardless of the user's stored color-scheme preference.
+   ======================================== */
+
+html[data-v2="1"],
+html[data-theme="dark"][data-v2="1"] {
+  /* Backgrounds */
+  --theme-bg: #F4F6FB;
+  --theme-bg-alt: #FFFFFF;
+  --theme-surface: #FFFFFF;
+  --theme-surface-elevated: #FFFFFF;
+
+  /* Soften the primary blue from Apple-blue to the aurora link blue */
+  --theme-primary: #3B9DFF;
+  --theme-primary-light: #7CC2FF;
+  --theme-primary-dark: #2080DB;
+  --theme-accent: #3B9DFF;
+  --theme-accent-light: rgba(59, 157, 255, 0.12);
+  --theme-accent-dark: #2080DB;
+
+  /* Text */
+  --theme-text: #1d1d1f;
+  --theme-text-secondary: #6e6e73;
+  --theme-text-muted: #9BA3A9;
+  --theme-text-on-primary: #FFFFFF;
+
+  /* Borders / dividers */
+  --theme-border: rgba(0, 0, 0, 0.08);
+  --theme-divider: #F0F4F9;
+  --theme-glass-bg: rgba(255, 255, 255, 0.85);
+  --theme-hover-subtle: rgba(0, 0, 0, 0.04);
+
+  /* Update gradients to match the v2 CTA */
+  --theme-gradient-progress: linear-gradient(90deg, #FF6FA8 0%, #FF9966 50%, #FFD36F 100%);
+  --theme-gradient-accent: linear-gradient(135deg, #FF6FA8 0%, #FF9966 50%, #FFD36F 100%);
+
+  color-scheme: light;
+}
+
+/* Primary buttons rendered by <Button variant="primary"> use a Tailwind
+   arbitrary value class (`bg-[var(--theme-primary)]`). Override that and the
+   matching hover state so legacy primary buttons pick up the v2 pink/orange
+   gradient instead of a flat blue. */
+html[data-v2="1"] button.bg-\[var\(--theme-primary\)\],
+html[data-v2="1"] a.bg-\[var\(--theme-primary\)\] {
+  background-color: transparent;
+  background-image: linear-gradient(90deg, #FF6FA8 0%, #FF9966 50%, #FFD36F 100%);
+  box-shadow: 0 4px 12px rgba(255, 111, 168, 0.25);
+}
+html[data-v2="1"] button.bg-\[var\(--theme-primary\)\]:hover,
+html[data-v2="1"] a.bg-\[var\(--theme-primary\)\]:hover {
+  background-image: linear-gradient(90deg, #FF5F9C 0%, #FF8855 50%, #FFCB5A 100%);
+}

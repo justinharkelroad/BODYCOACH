@@ -62,10 +62,13 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
         {/* Resolve color scheme before paint so the first frame matches the
-            user's preference — eliminates the light-flash on dark-mode loads. */}
+            user's preference — eliminates the light-flash on dark-mode loads.
+            When the v2 flag is on, force light theme + mark the root with
+            data-v2 so loading screens and public pages also pick up the
+            aurora palette overrides defined in globals.css. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('color-scheme');var m=(s==='dark'||s==='light')?s:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',m);}catch(e){}})();`,
+            __html: `(function(){try{var v2=${process.env.NEXT_PUBLIC_NEW_UI === '1' || process.env.NEXT_PUBLIC_NEW_UI === 'true' ? 'true' : 'false'};var s=localStorage.getItem('color-scheme');var m=v2?'light':((s==='dark'||s==='light')?s:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));document.documentElement.setAttribute('data-theme',m);if(v2)document.documentElement.setAttribute('data-v2','1');}catch(e){}})();`,
           }}
         />
       </head>
