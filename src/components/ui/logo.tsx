@@ -1,7 +1,6 @@
-// Swaps between the black and white wordmarks purely via CSS so the correct
-// asset is visible on the first paint — no flash and no JS required.
-// The visibility is driven by the `data-theme` attribute on <html>, which is
-// set by the pre-paint script in the root layout.
+// Single light wordmark — the v2 design is always light, so we no longer
+// swap between light/dark variants. The previous `standard-nutrition-white.png`
+// asset only contained the "NUTRITION" half and is no longer used.
 
 type LogoProps = {
   className?: string;
@@ -10,18 +9,10 @@ type LogoProps = {
 
 export function Logo({ className, alt = 'Standard Nutrition' }: LogoProps) {
   return (
-    <>
-      <img
-        src="/logos/standard-nutrition.png"
-        alt={alt}
-        className={`theme-logo-light ${className ?? ''}`}
-      />
-      <img
-        src="/logos/standard-nutrition-white.png"
-        alt=""
-        aria-hidden="true"
-        className={`theme-logo-dark ${className ?? ''}`}
-      />
-    </>
+    <img
+      src="/logos/standard-nutrition.png"
+      alt={alt}
+      className={className}
+    />
   );
 }

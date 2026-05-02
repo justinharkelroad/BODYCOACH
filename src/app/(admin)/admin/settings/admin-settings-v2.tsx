@@ -1,7 +1,6 @@
-import { Mail, Palette, User, Users } from 'lucide-react';
+import { Mail, User, Users } from 'lucide-react';
 import { PageHeader } from '@/components/v2';
 import { SendCheckinEmail } from './send-checkin-email';
-import { AppearanceForm } from '@/app/(app)/settings/appearance/appearance-form';
 
 interface AdminSettingsV2Props {
   profileName: string | null;
@@ -51,17 +50,6 @@ export function AdminSettingsV2({
           link to your check-in form.
         </p>
         <SendCheckinEmail clientCount={clientCount} />
-      </Section>
-
-      <Section
-        title="Appearance"
-        icon={<Palette className="h-5 w-5" />}
-        tone="green"
-      >
-        <p className="mb-3 text-[13px] text-[#6e6e73]">
-          Choose how the coach dashboard looks on this device.
-        </p>
-        <AppearanceForm />
       </Section>
     </div>
   );
