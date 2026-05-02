@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Plus, ClipboardList, Pencil, PlayCircle } from 'lucide-react';
 import { TemplateDeleteButton } from '@/components/workouts/template-delete-button';
 import type { WorkoutTemplate, WorkoutTemplateExercise } from '@/types/database';
+import { isNewUI } from '@/lib/feature-flags';
+import { TemplatesV2 } from './templates-v2';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +35,15 @@ export default async function TemplatesPage() {
     acc[ex.template_id] = (acc[ex.template_id] || 0) + 1;
     return acc;
   }, {});
+
+  if (isNewUI()) {
+    return (
+      <TemplatesV2
+        templates={templates || []}
+        exerciseCountByTemplate={exerciseCountByTemplate}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
