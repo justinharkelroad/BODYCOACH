@@ -1,12 +1,18 @@
 export const dynamic = 'force-dynamic';
 
 import { AdminSidebar } from '@/components/layout/admin-sidebar';
+import { V2AdminShell } from '@/components/v2';
+import { isNewUI } from '@/lib/feature-flags';
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  if (isNewUI()) {
+    return <V2AdminShell>{children}</V2AdminShell>;
+  }
+
   return (
     <div className="min-h-screen bg-[var(--neutral-off-white)]">
       <AdminSidebar />
