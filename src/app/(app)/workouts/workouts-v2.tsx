@@ -41,7 +41,7 @@ export function WorkoutsV2({
         title="Workouts"
         subtitle="Track your training sessions and monitor your progress"
         action={
-          <div className="flex flex-wrap items-center gap-2">
+          <>
             <Link
               href="/workouts/templates"
               className="flex items-center gap-1.5 rounded-full border border-[#D9E7FF] bg-white px-4 py-2 text-[13px] font-medium text-[#3B9DFF] transition hover:bg-[#F5F9FF]"
@@ -63,7 +63,7 @@ export function WorkoutsV2({
               <Plus className="h-4 w-4" />
               Log
             </Link>
-          </div>
+          </>
         }
       />
 
