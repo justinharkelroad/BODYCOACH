@@ -104,6 +104,31 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Coaches are admin-only. They never see the client experience — direct
+  // visits to client-side routes (mobile bookmarks, deep links, OAuth
+  // landing) bounce straight to /admin. If a coach wants a client account
+  // for personal tracking, they create a separate non-coach user.
+  const clientOnlyPaths = [
+    '/dashboard',
+    '/coach',
+    '/stats',
+    '/photos',
+    '/workouts',
+    '/settings',
+    '/check-in',
+    '/nutrition',
+    '/onboarding',
+  ];
+  const isClientOnlyPath = clientOnlyPaths.some((path) =>
+    request.nextUrl.pathname.startsWith(path),
+  );
+  if (user && isCoach && isClientOnlyPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/admin';
+    url.search = '';
+    return NextResponse.redirect(url);
+  }
+
   // Welcome walkthrough check — new clients must complete the info slides
   if (user && isProtectedPath && !request.nextUrl.pathname.startsWith('/onboarding') && !request.nextUrl.pathname.startsWith('/admin')) {
     const welcomeCookie = request.cookies.get('welcome_completed')?.value === '1';
