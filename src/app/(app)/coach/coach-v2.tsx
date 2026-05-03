@@ -1,22 +1,8 @@
 import Link from 'next/link';
-import { Apple, ArrowRight, Dumbbell, Sparkles } from 'lucide-react';
+import { ArrowRight, Dumbbell, Sparkles } from 'lucide-react';
 import { PageHeader } from '@/components/v2';
 
 const coaches = [
-  {
-    type: 'nutrition',
-    title: 'Nutrition Coach',
-    description:
-      'Personalized advice on diet, meal planning, macros, and eating habits to support your fitness goals.',
-    icon: Apple,
-    chipBg: 'bg-[#DDF6E2]',
-    chipFg: 'text-[#2EBA62]',
-    examples: [
-      'What should I eat before a workout?',
-      'Help me plan meals for muscle gain',
-      'How many calories should I eat?',
-    ],
-  },
   {
     type: 'workout',
     title: 'Workout Coach',

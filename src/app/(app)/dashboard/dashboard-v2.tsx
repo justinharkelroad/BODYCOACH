@@ -92,6 +92,7 @@ export function DashboardV2({
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <KPICard
+          href="/stats"
           label="Current Weight"
           icon={<Scale className="h-4 w-4" />}
           tone="blue"
@@ -99,6 +100,7 @@ export function DashboardV2({
           unit="lbs"
         />
         <KPICard
+          href="/workouts"
           label="Workouts"
           icon={<Dumbbell className="h-4 w-4" />}
           tone="pink"
@@ -106,6 +108,7 @@ export function DashboardV2({
           unit="this wk"
         />
         <KPICard
+          href="/check-in"
           label="Day Streak"
           icon={<Flame className="h-4 w-4" />}
           tone="coral"
@@ -114,6 +117,7 @@ export function DashboardV2({
         />
         {sleepHours !== null ? (
           <KPICard
+            href="/check-in"
             label="Sleep Last Night"
             icon={<Moon className="h-4 w-4" />}
             tone="gold"
@@ -122,6 +126,7 @@ export function DashboardV2({
           />
         ) : waterOz !== null ? (
           <KPICard
+            href="/check-in"
             label="Water Today"
             icon={<Droplet className="h-4 w-4" />}
             tone="gold"
@@ -130,6 +135,7 @@ export function DashboardV2({
           />
         ) : (
           <KPICard
+            href="/check-in"
             label="Sleep Last Night"
             icon={<Moon className="h-4 w-4" />}
             tone="gold"

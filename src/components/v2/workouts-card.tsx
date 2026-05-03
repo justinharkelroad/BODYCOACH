@@ -1,4 +1,4 @@
-import { Dumbbell, MoreHorizontal } from 'lucide-react';
+import { Dumbbell, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 interface WorkoutItem {
@@ -26,21 +26,25 @@ export function WorkoutsCard({
 
   return (
     <div className="rounded-3xl bg-white/95 p-5 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FCE5F2]">
+      <div className="flex items-start justify-between gap-3">
+        <Link href="/workouts" className="flex flex-1 items-center gap-3 min-w-0">
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#FCE5F2]">
             <Dumbbell className="h-5 w-5 text-[#E94BA8]" />
           </div>
-          <div>
+          <div className="min-w-0">
             <h3 className="text-[15px] font-semibold text-[#1d1d1f]">Exercise Days</h3>
             <p className="text-[12px] text-[#6e6e73]">
               This Week : {weekCount} of {weekTarget} Days
             </p>
           </div>
-        </div>
-        <button className="text-[#6e6e73]" aria-label="More">
-          <MoreHorizontal className="h-5 w-5" />
-        </button>
+        </Link>
+        <Link
+          href="/workouts/new"
+          className="flex flex-shrink-0 items-center gap-1 rounded-full bg-gradient-to-r from-[#FF6FA8] via-[#FF9966] to-[#FFD36F] px-3 py-1.5 text-[12px] font-semibold text-white shadow-md transition hover:shadow-lg"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          Log
+        </Link>
       </div>
 
       <div className="mt-4 flex h-16 items-end gap-2">
