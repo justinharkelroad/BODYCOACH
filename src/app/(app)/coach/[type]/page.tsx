@@ -44,9 +44,11 @@ export default function CoachChatPage() {
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Validate coach type
+  // Validate coach type. Nutrition coach is intentionally hidden from the
+  // v2 product — coach selector only surfaces the workout coach now, and
+  // any direct link to /coach/nutrition redirects to the picker.
   const config = coachConfig[type];
-  if (!config) {
+  if (!config || type === 'nutrition') {
     router.push('/coach');
     return null;
   }

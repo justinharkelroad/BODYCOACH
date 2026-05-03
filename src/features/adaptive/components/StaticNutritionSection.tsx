@@ -7,8 +7,7 @@
 
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Utensils, Settings, MessageCircle } from 'lucide-react';
+import { Utensils, Settings } from 'lucide-react';
 
 export interface StaticNutritionSectionProps {
   consumed: {
@@ -133,15 +132,6 @@ export function StaticNutritionSection({
         </Link>
       </div>
 
-      {/* Quick nutrition actions */}
-      <div className="flex gap-2 mt-3">
-        <Link href="/coach/nutrition" className="flex-1">
-          <Button variant="secondary" className="w-full text-sm">
-            <MessageCircle className="h-4 w-4 mr-2" />
-            Ask Nutrition Coach
-          </Button>
-        </Link>
-      </div>
     </section>
   );
 }

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 
 export type AccentTone = 'blue' | 'pink' | 'coral' | 'gold' | 'green';
 
@@ -16,12 +17,16 @@ interface KPICardProps {
   tone: AccentTone;
   value: string;
   unit?: string;
+  href?: string;
 }
 
-export function KPICard({ label, icon, tone, value, unit }: KPICardProps) {
+export function KPICard({ label, icon, tone, value, unit, href }: KPICardProps) {
   const { bg, fg } = accentMap[tone];
-  return (
-    <div className="flex h-32 flex-col justify-between rounded-3xl bg-white/95 p-4 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur">
+  const baseClasses =
+    'flex h-32 flex-col justify-between rounded-3xl bg-white/95 p-4 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur';
+
+  const inner = (
+    <>
       <div className="flex items-start justify-between">
         <div className="text-[13px] font-medium leading-tight text-[#6e6e73]">
           {label}
@@ -38,6 +43,18 @@ export function KPICard({ label, icon, tone, value, unit }: KPICardProps) {
           <span className="text-[13px] font-medium text-[#6e6e73]">{unit}</span>
         )}
       </div>
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className={`${baseClasses} transition hover:shadow-[0_12px_32px_rgba(120,120,180,0.16)]`}
+      >
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={baseClasses}>{inner}</div>;
 }
