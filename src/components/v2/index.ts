@@ -23,3 +23,4 @@ export { V2AdminSidebar } from './admin-sidebar';
 export { V2MobileHeader } from './mobile-header';
 export { PageHeader } from './page-header';
 export { V2PageWrapper } from './v2-page-wrapper';
+export { SignOutButton } from './sign-out-button';

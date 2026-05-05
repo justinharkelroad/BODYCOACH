@@ -21,6 +21,44 @@ export function ProfileForm({ email, initialFullName, initialPhone }: ProfileFor
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
 
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordChanged, setPasswordChanged] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+
+  async function handleChangePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordChanged(false);
+
+    if (newPassword.length < 8) {
+      setPasswordError('Password must be at least 8 characters.');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Passwords do not match.');
+      return;
+    }
+
+    setIsChangingPassword(true);
+    try {
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if (updateError) {
+        setPasswordError(updateError.message);
+        return;
+      }
+      setNewPassword('');
+      setConfirmPassword('');
+      setPasswordChanged(true);
+      setTimeout(() => setPasswordChanged(false), 3000);
+    } finally {
+      setIsChangingPassword(false);
+    }
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setError('');
@@ -110,6 +148,66 @@ export function ProfileForm({ email, initialFullName, initialPhone }: ProfileFor
             className="v2-cta-btn w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
           >
             {isSaving ? 'Saving...' : 'Save changes'}
+          </button>
+        </form>
+
+        <div className="my-8 border-t border-[var(--theme-border)]" />
+
+        <form onSubmit={handleChangePassword} className="space-y-5">
+          <div>
+            <h2 className="text-[17px] font-semibold text-[var(--theme-text)]">Change password</h2>
+            <p className="text-[13px] text-[var(--theme-text-secondary)] mt-1">
+              Use at least 8 characters.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
+              New password
+            </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="At least 8 characters"
+              minLength={8}
+              autoComplete="new-password"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[12px] font-semibold text-[var(--theme-text-secondary)] uppercase tracking-wider mb-1.5">
+              Confirm new password
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Re-enter password"
+              minLength={8}
+              autoComplete="new-password"
+              className="block w-full rounded-[8px] border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-[17px] text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[rgba(0,113,227,0.2)]"
+            />
+          </div>
+
+          {passwordError && (
+            <p className="text-[14px] text-[var(--theme-error)]">{passwordError}</p>
+          )}
+
+          {passwordChanged && (
+            <div className="flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[rgba(52,199,89,0.08)] text-[var(--theme-success)] text-[14px] font-medium">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              Password updated
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={isChangingPassword || !newPassword || !confirmPassword}
+            className="v2-cta-btn w-full py-3 rounded-[8px] text-[17px] font-normal text-white bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] transition-colors disabled:opacity-50"
+          >
+            {isChangingPassword ? 'Updating...' : 'Update password'}
           </button>
         </form>
       </CardContent>

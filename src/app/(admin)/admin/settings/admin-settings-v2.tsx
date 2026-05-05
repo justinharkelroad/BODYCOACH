@@ -1,5 +1,5 @@
 import { Mail, User, Users } from 'lucide-react';
-import { PageHeader } from '@/components/v2';
+import { PageHeader, SignOutButton } from '@/components/v2';
 import { SendCheckinEmail } from './send-checkin-email';
 
 interface AdminSettingsV2Props {
@@ -51,6 +51,8 @@ export function AdminSettingsV2({
         </p>
         <SendCheckinEmail clientCount={clientCount} />
       </Section>
+
+      <SignOutButton />
     </div>
   );
 }

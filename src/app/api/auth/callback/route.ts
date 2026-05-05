@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
+  const type = searchParams.get('type');
   const redirectTo = searchParams.get('redirectTo') || '/dashboard';
 
   if (code) {
@@ -11,6 +12,12 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
+      // Password recovery: skip role-based redirects so coaches and onboarding
+      // clients still land on the reset-password screen.
+      if (type === 'recovery') {
+        return NextResponse.redirect(`${origin}/reset-password`);
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {

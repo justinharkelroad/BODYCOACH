@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Bell, ChevronRight, User } from 'lucide-react';
-import { PageHeader } from '@/components/v2';
+import { PageHeader, SignOutButton } from '@/components/v2';
 
 interface SettingsV2Props {
   fullName: string | null;
@@ -72,6 +72,8 @@ export function SettingsV2({ fullName, email }: SettingsV2Props) {
           );
         })}
       </div>
+
+      <SignOutButton />
     </div>
   );
 }
