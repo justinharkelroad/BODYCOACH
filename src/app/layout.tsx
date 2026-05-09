@@ -61,6 +61,12 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/app-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
         {/* Resolve color scheme before paint so the first frame matches the
             user's preference — eliminates the light-flash on dark-mode loads.
             When the v2 flag is on, force light theme + mark the root with
