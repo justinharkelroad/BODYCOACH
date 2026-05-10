@@ -150,7 +150,7 @@ function HeroSection({ onLearnMore }: { onLearnMore: () => void }) {
       <div className="px-6 md:px-10 max-w-[1440px] mx-auto relative">
         <div className="grid grid-cols-12 gap-6 items-start relative">
           {/* Massive editorial headline */}
-          <div className="col-span-12 md:col-span-9 relative z-20">
+          <div className="col-span-12 md:col-span-8 relative z-20">
             <p style={{
               fontFamily: body, fontSize: 12, fontWeight: 600, letterSpacing: '0.18em',
               color: ink, textTransform: 'uppercase', marginBottom: 24,
@@ -178,7 +178,7 @@ function HeroSection({ onLearnMore }: { onLearnMore: () => void }) {
           </div>
 
           {/* Tilted Corina photo */}
-          <div className="col-span-12 md:col-span-3 relative z-10">
+          <div className="col-span-12 md:col-span-4 relative z-10">
             <div
               className="corina-hero-card"
               style={{
@@ -187,6 +187,7 @@ function HeroSection({ onLearnMore }: { onLearnMore: () => void }) {
                 background: ink,
                 overflow: 'hidden',
                 boxShadow: '0 30px 60px -20px rgba(0,0,0,0.45)',
+                pointerEvents: 'none',
               }}
             >
               <img
@@ -201,15 +202,15 @@ function HeroSection({ onLearnMore }: { onLearnMore: () => void }) {
             </div>
             <style>{`
               .corina-hero-card {
-                margin-top: -2vw;
-                transform: rotate(-6deg);
-                transform-origin: center top;
+                margin-top: 8px;
+                transform: rotate(-4deg);
+                transform-origin: center center;
               }
               @media (min-width: 768px) {
                 .corina-hero-card {
-                  margin-top: 3vw;
-                  transform: rotate(-6deg) scale(1.25);
-                  transform-origin: center top;
+                  margin-top: 0;
+                  transform: rotate(-5deg);
+                  transform-origin: center center;
                 }
               }
             `}</style>
@@ -217,7 +218,7 @@ function HeroSection({ onLearnMore }: { onLearnMore: () => void }) {
         </div>
 
         {/* Sub-row: tagline + CTA */}
-        <div className="grid grid-cols-12 gap-6 mt-12">
+        <div className="grid grid-cols-12 gap-6 mt-12 relative z-30">
           <div className="col-span-12 md:col-span-6">
             <p
               style={{
