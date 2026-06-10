@@ -16,10 +16,10 @@ interface NavItem {
 const items: NavItem[] = [
   {
     key: 'clients',
-    href: '/design-preview/admin',
+    href: '/admin',
     icon: <Users className="h-5 w-5" />,
     label: 'CLIENTS',
-    match: '/design-preview/admin',
+    match: '/admin',
   },
   {
     key: 'messages',
