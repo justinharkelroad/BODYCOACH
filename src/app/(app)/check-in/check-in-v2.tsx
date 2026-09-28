@@ -1,6 +1,7 @@
 import { CheckCircle2, Clock, Scale } from 'lucide-react';
 import { PageHeader } from '@/components/v2';
 import { CheckInForm } from './check-in-form';
+import Link from 'next/link';
 import type { BodyStat, DailyCheckin } from '@/types/database';
 
 interface CheckInV2Props {
@@ -73,9 +74,12 @@ export function CheckInV2({
 
       {recentStats.length > 0 && (
         <div className="rounded-3xl bg-white/95 p-5 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur">
-          <h3 className="mb-3 text-[15px] font-semibold text-[#1d1d1f]">
-            Recent Weigh-ins
-          </h3>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h3 className="text-[15px] font-semibold text-[#1d1d1f]">Recent Weigh-ins</h3>
+            <Link href="/stats#weight-history" className="text-[13px] font-semibold text-[#166DB5] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#166DB5]">
+              View full history
+            </Link>
+          </div>
           <div className="divide-y divide-[#F0F4F9]">
             {recentStats.slice(0, 5).map((stat, i) => {
               const prevWeight = recentStats[i + 1]?.weight_lbs;
@@ -87,7 +91,8 @@ export function CheckInV2({
                   className="flex items-center justify-between py-3"
                 >
                   <span className="text-[13px] text-[#6e6e73]">
-                    {new Date(stat.recorded_at).toLocaleDateString('en-US', {
+                    {new Date(`${stat.recorded_at}T00:00:00Z`).toLocaleDateString('en-US', {
+                      timeZone: 'UTC',
                       weekday: 'short',
                       month: 'short',
                       day: 'numeric',

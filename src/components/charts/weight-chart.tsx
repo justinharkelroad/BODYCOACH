@@ -17,12 +17,15 @@ interface WeightChartProps {
 
 export function WeightChart({ data }: WeightChartProps) {
   // Sort by date ascending for the chart
-  const chartData = [...data]
+  const chartData = data.filter((stat) => stat.weight_lbs !== null)
+    .slice()
     .sort((a, b) => new Date(a.recorded_at).getTime() - new Date(b.recorded_at).getTime())
     .map((stat) => ({
-      date: new Date(stat.recorded_at).toLocaleDateString('en-US', {
+      date: new Date(`${stat.recorded_at}T00:00:00Z`).toLocaleDateString('en-US', {
+        timeZone: 'UTC',
         month: 'short',
         day: 'numeric',
+        year: 'numeric',
       }),
       weight: stat.weight_lbs,
     }));
@@ -36,7 +39,7 @@ export function WeightChart({ data }: WeightChartProps) {
   }
 
   // Calculate Y-axis domain with some padding
-  const weights = chartData.map((d) => d.weight).filter(Boolean) as number[];
+  const weights = chartData.map((d) => d.weight) as number[];
   const minWeight = Math.min(...weights);
   const maxWeight = Math.max(...weights);
   const padding = Math.max((maxWeight - minWeight) * 0.1, 5);

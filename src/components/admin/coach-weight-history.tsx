@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Pencil, Trash2 } from 'lucide-react';
@@ -13,12 +14,18 @@ interface CoachWeightHistoryProps {
 }
 
 export function CoachWeightHistory({ clientId, initialStats }: CoachWeightHistoryProps) {
+  const router = useRouter();
   const [stats, setStats] = useState<BodyStat[]>(initialStats);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editWeight, setEditWeight] = useState('');
   const [editDate, setEditDate] = useState('');
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(20);
+
+  useEffect(() => {
+    setStats(initialStats);
+  }, [initialStats]);
 
   function startEdit(stat: BodyStat) {
     setError(null);
@@ -54,6 +61,7 @@ export function CoachWeightHistory({ clientId, initialStats }: CoachWeightHistor
             .sort((a, b) => (a.recorded_at < b.recorded_at ? 1 : -1)),
         );
         setEditingId(null);
+        router.refresh();
       } else {
         const body = await res.json().catch(() => ({}));
         setError(body.error || 'Failed to save');
@@ -75,6 +83,7 @@ export function CoachWeightHistory({ clientId, initialStats }: CoachWeightHistor
       });
       if (res.ok) {
         setStats(prev => prev.filter(s => s.id !== stat.id));
+        router.refresh();
       } else {
         const body = await res.json().catch(() => ({}));
         setError(body.error || 'Failed to delete');
@@ -86,16 +95,22 @@ export function CoachWeightHistory({ clientId, initialStats }: CoachWeightHistor
     }
   }
 
-  if (stats.length === 0) return null;
+  const weighIns = stats.filter((stat) => stat.weight_lbs !== null);
 
   return (
     <div className="mt-6 border-t border-[var(--theme-divider)] pt-4">
-      <h4 className="text-sm font-medium text-[var(--theme-text-secondary)] mb-3">Recent Entries</h4>
+      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+        <h4 className="text-sm font-semibold text-[var(--theme-text)]">Full Weight History</h4>
+        <span className="text-xs text-[var(--theme-text-secondary)]">{weighIns.length} weigh-in{weighIns.length === 1 ? '' : 's'} · all time</span>
+      </div>
       {error && (
         <p className="text-sm text-[var(--theme-error)] mb-2">{error}</p>
       )}
+      {weighIns.length === 0 && (
+        <p className="py-3 text-sm text-[var(--theme-text-secondary)]">No weigh-ins logged yet. New entries will appear here.</p>
+      )}
       <div className="space-y-2">
-        {stats.slice(0, 10).map(stat => (
+        {weighIns.slice(0, visibleCount).map(stat => (
           <div
             key={stat.id}
             className="py-2 border-b border-[var(--theme-divider)] last:border-0"
@@ -140,10 +155,11 @@ export function CoachWeightHistory({ clientId, initialStats }: CoachWeightHistor
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-[var(--theme-text)]">
-                    {new Date(stat.recorded_at).toLocaleDateString('en-US', {
-                      weekday: 'short',
+                    {new Date(`${stat.recorded_at}T00:00:00Z`).toLocaleDateString('en-US', {
+                      timeZone: 'UTC', weekday: 'short',
                       month: 'short',
                       day: 'numeric',
+                      year: 'numeric',
                     })}
                   </p>
                   {stat.notes && (
@@ -180,6 +196,15 @@ export function CoachWeightHistory({ clientId, initialStats }: CoachWeightHistor
           </div>
         ))}
       </div>
+      {visibleCount < weighIns.length && (
+        <button
+          type="button"
+          onClick={() => setVisibleCount((count) => count + 20)}
+          className="mt-4 w-full rounded-xl bg-[#E5F2FF] px-4 py-3 text-sm font-semibold text-[#166DB5] hover:bg-[#D5EAFE] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#166DB5]"
+        >
+          Show older weigh-ins ({weighIns.length - visibleCount} remaining)
+        </button>
+      )}
     </div>
   );
 }

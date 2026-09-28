@@ -13,7 +13,6 @@ import {
   Moon,
   Scale,
   StickyNote,
-  TrendingDown,
 } from 'lucide-react';
 import {
   KPICard,
@@ -101,9 +100,9 @@ export function ClientDetailV2({
     year: 'numeric',
   });
 
-  const latestWeight = stats[0]?.weight_lbs ?? null;
-  const startWeight =
-    stats.length > 0 ? (stats[stats.length - 1]?.weight_lbs ?? null) : null;
+  const weighIns = stats.filter((stat) => stat.weight_lbs !== null);
+  const latestWeight = weighIns[0]?.weight_lbs ?? null;
+  const startWeight = weighIns[weighIns.length - 1]?.weight_lbs ?? null;
   const totalChange =
     latestWeight !== null && startWeight !== null
       ? latestWeight - startWeight
@@ -117,9 +116,11 @@ export function ClientDetailV2({
         new Date(b.recorded_at).getTime(),
     )
     .map((s) => ({
-      label: new Date(s.recorded_at).toLocaleDateString('en-US', {
+      label: new Date(`${s.recorded_at}T00:00:00Z`).toLocaleDateString('en-US', {
+        timeZone: 'UTC',
         month: 'short',
         day: 'numeric',
+        year: 'numeric',
       }),
       value: s.weight_lbs as number,
     }));
@@ -325,14 +326,13 @@ export function ClientDetailV2({
       />
 
       <Section
-        title="Log a weigh-in for this client"
+        title="Weight History"
         icon={<Scale className="h-5 w-5" />}
         tone="blue"
       >
+        <p className="mb-3 text-[13px] font-medium text-[#6e6e73]">Log a weigh-in for this client</p>
         <CoachWeightForm clientId={clientId} />
-        <div className="mt-4 border-t border-[#F0F4F9] pt-4">
-          <CoachWeightHistory clientId={clientId} initialStats={stats} />
-        </div>
+        <CoachWeightHistory clientId={clientId} initialStats={stats} />
       </Section>
 
       {/* Photos */}

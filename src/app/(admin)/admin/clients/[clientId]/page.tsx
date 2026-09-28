@@ -14,9 +14,10 @@ import {
   ArrowLeft, Scale, Camera, StickyNote, TrendingUp, TrendingDown, Minus,
   Droplets, Moon, Brain, Apple, Dumbbell, Flame, Clock, Mail,
 } from 'lucide-react';
-import type { BodyStat, ProgressPhoto, DailyCheckin, Profile, CoachNote, ClientMacroPlan, WorkoutLog, WorkoutExercise, UserStreak } from '@/types/database';
+import type { ProgressPhoto, DailyCheckin, Profile, CoachNote, ClientMacroPlan, WorkoutLog, WorkoutExercise, UserStreak } from '@/types/database';
 import { isNewUI } from '@/lib/feature-flags';
 import { ClientDetailV2 } from './client-detail-v2';
+import { getAllBodyStats } from '@/lib/weight-history';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,9 +60,9 @@ export default async function ClientDetailPage({
   const checkinDay = (relationship as { id: string; checkin_day: number | null }).checkin_day;
 
   // Fetch all client data in parallel
-  const [profileRes, statsRes, photosRes, checkinsRes, notesRes, macroRes, workoutsRes, streakRes] = await Promise.all([
+  const [profileRes, stats, photosRes, checkinsRes, notesRes, macroRes, workoutsRes, streakRes] = await Promise.all([
     supabase.from('profiles').select('id, full_name, email, goal, activity_level, created_at').eq('id', clientId).single(),
-    supabase.from('body_stats').select('*').eq('user_id', clientId).order('recorded_at', { ascending: false }).limit(90),
+    getAllBodyStats(supabase, clientId),
     supabase.from('progress_photos').select('*').eq('user_id', clientId).order('taken_at', { ascending: false }),
     supabase.from('daily_checkins').select('*').eq('user_id', clientId).order('date', { ascending: false }).limit(30),
     supabase.from('coach_notes').select('*').eq('coach_id', user.id).eq('client_id', clientId).order('created_at', { ascending: false }),
@@ -71,7 +72,6 @@ export default async function ClientDetailPage({
   ]);
 
   const profile = profileRes.data as Pick<Profile, 'id' | 'full_name' | 'email' | 'goal' | 'activity_level' | 'created_at'> | null;
-  const stats = (statsRes.data || []) as BodyStat[];
   const photos = (photosRes.data || []) as ProgressPhoto[];
   const checkins = (checkinsRes.data || []) as DailyCheckin[];
   const coachNotes = (notesRes.data || []) as CoachNote[];
@@ -114,9 +114,10 @@ export default async function ClientDetailPage({
     })
   );
 
-  const latestWeight = stats[0]?.weight_lbs;
-  const startWeight = stats.length > 0 ? stats[stats.length - 1]?.weight_lbs : null;
-  const totalChange = latestWeight && startWeight ? latestWeight - startWeight : null;
+  const weighIns = stats.filter((stat) => stat.weight_lbs !== null);
+  const latestWeight = weighIns[0]?.weight_lbs ?? null;
+  const startWeight = weighIns[weighIns.length - 1]?.weight_lbs ?? null;
+  const totalChange = latestWeight !== null && startWeight !== null ? latestWeight - startWeight : null;
   const displayName = profile.full_name || profile.email.split('@')[0];
   const memberSince = new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 

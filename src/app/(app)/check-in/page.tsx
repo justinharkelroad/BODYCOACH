@@ -7,6 +7,7 @@ import type { CheckIn, BodyStat, DailyCheckin, Profile } from '@/types/database'
 import { getDateStringInTimezone } from '@/lib/date';
 import { isNewUI } from '@/lib/feature-flags';
 import { CheckInV2 } from './check-in-v2';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -151,7 +152,10 @@ export default async function CheckInPage() {
       {recentStats && recentStats.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Recent Weigh-ins</CardTitle>
+            <div className="flex items-center justify-between gap-3">
+              <CardTitle>Recent Weigh-ins</CardTitle>
+              <Link href="/stats#weight-history" className="text-sm font-medium text-[var(--theme-primary)] hover:underline">View full history</Link>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -167,7 +171,8 @@ export default async function CheckInPage() {
                     className="flex items-center justify-between py-2 border-b border-[var(--theme-divider)] last:border-0"
                   >
                     <span className="text-[var(--theme-text-secondary)]">
-                      {new Date(stat.recorded_at).toLocaleDateString('en-US', {
+                      {new Date(`${stat.recorded_at}T00:00:00Z`).toLocaleDateString('en-US', {
+                        timeZone: 'UTC',
                         weekday: 'short',
                         month: 'short',
                         day: 'numeric',

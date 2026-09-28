@@ -8,6 +8,7 @@ import {
 import { Scale, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { StatsForm } from './stats-form';
 import type { BodyStat } from '@/types/database';
+import { WeightHistoryList } from '@/components/weight-history-list';
 
 interface StatsV2Props {
   userId: string;
@@ -36,9 +37,11 @@ export function StatsV2({
         new Date(a.recorded_at).getTime() - new Date(b.recorded_at).getTime(),
     )
     .map((s) => ({
-      label: new Date(s.recorded_at).toLocaleDateString('en-US', {
+      label: new Date(`${s.recorded_at}T00:00:00Z`).toLocaleDateString('en-US', {
+        timeZone: 'UTC',
         month: 'short',
         day: 'numeric',
+        year: 'numeric',
       }),
       value: s.weight_lbs as number,
     }));
@@ -143,58 +146,7 @@ export function StatsV2({
             ]}
           />
 
-          <div className="rounded-3xl bg-white/95 p-5 shadow-[0_8px_24px_rgba(120,120,180,0.10)] backdrop-blur">
-            <h3 className="text-[15px] font-semibold text-[#1d1d1f]">
-              Recent Entries
-            </h3>
-            {stats.length === 0 ? (
-              <p className="mt-4 text-center text-[14px] text-[#6e6e73]">
-                No stats logged yet. Start tracking today.
-              </p>
-            ) : (
-              <div className="mt-3 divide-y divide-[#F0F4F9]">
-                {stats.slice(0, 10).map((stat) => (
-                  <div
-                    key={stat.id}
-                    className="flex items-center justify-between py-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#E5F2FF]">
-                        <Calendar className="h-4 w-4 text-[#3B9DFF]" />
-                      </div>
-                      <div>
-                        <div className="text-[14px] font-medium text-[#1d1d1f]">
-                          {new Date(stat.recorded_at).toLocaleDateString(
-                            'en-US',
-                            {
-                              weekday: 'long',
-                              month: 'short',
-                              day: 'numeric',
-                            },
-                          )}
-                        </div>
-                        {stat.notes && (
-                          <div className="max-w-xs truncate text-[12px] text-[#6e6e73]">
-                            {stat.notes}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-[14px] font-semibold text-[#1d1d1f]">
-                        {stat.weight_lbs ? `${stat.weight_lbs} lbs` : '—'}
-                      </div>
-                      {stat.body_fat_pct && (
-                        <div className="text-[12px] text-[#6e6e73]">
-                          {stat.body_fat_pct}% BF
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <WeightHistoryList stats={stats} />
         </div>
       </div>
     </div>
